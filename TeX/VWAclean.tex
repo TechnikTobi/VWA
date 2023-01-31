@@ -1,0 +1,428 @@
+\documentclass[a4paper,12pt,ngerman,oneside]{scrreprt}	%Festlegen der Dokumentenklasse				%Erstellen der Dokument-Klasse
+
+% Das ist ein Kommentar
+% Bei Anführungszeichen: unteres -> Anführungszeichen + Shift+Akzent; oberes -> Anführungszeichen + Shift+Hashtag
+% Mathmatischer Ausdruck -> $AUSDRUCK$ oder \(AUSDRUCK\)
+% Tiefgestelte Zahlen: x_1
+% Für Tabellen ganz nützlich: https://www.tablesgenerator.com
+
+\usepackage[ngerman]{babel} 																		%Deutsche Einstellungen
+\usepackage[utf8]{inputenc} 																		%UTF8
+\usepackage[T1]{fontenc}																			%Schriftart für den Titel
+\usepackage{csquotes}																				%Für Anführungszeichen
+\usepackage[onehalfspacing]{setspace}																%1,5 Zeilenabstand
+\usepackage{geometry}																				%Für die Bestimmung der Größe der Seiten
+\usepackage[backend=bibtex, citestyle=authoryear, date=short,]{biblatex}											%Fürs Literaturverzeichnis
+\usepackage{graphicx}																				%Fürs Einbinden von Grafiken
+\usepackage{wrapfig}																				%Fürs Verschieben von Grafiken
+\usepackage{amsmath}																				%Für Vektoren
+\usepackage{abstract}																				%Für das Abstract
+\usepackage{url}																					%Für URLs im Literaturverzeichnis
+\usepackage{etoolbox}	
+\usepackage{chngcntr}	
+\usepackage[nopostdot, toc]{glossaries}																%Fürs Glossar
+\usepackage{acronym}																				%Fürs Abkürzungsverzeichnis
+\usepackage{listings}																				%Fürs Formatieren von Code Teil 1
+\usepackage{color}																					%Fürs Formatieren von Code Teil 2
+\usepackage{lstlinebgrd}																			%Fürs Formatieren von Code Teil 3
+\usepackage{pgfplots}																				%Für Graphen
+\usepgfplotslibrary{statistics}
+\usepackage{subcaption}																				%Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
+\usepackage[format=plain,indention=0cm,labelfont=bf,figurename=Abb.]{caption}						%Formatierung von Bildunterschriften
+\usepackage{lineno}																					%Für Zeilennummerierung für Korrektur
+\usepackage[hang,flushmargin]{footmisc} 															%Für Indention in Fußnoten
+\usepackage{amsfonts,amssymb}
+\usepackage{csvsimple}
+\usepackage{longtable}
+\usepackage{multirow}																				%Für Mehrere Zellen in einer Zeile
+\usepackage{booktabs}
+\usepackage{calc}
+\usepackage[percent]{overpic}
+\usepackage{float}
+
+\newlength{\shiftdown}
+\setlength{\shiftdown}{\heightof{f}-\heightof{A}}
+\newlength{\myshiftdown}
+\setlength{\myshiftdown}{\heightof{f}-\heightof{A}+\heightof{A}}
+
+\usetikzlibrary{datavisualization}																	%Ebenfalls für Graphen
+\usetikzlibrary{decorations.markings}																%Pfeilspitzen in der Mitte
+
+\geometry{a4paper,left=35mm,right=25mm,top=10mm} 													%Format der Datei + Abstand zu den Rändern
+
+\addtokomafont{chapter}{\rmfamily} 																	%Schriftart für Kapitelüberschriften
+\addtokomafont{chapterentry}{\rmfamily}																%Schriftart für Kapiteleinstiege
+\addtokomafont{section}{\rmfamily}																	%Schriftart für Unterkapitelüberschriften
+\addtokomafont{subsection}{\rmfamily}																%Schriftart für Unterunterkapitelüberschriften
+\addtokomafont{subsubsection}{\rmfamily} 															%Schriftart für Unterunterunterkapitelüberschriften
+\addtokomafont{descriptionlabel}{\rmfamily} 														%Schriftart für Glossar
+
+\setlength{\parindent}{0pt}																			%Nach Absatz nicht einrücken
+
+\addbibresource{Literaturverzeichnis.bib} 															%Einbinden des Literaturverzeichnises
+   
+\DeclareFieldFormat{urldate}{%
+	(Zuletzt besucht am \thefield{urlday}. \thefield{urlmonth}. \thefield{urlyear}\isdot)}			%Fürs Datum beim Literaturverzeichnis
+\DeclareFieldFormat{url}{URL: \url{#1}} 
+\DeclareNameAlias{sortname}{family-given}															%Nachname vor Vorname Teil 1
+\DeclareNameAlias{default}{family-given}															%Nachname vor Vorname Teil 2
+
+\renewcommand*{\labelnamepunct}{\addcolon\addspace} 												%Beistrich und Abstand nach dem Namen des Autors
+\renewcommand*{\mkbibnamefamily}[1]{\MakeUppercase{#1}}												%Nachname des Autors in Großbuchstaben
+\renewcommand{\multinamedelim}{\addslash}															%Mehrere Autoren durch Slash separiert
+\renewcommand*{\finalnamedelim}{\addslash}															%Mehrere Autoren durch Slash separiert				
+
+\nocite{Quelle1}																					%Begin Einbinden der Werke
+\nocite{Quelle2}
+\nocite{Quelle3}																					%Ende Einbinden der Werke
+
+\newcommand{\practitioner}[1]{vgl. Gibson \& Patterson, 2017, S. {#1}}
+\newcommand{\fundamentals}[1]{vgl. Buduma, 2017, S. {#1}}
+\newcommand{\cnnKlein}[1]{vgl. Nash \& O'Shea, 2015, S. {#1}}
+\newcommand{\ebd}[1]{vgl. ebd., S. {#1}}
+
+
+
+	
+%Anfang für Formatierung von Code
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+
+\lstset{frame=tb, %https://stackoverflow.com/questions/3175105/writing-code-in-latex-document
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\fontsize{10}{10}\ttfamily},
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{black}\bfseries,
+	commentstyle=\itshape\color{gray},
+	stringstyle=\itshape,
+	breaklines=true,
+	tabsize=3,
+	frame=nonuple,			%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	keepspaces=false,			%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	numbers=left,			%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	rulecolor=\color{black},  %https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	morekeywords={self},		%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings und https://latex.org/forum/viewtopic.php?t=2320
+	breakindent=6em,				%https://tex.stackexchange.com/questions/4239/which-measurement-units-should-one-use-in-latex und https://github.com/olivierverdier/python-latex-highlighting/blob/master/pythonhighlight.sty
+}
+\lstset{literate=%
+	{Ö}{{\"O}}1
+	{Ä}{{\"A}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
+	{ü}{{\"u}}1
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+}
+%Ende für Formatierung von Code	
+
+%Anfang Beispiel für Code
+%\begin{lstlisting}
+%\end{lstlisting}
+%Ende Beispiel für Code
+
+
+\setlength\LTleft\parindent
+\setlength\LTright\fill
+
+
+
+\newglossary[tlg]{Abk}{tld}{tdn}{Abkürzungsverzeichnis} %https://texblog.org/2014/04/01/multiple-glossaries-in-latex/
+\makeglossaries
+
+%==============================GLOSSAR=================================
+\newglossaryentry{Begriff}{name=Begriff, description={Definition}}
+%======================================================================
+
+
+%==============================ABKÜRZUNGSVERZEICHNIS===================
+\newglossaryentry{Abkürzung}{type=Abk, name=Abkürzung, description={Definition}}
+%======================================================================
+
+\glsaddall 
+
+
+
+\interfootnotelinepenalty=10000
+\displaywidowpenalty=10000
+\widowpenalty=10000
+\clubpenalty=10000
+
+\raggedbottom																								%Einstellung, wie das Ende einer Seite ausschauen soll
+	
+																																				
+\patchcmd{\abstract}{\null\vfil}{}{}{}																		%Verschieben des Abstracts in der Höhe
+																			
+\counterwithout{figure}{chapter} 																			%Abbildungen werden nicht mehr per Kapitel, sonder global nummeriert 
+\counterwithout{equation}{chapter}																			%Equations werden global nummeriert
+\counterwithout{table}{chapter}																				%Tabellen werden global nummeriert
+
+
+\begin{document}
+	
+	%\linenumbers %Für Zeilennummerierung zur Korrektur
+
+	\begin{titlepage}\label{Titleseite}
+		
+		\vspace*{80mm}\Huge\centering\textbf{Hier könnte der Titel Ihrer VWA stehen\break}
+		\vspace{0mm}\hrulefill
+		\setstretch{1}\vspace{7mm}\Large{\break Verfasser: Max Mustermann, 8X 20XX/XX \break Betreuer: Mag. XYZ}
+		\vspace{15mm}\Large{\break BRG/BORG St. Pölten \break Schulring 16, 3100 St. Pölten}
+		\vspace{70mm}\Large{\break Abgabe: Monat 20XX}
+		
+	\end{titlepage}
+	
+	%\begin{flushleft} Für Nicht-Blocksatz
+	
+	\renewcommand{\abstractname}{Abstract}	
+	\chapter*{Abstract}\label{Abstract}
+		Dieses Abstract ist (noch) leer.
+		\thispagestyle{empty}
+	
+	\chapter*{Vorwort}\label{Vorwort}
+		\addcontentsline{toc}{chapter}{Vorwort}
+		Dieses Vorwort ist (noch) leer.
+		\thispagestyle{empty}
+	
+
+
+	\begingroup
+		\renewcommand*{\chapterpagestyle}{empty}
+		\pagestyle{empty}
+		\tableofcontents
+		\clearpage
+	\endgroup
+
+	
+	\chapter{Einleitung}\label{Einleitung}
+	Diese Einleitung ist (noch) leer.
+	
+
+
+
+	\chapter{Kapitel X}
+	Das Kapitel X ist (noch) leer.
+		\section{Unterkapitel XX} 
+		Das Unterkapitel XX ist (noch) leer.
+			\subsection{Unterunterkapitel XXX}
+			Das Unterunterkapitel XXX ist (noch) leer.
+			\subsection{Unterunterkapitel XXY}
+			Das Unterunterkapitel XXY ist (noch) leer.
+			
+		\section{Unterkapitel XY}
+		Auch leer.
+		\section{Unterkapitel XZ}
+		Ebenfalls leer. Dafür aber mal eine Gleichung.
+			\begin{equation}
+				x_{(l,n)} = f_{(l)} \left(\sum_{i=1}^{m}(w_{(l-1,i),(l,n)} \cdot x_{(l-1,i)}) + b_{(l,n)} \right) = f_{(l)}(z_{(l,n)})
+			\end{equation}
+
+	
+		\newpage
+		
+		\begin{figure}[htb]
+			\centering
+			\begin{minipage}[t]{.48\linewidth}
+				\centering
+					\begin{tikzpicture}[scale=0.79]
+					\begin{axis}[
+					xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+					xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+					ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+					yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+					x=10,
+					y=100, 
+					ymin=-1.05, 	ymax=1.05, 
+					xmin=-10.5, 	xmax=10.5, 
+					axis lines=center, 
+					hide obscured x ticks=false, 
+					xlabel=$x$,
+					ylabel={$f(x) = \left\{\begin{array}{rcl}
+						k \cdot x &x\leq0\\
+						x&x>0
+						\end{array}\right.$},
+					every inner x axis line/.append style={-},
+					every inner y axis line/.append style={-},
+					every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+					every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+					] 
+					\addplot[domain=-10:10, samples=1000, color=black, very thick]{
+												(x <= 0) * (0.01*x)   +
+												(x > 0) * (x)}; 
+					\end{axis}
+					\end{tikzpicture}	
+				\caption{Ein Graph als Abbildung.}
+			\end{minipage}
+		\end{figure}
+
+		
+	\chapter{Kapitel Y}
+	Jetzt mal ein wenig Lorem Ipsum!
+		\section{Unterkapitel YX}
+		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+		
+		\section{Unterkapitel YY }
+		Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \break
+		
+		Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
+		
+		\section{Unterkapitel YZ}
+		Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
+		
+		Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
+
+			
+	\chapter{Kapitel Z}
+	Noch ein Kapitel.\footnote{Hier eine Fußnote mit Link: www.google.com (Zuletzt besucht am 8.4.2019)}.
+		
+			
+		\section{Boxplot!}
+			\begin{figure}[h!]
+				\begin{scriptsize}
+					\begin{tikzpicture}
+					\begin{axis}
+					[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=33mm,width=151mm,ytick={1,2,3},yticklabels={1, 2, 3},]
+					\addplot [mark=*, boxplot,
+					boxplot prepared={
+						median=0.8741,
+						upper quartile=0.9166,
+						lower quartile=0.4395,
+						upper whisker=0.9755,
+						lower whisker=0.1012,
+					},
+					] coordinates {};
+					\addplot [mark=*, boxplot,
+					boxplot prepared={
+						median=0.894,
+						upper quartile=0.9220,
+						lower quartile=0.7097,
+						upper whisker=0.9657,
+						lower whisker=0.1788,
+					},
+					] coordinates {};
+					\addplot [mark=*, boxplot,
+					boxplot prepared={
+						median=0.3739,
+						upper quartile=0.8648,
+						lower quartile=0.1617,
+						upper whisker=0.9438,
+						lower whisker=0.065,
+					},
+					] 
+					coordinates {};
+					\end{axis}
+					\end{tikzpicture}
+				\end{scriptsize}
+				\caption{Ein Boxplot.}
+			\end{figure}
+		
+		\section{Tabelle!}
+		\begin{footnotesize}
+			\begin{longtable}[l]{|l|l|l|}
+				\hline
+				Nr. & Spalte 1                                                                                                                                                              & Spalte 2 \\ \hline
+				\endfirsthead
+				%
+				\endhead
+				%
+				1      & \begin{tabular}[t]{@{}l@{}}Text 1\end{tabular}			& 1.670              \\ \hline
+				2      & \begin{tabular}[t]{@{}l@{}}Text 2\end{tabular}			& 2.510              \\ \hline
+				3      & \begin{tabular}[t]{@{}l@{}}Text 3\end{tabular}			& 1.240              \\ \hline
+				\caption{Eine Tabelle.}
+			\end{longtable}
+		\end{footnotesize}	
+
+
+		
+
+			
+	
+	\chapter{Resümee}
+	Dieses Resümee ist auch leer.
+	
+	\begin{sloppypar}
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+	\printbibliography[title={Literaturverzeichnis}]
+	\end{sloppypar}
+	
+	
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+	\listoffigures
+	
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+	\listoftables
+
+	
+
+	
+	
+	
+	\printglossary[style=list, type=Abk, nonumberlist]
+	\printglossary[style=indexgroup, title=Glossar, nonumberlist]			%Damit das geht muss zuerst Tools -> Befehle -> Makeglossaries ausgeführt werden (TeXstudio)
+	
+	
+	
+	\chapter*{Anhang}
+		\addcontentsline{toc}{chapter}{Anhang}
+
+		\section*{Anhang A: Programmcode}
+			\addcontentsline{toc}{section}{Anhang A: Programmcode}
+			
+			{\renewcommand*{\ttdefault}{txtt}
+				\begin{lstlisting}				
+#include <stdio.h>
+
+int main() {
+const char *foo = "Hello";
+const char *bar = "World!";
+fprintf(stdout, "%s %s\n", foo, bar);
+
+return 0;
+}
+				\end{lstlisting}
+			}
+		
+		
+		
+		
+		
+			
+	\newpage
+	\vspace*{2cm}	
+	\section*{Anhang B: Daten-DVD}
+	\addcontentsline{toc}{section}{Anhang B: Daten-DVD}
+	\begin{center}
+		\hspace*{-1cm}
+		\begin{tikzpicture}
+			\draw (0,0) -- (12.6,0) -- (12.6,12.6) -- (0,12.6) -- (0,0);
+			\draw[dashed] (2,3.3) -- (3.5,3.3) -- (3.5,7.3) -- (2,7.3) -- (2,3.3);
+			\draw[dashed] (2+5.6+1.5,3.3) -- (3.5+5.6+1.5,3.3) -- (3.5+5.6+1.5,7.3) -- (2+5.6+1.5,7.3) -- (2+5.6+1.5,3.3);
+			\draw node[black,midway,yshift=5.3cm,xshift=2.75cm, rotate=90] at (0,0) {\centering Klebestelle};
+			\draw node[black,midway,yshift=5.3cm,xshift=9.85cm, rotate=270] at (0,0) {\centering Klebestelle};
+		\end{tikzpicture}
+	\end{center}
+	Dieser Datenträger enthält ...
+	
+	\chapter*{Selbstständigkeitserklärung}
+	Name: Max Mustermann\newline
+	
+	Ich erkläre, dass ich diese vorwissenschaftliche Arbeit eigenständig angefertigt und nur die im Literaturverzeichnis angeführten Quellen und Hilfsmittel benutzt habe.
+	
+	\vspace{3cm}
+	
+	
+	\parbox{6cm}{\centering\hrule
+	\strut \centering\footnotesize Ort, Datum} \hfill\parbox{6cm}{\hrule
+	\strut \centering\footnotesize Unterschrift}
+	
+	%\end{flushleft} Für Nicht-Blocksatz
+	
+\end{document}

@@ -1,4 +1,9 @@
-\documentclass[a4paper,12pt,ngerman,oneside]{scrreprt}
+\documentclass[
+	a4paper,
+	12pt,
+	ngerman,
+	oneside
+]{scrreprt}											% Festlegen der Dokumentenklasse
 
 
 
@@ -12,38 +17,38 @@
 	backend=bibtex, 
 	citestyle=authoryear, 
 	date=short
-]{biblatex}	
+]{biblatex}											% Fürs Literaturverzeichnis
 
 \usepackage{calc}									% Für \heightof
-										% Fürs Literaturverzeichnis
-%\usepackage{graphicx}								% Fürs Einbinden von Grafiken
-%\usepackage{wrapfig}								% Fürs Verschieben von Grafiken
-%\usepackage{amsmath}								% Für Vektoren
-%\usepackage{abstract}								% Für das Abstract
-%\usepackage{url}									% Für URLs im Literaturverzeichnis
-%\usepackage{etoolbox}	
-%\usepackage{chngcntr}	
-%\usepackage[nopostdot, toc]{glossaries}				% Fürs Glossar
+\usepackage{pgfplots}								% Für Graphen
+
+\usepackage{graphicx}								% Fürs Einbinden von Grafiken
+\usepackage{wrapfig}								% Fürs Verschieben von Grafiken
+\usepackage{amsmath}								% Für Vektoren
+\usepackage{abstract}								% Für das Abstract
+\usepackage{url}									% Für URLs im Literaturverzeichnis
+\usepackage{etoolbox}	
+\usepackage{chngcntr}	
+\usepackage[nopostdot, toc]{glossaries}				% Fürs Glossar
 %\usepackage{acronym}								% Fürs Abkürzungsverzeichnis
-%\usepackage{listings}								% Fürs Formatieren von Code Teil 1
-%\usepackage{color}									% Fürs Formatieren von Code Teil 2
-%\usepackage{lstlinebgrd}							% Fürs Formatieren von Code Teil 3
-%\usepackage{pgfplots}								% Für Graphen
 %\usepgfplotslibrary{statistics}
-%\usepackage{subcaption}								% Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
-%\usepackage[
-%	format=plain,
-%	indention=0cm,
-%	labelfont=bf,
-%	figurename=Abb.
-%]{caption}											% Formatierung von Bildunterschriften
+\usepackage{subcaption}								% Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
+\usepackage[
+	format=plain,
+	indention=0cm,
+	labelfont=bf,
+	figurename=Abb.
+]{caption}											% Formatierung von Bildunterschriften
 %\usepackage{lineno}									% Für Zeilennummerierung für Korrektur
 %\usepackage[hang,flushmargin]{footmisc} 			% Für Indention in Fußnoten
 
+\usepackage{csvsimple}								% Einlesen von CSV Dateien
+\usepackage{longtable}								% Tabellen über mehrere Seiten (?)
+\usepackage{multirow}								% Für Mehrere Zellen in einer Zeile
 
+\usetikzlibrary{datavisualization}					% Ebenfalls für Graphen
+\usetikzlibrary{decorations.markings}				% Pfeilspitzen in der Mitte
 
-%\usetikzlibrary{datavisualization}					% Ebenfalls für Graphen
-%\usetikzlibrary{decorations.markings}				% Pfeilspitzen in der Mitte
 
 
 \geometry{a4paper,left=35mm,right=25mm,top=10mm} 	% Format der Datei + Abstand zu den Rändern
@@ -56,12 +61,180 @@
 \addtokomafont{descriptionlabel}{\rmfamily} 		% Schriftart für Glossar
 
 \setlength{\parindent}{0pt}							% Nach Absatz nicht einrücken
+\setlength\LTleft\parindent
+\setlength\LTright\fill
+
+
 
 % Fürs Zitieren
+\addbibresource{Literaturverzeichnis.bib} 			% Einbinden des Literaturverzeichnises
+
+\DeclareFieldFormat{urldate}{%
+	(Zuletzt besucht am \thefield{urlday}. \thefield{urlmonth}. \thefield{urlyear}\isdot)
+}														% Fürs Datum beim Literaturverzeichnis
+\DeclareFieldFormat{url}{URL: \url{#1}} 
+\DeclareNameAlias{sortname}{family-given}				% Nachname vor Vorname Teil 1
+\DeclareNameAlias{default}{family-given}				% Nachname vor Vorname Teil 2
+
+\renewcommand*{\labelnamepunct}{\addcolon\addspace} 	% Beistrich und Abstand nach dem Namen des Autors
+\renewcommand*{\mkbibnamefamily}[1]{\MakeUppercase{#1}}	% Nachname des Autors in Großbuchstaben
+\renewcommand{\multinamedelim}{\addslash}				% Mehrere Autoren durch Slash separiert Teil 1
+\renewcommand*{\finalnamedelim}{\addslash}				% Mehrere Autoren durch Slash separiert Teil 2		
+
+% Begin Einbinden der Werke
+\nocite{Practitioner}
+\nocite{Nielsen}
+\nocite{Gurney}
+\nocite{Fundamentals}
+\nocite{Rashid}
+\nocite{Wartala}
+\nocite{DickeBuch}
+\nocite{CNNklein}
+\nocite{CNNgross}
+\nocite{UnderstandingLSTMs}
+\nocite{Gupta}
+\nocite{UnreasonableEffectivness}
+\nocite{LeCunWebseite}
+% Ende Einbinden der Werke
+
+% Shortcuts zum Zitieren
 \newcommand{\practitioner}[1]{vgl. Gibson \& Patterson, 2017, S. {#1}}
 \newcommand{\fundamentals}[1]{vgl. Buduma, 2017, S. {#1}}
 \newcommand{\cnnKlein}[1]{vgl. Nash \& O'Shea, 2015, S. {#1}}
 \newcommand{\ebd}[1]{vgl. ebd., S. {#1}}
+
+
+
+\usepackage{listings}								% Fürs Formatieren von Code Teil 1
+\usepackage{color}									% Fürs Formatieren von Code Teil 2
+%\usepackage{lstlinebgrd}							% Fürs Formatieren von Code Teil 3
+
+
+\patchcmd{\abstract}{\null\vfil}{}{}{}				% Verschieben des Abstracts in der Höhe
+\counterwithout{figure}{chapter} 					% Abbildungen werden nicht mehr per Kapitel, sonder global nummeriert 
+\counterwithout{equation}{chapter}					% Equations werden global nummeriert
+\counterwithout{table}{chapter}						% Tabellen werden global nummeriert
+
+
+
+
+\newglossary[tlg]{Abk}{tld}{tdn}{Abkürzungsverzeichnis}
+\makeglossaries
+
+%==============================GLOSSAR=================================
+\newglossaryentry{Kuenstliches Neuronales Netz(werk)}{name=Künstliches Neuronales Netzwerk, description={Rechnerisches Modell, bestehend aus mehreren künstlichen Neuronen}}
+\newglossaryentry{Neuronales Netz(werk)}{name=Neuronales Netz(werk), description={Siehe: Künstliches Neuronales Netzwerk}}
+\newglossaryentry{Kuenstliches Neuron}{name=Künstliches Neuron, description={Mathematische Funktion mit mehreren Parametern}}
+\newglossaryentry{Neuron}{name=Neuron, description={Siehe: Künstliches Neuron}}
+\newglossaryentry{Weight}{name=Weight, description={Parameter zur Gewichtung der Eingabe eines künstlichen Neurones}}
+\newglossaryentry{Gewicht}{name=Gewicht, description={Siehe: Weight}}
+\newglossaryentry{Layer}{name=Layer, description={Gruppierung von einem oder mehreren Neuronen}}
+\newglossaryentry{Schicht}{name=Schicht, description={Siehe: Layer}}
+\newglossaryentry{Ausgabewert}{name=Ausgabewert, description={Wert eines Neurons, welchen es an Neurone der nächsten Schicht weitergibt}}
+\newglossaryentry{Bias}{name=Bias, description={Parameter welcher zu den gewichteten Eingaben eines Neurons addiert wird}}
+\newglossaryentry{Aktivierungsfunktion}{name=Aktivierungsfunktion, description={Funktion, in welche die gewichteten Eingaben samt Bias eingegeben werden und den Ausgabewert des Neurons berechnet}}
+\newglossaryentry{Aktivierung}{name=Aktivierung, description={Zustand eines Neurons; gilt als aktiviert wenn sein Ausgabewert $\neq 0$}}
+\newglossaryentry{Regression}{name=Regression, description={Aufgabenstellungen bei denen der Zusammenhang zwischen Eingabe und Ausgabe modelliert werden muss um für eine gegebene Eingabe die Ausgabe zu ermitteln}}
+\newglossaryentry{Classification}{name=Classification,description={Aufgabenstellung, bei der die Eingabe in zwei oder mehr Klassen kategorisiert wird}}
+\newglossaryentry{Binary Classification}{name=Binary Classification, description={Aufgabenstellungen bei denen entschieden werden muss, ob die Eingabe einer bestimmten Struktur entspricht oder nicht. Oft liegt der Ausgabewert zwischen 0 und 1, weshalb ein Schwellenwert für die Ausgabe festgelegt wird um zwischen den beiden möglichen Kategorien zu unterscheiden}, parent=Classification}
+\newglossaryentry{Multiclass Classification}{name=Multiclass Classification, description={Aufgabenstellungen bei denen die Eingabe in eine von mehreren Kategorien eingeordnet werden muss. Die Klasse dessen entsprechendes Neuron den höchsten Ausgabewert hat ist die Antwort des KNN}, parent=Classification}
+\newglossaryentry{Feedforward Neural Network}{name=Feedforward Neural Network, description={KNN mit einem Input, einem Output und einem oder mehreren Hidden Layern, deren Neurone mit allen Neuronen benachbarter Schichten verbunden sind}}
+\newglossaryentry{Convolutional Neural Network}{name=Convolutional Neural Network, description={Art von KNNs; besteht grundsätzlich aus drei unterschiedlichen Arten von Layern: Convolutional, Pooling und Fully-connected Layer}}
+\newglossaryentry{Recurrent Neural Network}{name=Recurrent Neural Network, description={KNNs, deren Ausgabe zu einem Zeitschritt $t$ die Ausgabe zum Zeitschritt $t+1$ beeinflusst}}
+\newglossaryentry{Learning Rate}{name=Learning Rate, description={Hyperparamter zur Bestimmung der Größe der Veränderungen der Parameter relativ zu dessen partieller Ableitung}}
+\newglossaryentry{Lernrate}{name=Lernrate, description={Siehe: Learning Rate}}
+\newglossaryentry{Parameter}{name=Parameter, description={Weights und Biases eines KNN}}
+\newglossaryentry{Sigmoid-Funktion}{name=Sigmoid-Funktion, description={Häufige Aktivierungsfunktion, definiert als: $\sigma (x) = \frac{1}{1+\textrm{e}^{-x}}$}}
+\newglossaryentry{Rectified Linear-Funktion}{name=Rectified Linear-Funktion, description={Häufige Aktivierungsfunktion, definiert als: $f(x) = $ max$(0,x)$}}
+\newglossaryentry{Rectified Linear Unit}{name=Rectified Linear Unit, description={Neuron, welches die Rectified Linear-Funktion als Aktivierungsfunktion verwendet}}
+\newglossaryentry{Leaky Rectified Linear-Funktion}{name=Leaky Rectified Linear-Funktion, description={Häufige Aktivierungsfunktion, definiert als: $f(x) = \left\{\begin{array}{rcl}
+			k \cdot x &x\leq0\\
+			x&x>0
+		\end{array}\right.$}}
+\newglossaryentry{Input Layer}{name=Input Layer, description={Erste Layer eines KNN, nimmt die Eingabedaten an und übergibt diese dem ersten Hidden Layer}, parent=Layer}
+\newglossaryentry{Output Layer}{name=Output Layer, description={Letzte Layer eines KNN; Neurone geben endültigen Output des KNN an}, parent=Layer}
+\newglossaryentry{Hidden Layer}{name=Hidden Layer, description={Layer eines KNN, dessen Neurone nicht die finalen Ausgabewerte angeben}, parent=Layer}
+\newglossaryentry{Long Short Term Memory (Neural) Network}{name={Long Short Term Memory (Neural) Network},description={Typ von RNNs, welche LSTM Zellen verwenden}}
+\newglossaryentry{Modified National Institue of Standards and Technology (Datensatz)}{name={Modified National Institue of Standards and Technology (Datensatz)},description={Datensatz aus insgesamt 70.000 handgeschriebenen, in einer Auflösung von 28 mal 28 Pixel eingescannte Ziffern}}
+\newglossaryentry{Algorithmus}{name=Algorithmus, description={Eine Sequenz von (rechnerischen) Verarbeitungsschritten, die eine Eingabe in eine Ausgabe transformiert}}
+\newglossaryentry{fully connected}{name=fully connected, description={zwei (benachbarte) Layer sind fully connected, wenn alle Neurone eines Layers mit allen Neuronen des anderen verbunden sind}}
+\newglossaryentry{Training}{name=Training, description={Anpassen der Parameter eines KNN für eine bestimmte Aufgabe mithilfe von Trainingsbeispielen}}
+\newglossaryentry{Convolutional Layer}{name=Convolutional Layer, description={Typ von Layer, der Grundbestandteil eines CNNs ist; Neurone dieses Layers sind nur mit einem Ausschnitt, dem LRF, des vorherigen Layers verbunden}, parent=Layer}
+\newglossaryentry{Pooling Layer}{name=Pooling Layer, description={Layer eines CNN, dessen Ziel es ist, kleinere Feature Maps als der vorhergehende Layer zu haben}, parent=Layer}
+\newglossaryentry{Fully-connected Layer}{name=Fully-connected Layer, description={Layer, bei dem jedes Neuron mit jedem Neuron des vorherigen Layers verbunden ist}, parent=Layer}
+\newglossaryentry{Softmax Layer}{name=Softmax Layer, description={Output Layer, dessen Ausgabe als Wahrscheinlichkeitsverteilung angesehen werden kann}, parent=Layer}
+\newglossaryentry{LernenGlossar}{name=Lernen, description={Siehe: Training}}
+\newglossaryentry{Local Receptive Field}{name=Local Receptive Field, description={Ausschnitt einer Input Matrix für ein Neuron eines Convolutionsl Layers}}
+\newglossaryentry{Kernel}{name=Kernel, description={Matrix mit den Gewichten zwischen einem Neuron eines Convolutional Layer und seinem dazugehörigen LRF}}
+\newglossaryentry{Stride}{name=Stride, description={Hyperparameter, welcher angibt, wie eine Input Matrix in die verschiedenen LRFs aufgeteilt werden soll}}
+\newglossaryentry{Feature Map}{name=Feature Map, description={(meist) zweidimensionale Matrix von Neuronen eines Convolutional Layer}}
+\newglossaryentry{Zero Padding}{name=Zero Padding, description={Hinzufügen von zusätzlichen, mit dem Wert 0 gefüllten Zeilen und Spalten um eine Input Matrix, um die Größe der Feature Maps des Convolutional Layers zu steuern}}
+\newglossaryentry{Max-Pooling}{name=Max-Pooling, description={Mögliche Funktion eines Pooling Layer, die seinen Neuronen die arithemtischen Mittel ihrer jeweiligen Local Receptive Fields als Ausgabewert annehmen lässt}}
+\newglossaryentry{Average-Pooling}{name=Average-Pooling, description={Mögliche Funktion eines Pooling Layer, die jedem seiner Neurone den größten Wert des jeweiligen Local Receptive Fields als Ausgabewert zuordnet}}
+\newglossaryentry{Vanishing Gradient}{name=Vanishing Gradient, description={Problem beim Lernen von KNNs, bei dem der Gradient für die Parameter von Layern, die näher beim Input Layer liegen, sich dem Wert 0 nähert und das Lernen verlangsamt wird}}
+\newglossaryentry{Many-To-One}{name=Many-To-One, description={Eine Sequenz von Eingaben erzeugt eine Ausgabe}, parent=Classification}
+\newglossaryentry{One-To-Many}{name=One-To-Many, description={Eine Eingabe erzeut eine Sequenz von Ausgaben}, parent=Classification}
+\newglossaryentry{Many-To-Many}{name=Many-To-Many, description={Eine Sequenz von Eingaben erzeugt eine Sequenz von Ausgaben}, parent=Classification}
+\newglossaryentry{Gate}{name=Gate, description={Steuereinheiten zur Veränderung des Zell Status}}
+\newglossaryentry{Gatter}{name=Gatter, description={Siehe: Gate}}
+\newglossaryentry{Forget Gate}{name=Forget Gate, description={Gate zur Bestimmung, welche Informationen des vorherigen Zell Status erhalten bleiben sollen}, parent=Gate}
+\newglossaryentry{Input Gate}{name=Input Gate, description={Gate zur Bestimmung, welche neuen Informationen in den aktuellen Zell Status aufgenommen werden sollen}, parent=Gate}
+\newglossaryentry{Output Gate}{name=Output Gate, description={Gate zur Bestimmung, welche Informationen an die nächste Schicht und an den nächsten Zeitschritt weitergegeben werden sollen}, parent=Gate}
+\newglossaryentry{Zell Status}{name=Zell Status, description={Variable eines LSTMs, welche Informationen über mehrere Zeitschritte hinweg speichern kann}}
+\newglossaryentry{Output}{name=Output, description={Ausgabe eines KNN}}
+\newglossaryentry{Trainingsdatensatz}{name=Trainingsdatensatz, description={Menge von Beispielen, deren Eingaben und Ausgaben bekannt sind, welche zum Trainieren eines KNN verwendet werden}}
+\newglossaryentry{Cost-Funktion}{name=, description={Funktion, welche angibt, wie stark der Output eines KNN vom gewünschten Output der Trainingsbeispiele abweicht}}
+\newglossaryentry{Loss-Funktion}{name=Loss-Funktion, description={Siehe: Cost-Funktion}}
+\newglossaryentry{Gradient Descent}{name=Gradient Descent, description={Algorithmus zum Trainieren von KNNs}}
+\newglossaryentry{Stochastic Gradient Descent}{name=Stochastic Gradient Descent, description={Gradient Descent, bei dem die Parameter des KNNs nach jedem Trainingsbeispiel verändert werden}}
+\newglossaryentry{Epoch(e)}{name=Epoch, description={ein kompletter Durchlauf beim Lernen durch alle Trainingsbeispiele}}
+\newglossaryentry{HyperparameterGlossar}{name=Hyperparameter, description={Parameter, die das Trainieren eines KNN steuern}}
+\newglossaryentry{Gradient}{name=Gradient, description={Vektor mit partiellen Ableitungen}}
+\newglossaryentry{Mini-Batch Gradient Descent}{name=Mini-Batch Gradient Descent, description={Gradient Descent, bei dem nach einer kleinen Teilmenge der Trainingsdaten die Parameter des KNNs verändert werden}, parent={Gradient Descent}}
+\newglossaryentry{Mini-Batch}{name=Mini-Batch, description={Kleine Teilmenge von Trainingsdaten}}
+\newglossaryentry{Testdatensatz}{name=Testdatensatz, description={Menge von Beispielen, deren Eingaben und Ausgaben bekannt sind, welche dazu verwendet werden, um zu überprüfen, wie gut ein KNN mit Daten umgehen kann, die es zuvor noch nie gesehen hat}}
+\newglossaryentry{Validationsdatensatz}{name=Validationsdatensatz, description={Menge von Daten, deren Eingaben und Ausgaben bekannt sind, welche dazu dienen, um zu überprüfen, ob es beim Trainieren zu Overfitting kommt}}
+\newglossaryentry{BackpropagationGlossar}{name=Backpropagation, description={Algorithmus zur Berechnung partieller Ableitungen bei mehrschichtigen KNNs}}
+\newglossaryentry{Optimierungs-Methode}{name=Optimierungs-Methode, description={Methode zum Trainieren eines KNN (auch Optimieren der Parameter genannt)}}
+\newglossaryentry{Underfitting}{name=Underfitting, description={Problem beim Lernen eines KNN; tritt ein, wenn das KNN sich an die Trainingsdaten nicht anpassen kann und eine Eingabe nicht in Verbindung mit der dazugehörigen Ausgabe setzen kann}}
+\newglossaryentry{Overfitting}{name=Overfitting, description={Problem beim Lernen eines KNN; tritt ein, sobald die Trefferquote bei den Validationsdaten nicht weiter steigt, die Cost-Funktion aber weiterhin sinkt}}
+\newglossaryentry{Dying ReLU}{name=Dying ReLU, description={Problem beim Lernen von KNNs mit ReLUs}}
+\newglossaryentry{SaettigungGlossar}{name=Sättigung, description={Nähert sich eine Ableitung dem Wert 0, so sind die Veränderungen der Parameter relativ gering und das KNN benötigt zum Lernen mehr Zeit}}
+\newglossaryentry{Trefferquote}{name=Trefferquote, description={Quotient von Anzahl der erkannten Ziffern einer Menge und Gesamtanzahl der Ziffern einer Menge}}
+\newglossaryentry{Python}{name={Python},description={häufig im Bereich der KNNs eingesetzte Programmiersprache}}
+\newglossaryentry{Library}{name={Library},description={Vorgefertigter Programmcode, auf den ein Programmierer zurückgreifen kann}}
+\newglossaryentry{Keras}{name={Keras},description={Library zur Vereinfachung der Implementierung von KNNs mittels Tensorflow}}
+\newglossaryentry{Tensorflow}{name={Tensorflow},description={Library von Google für C++/Python zur Implementierung von KNNs}}
+\newglossaryentry{Grid Search}{name={Grid Search},description={Suche nach geeigneten Werten für Hyperparameter durch Iterieren durch eine/mehrere Liste/n von verschiedenen Werten}}
+\newglossaryentry{CSV-Datei}{name={CSV-Datei},description={Datei mit einer Tabelle, derer Zellen durch z. B. Kommas getrennt sind}}
+\newglossaryentry{GFLOPS}{name={GFLOPS},description={Milliarden Gleitkommaoperationen pro Sekunde; Einheit zur Messung der Rechengeschwindigkeit von Prozessoren}}
+\newglossaryentry{Boxplot}{name={Boxplot},description={Graphische Darstellung des Minimums, 1., 2. und 3. Quartils und Maximum einer Liste}}
+\newglossaryentry{Leistung}{name={Leistung},description={Trefferquote eines KNNs bei einem vollständigen Durchlauf aller Beispiele des Testdatensatzes}}
+%======================================================================
+
+
+%==============================ABKÜRZUNGSVERZEICHNIS===================
+\newglossaryentry{KNNglossar}{type=Abk, name=KNN, description={Künstliches Neuronales Netz(werk)}}
+\newglossaryentry{FFNNglossar}{type=Abk, name=FFNN, description={Feedforward Neural Network}}
+\newglossaryentry{CNNglossar}{type=Abk, name=CNN, description={Convolutional Neural Network}}
+\newglossaryentry{RNNglossar}{type=Abk, name=RNN, description={Recurrent Neural Network}}
+\newglossaryentry{MNISTglossar}{type=Abk, name=MNIST, description={Modified National Institute of Standards and Technology (Dataset)}}
+\newglossaryentry{CSVglossar}{type=Abk, name=CSV,description={Comma Separated Values}}
+\newglossaryentry{ReLUglossar}{type=Abk, name=ReLU,description={Rectified Linear Unit}}
+\newglossaryentry{LSTMglossar}{type=Abk, name=LSTM,description={Long Short Term Memory (Neural Network)}}
+\newglossaryentry{LRFglossar}{type=Abk, name=LRF,description={Local Receptive Field}}
+\newglossaryentry{GDglossar}{type=Abk, name=GD,description={Gradient Descent}}
+\newglossaryentry{SGDglossar}{type=Abk, name=SGD,description={Stochastic Gradient Descent}}
+\newglossaryentry{v. a.}{type=Abk, name={v. a.},description={vor allem}}
+\newglossaryentry{E. D.}{type=Abk, name={E. D.},description={Eigene Darstellung}}
+\newglossaryentry{GFLOPSabk}{type=Abk, name={GFLOPS},description={Giga Floating Point Operations per Second}}
+\newglossaryentry{Aktf.}{type=Abk, name={Aktf.},description={Aktivierungsfunktion}}
+\newglossaryentry{rek. Aktf.}{type=Abk, name={rek. Aktf.},description={rekurrente Aktivierungsfunktion}}
+\newglossaryentry{Abb.}{type=Abk, name={Abb.},description={Abbildung}}
+\newglossaryentry{z. B.}{type=Abk, name={z. B.}, description={zum Beispiel}}
+%======================================================================
+
+\glsaddall 
 
 
 
@@ -105,6 +278,7 @@
 		Noch lange werden mir die langen Sommernächte, welche bis 3 Uhr morgens mit der Arbeit an der VWA gefüllt waren, sowie das grausame Gefühl, ein Stück Information zu wissen, von dem man weiß, dass es sich irgendwo im Papierberg vor einem befindet, man es jedoch nicht finden kann, in Erinnerung bleiben. 
 		\\ \ 
 		\\ \
+		% Zum Abschluss möchte ich noch ein Zitat von Adam Savage aus der us-amerikanischen TV-Serie „MythBusters“ nennen, an das ich immer wieder bei meinen Experimenten mit KNNs denken musste: „Remember kids, the only difference between science and screwing around is writing it down.“\footnote{?}
 		St. Pölten, am 20. 01. 2019 \\ \
 		Tobias Prisching
 		\thispagestyle{empty}
@@ -128,6 +302,7 @@
 		\\ \
 		Diese Arbeit beschäftigt sich mit den Grundlagen der Künstlichen Neuronalen Netzwerke, wie diese aufgebaut sind und funktionieren. Die Kapitel 3, 4 und 5 beschäftigen sich mit drei Arten von Netzwerken und im sechsten Kapitel wird beschrieben, wie diese lernen. Dieser Teil der Arbeit beruht rein auf Literatur, welche sowohl in gedruckter Form als auch digital im Internet zu finden ist. Da die behandelte Thematik erst seit relativ kurzer Zeit relevant und interessant ist, waren die meisten Werke erst seit nur wenige Monaten zur Zeit des Verfassens dieser Arbeit alt. In Kapitel 7 wird untersucht, wie sich verschiedene Netztypen beim MNIST-Datensatz, einem Vergleichstest für Künstliche Neuronale Netzwerke, verhalten und wie ein Netz beschaffen sein muss, um diese Aufgabe weitgehendst zu bewältigen. Um diese Fragen zu beantworten, werden zusätzlich zur Literatur auch Experimente in Form von Programmiertätigkeiten ausgewertet. 
 		
+		% Kapitel \ref{BausteineGrundlegendes} gibt einen Einstieg in die verschiedenen Grundlagen, welche für die weiteren Kapitel benötigt werden. Die Kapitel \ref{FFNN Kapitel} bis \ref{LSTM Kapitel} erklären die verschiedenen, in dieser Arbeit betrachteten Netztypen. Im Kapitel \ref{Lernen} wird der Prozess des Trainings eines KNNs erläutert. Die zu den verschiedenen Netztypen ausgeführten Experimente und ihre Ergebnisse werden in Kapitel \ref{Experimente} genannt. 
 		
 	
 	
@@ -158,130 +333,438 @@
 				\vec{x}_{(l)} = f_{(l)}(W_{(l-1),(l)} \cdot \vec{x}_{(l-1)} + \vec{b}_{(l)})  = f_{(l)}(\vec{z}_{(l)})
 			\end{equation}
 			
+			% Grafik machen, ähnlich Practitioner S. 51 mit Bias. -> Wir schreiben hier kein Kinderbuch -> Antrag ABGELEHNT
+			% Meistens skaliert auf Intervall, z.B. [0;1] oder [-1;1]
+			% Falls =0 -> keine Verbindung zwischen Neuronen (BELEG ERFORDERLICH)
+			
 			Das Gewicht einer Eingabe gibt an, wie viel Aussagekraft bzw. wie wichtig der Wert eines Neurons ist. Der Bias eines Neurons lässt sich mit einem Schwellenwert vergleichen, welchen die gewichteten Eingaben überwinden müssen, damit dass Neuron aktiviert wird.\footnote{vgl. Nielsen, 2015, Kapitel 1/Perceptrons} Allerdings fehlt der Bias bei Netzen mancher Quellen, so z. B. bei Rashid.
 			\ \\
 			\ \\
 			Neurone wie beim menschlichen Gehirn haben keine lineare Funktion für ihren Ausgabewert. Erst wenn ein bestimmter Schwellenwert erreicht ist, geben sie ein Ausgabesignal aus. Dieses Konzept der Nichtlinearität wird bei künstlichen Neuronen übernommen.\footnote{vgl. Rashid, 2017, S. 32} Diese Nichtlinearität ist wichtig, da diese es einem KNN erst ermöglicht, komplexere Aufgaben zu lösen.\footnote{vgl. Buduma, 2017, S. 13} Erreicht wird sie durch eine Aktivierungsfunktion, welche die Aktivierung eines Neurons steuert. Ein Neuron gilt dann als aktiviert, wenn sein Ausgabewert ungleich 0 ist.\footnote{vgl. Gibson \& Patterson, 2017, S. 53} Es gibt verschiedene Aktivierungsfunktionen, welche je nach Aufgabe des KNNs bzw. des Layers im KNN eingesetzt werden.\footnote{vgl. ebd., S. 255f} Innerhalb eines KNNs können die Layer unterschiedliche Aktivierungsfunktionen verwenden.\footnote{vgl. ebd., S. 50} Die Graphen von vier Funktionen sind in den Abbildungen \ref{SigmoidGraph} - \ref{LeakyReLUGraph} dargestellt, die Sigmoid-Funktion, die TanH-Funktion, die Rectified Linear-Funktion und die Leaky Rectified Linear-Funktion.\footnote{vgl. Buduma, 2017, S. 13ff} Die Sigmoid-Funktion ist in der Literatur eine der am häufigsten anzutreffenden Aktivierungsfunktionen, jedoch werden aufgrund eines Nachteils dieser Aktivierungsfunktion, dem Vanishing Gradient (Siehe \ref{VanishingGradient}), andere Funktionen verwendet. Auch die TanH-Funktion besitzt diesen Nachteil, die Rectified Linear-Funktion hat das Problem des "`Dying ReLU"' (Siehe \ref{DyingReLU}), weshalb die Leaky Rectified Linear-Funktion oft bevorzugt wird\footnote{Es gibt genaue, mathematische Begründungen, warum eine Aktivierungsfunktion besser ist als die andere, welche allerdings nicht zielführend zur Beantwortung der Forschungsfragen sind.}.\footnote{vgl. Gibson \& Patterson, 2017, S. 254}
 		
+			% Dieser Punkt wird daher auch nur kurz in Kapitel \ref{Lernen} angeschnitten, da es noch weitere Parameter gibt, welche den Erfolg eines KNN ausmachen.
+			% Verschiedene Arten von Aktivierungsfunktionen -> ERLEDIGT
+			% Notiz 3, ERLEDIGT
+			% Innerhalb eines KNNs können verschiedene Aktivierungsfunktionen verwendet werden (BELEG ERFORDERLICH)	
+			% Graphen von Heaviside, Sigmoid, TanH, ReLU	ERLEDIGT
+			% Zu Sigmoid -> Probleme mit vanishing Gradient	ERLEDIGT (WIRD IN KAPITEL ZU BACKPROP ERKLÄRT)
+			% Es gibt sher viel zu diesem Thema zu sagenm alleine was den Vergleich von Aktivierungsfunktionen angeht, wie LeCun in Efficient Backpropagation zeigt. Da diese Vergleiche nicht zeilführend für Forschungsfragen sind, werden diese auch (forerst) ausgelassen. 
+		
 			\newpage
-%		
-%			\begin{figure}[htb] % Vorlage: Practitioner S. 65-70
-%				\centering
-%				\begin{minipage}[t]{.48\linewidth}
-%					\centering
-%					\begin{tikzpicture}[scale=0.79]
-%						\begin{axis}[
-%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
-%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
-%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
-%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0},
-%							x=10,
-%							y=100,
-%							ymin=-1.05, 	ymax=1.05, 
-%							xmin=-10.5, 	xmax=10.5, 
-%							axis lines=center, 
-%							hide obscured x ticks=false, 
-%							xlabel=$x$,
-%							ylabel={$f(x) = \sigma(x) = \frac{1}{1 + \mathrm{e}^{-x}}$},
-%							every inner x axis line/.append style={-},
-%							every inner y axis line/.append style={-},
-%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
-%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
-%							] 
-%							\addplot[domain=-10:10, samples=100, color=black, very thick]{1 / (1+exp(-x))}; 
-%						\end{axis};
-%					\end{tikzpicture}	
-%					\caption{Sigmoid-Funktion \\ (Quelle: E. D.)}\label{SigmoidGraph}
-%				\end{minipage}
-%				\hfill
-%				\begin{minipage}[t]{.48\linewidth}
-%					\centering
-%					\begin{tikzpicture}[scale=0.79]
-%						\begin{axis}[
-%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
-%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
-%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
-%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
-%							x=10,
-%							y=100,
-%							ymin=-1.05, 	ymax=1.05, 
-%							xmin=-10.5, 	xmax=10.5, 
-%							axis lines=center, 
-%							hide obscured x ticks=false, 
-%							xlabel=$x$,
-%							ylabel={$f(x) = \textrm{tanh}(x) = \frac{\mathrm{e}^{x} - \mathrm{e}^{-x}}{\mathrm{e}^{x} + \mathrm{e}^{-x}}$},
-%							every inner x axis line/.append style={-},
-%							every inner y axis line/.append style={-},
-%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
-%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
-%							] 
-%							\addplot[domain=-10:10, samples=100, color=black, very thick]{tanh(x)}; 
-%						\end{axis}
-%					\end{tikzpicture}	
-%					\caption{TanH-Funktion (Quelle: E. D.)}\label{TanHGraph}
-%				\end{minipage}
-%				\hfill
-%				\vspace*{0.7cm}
-%				\begin{minipage}[t]{.48\linewidth}
-%					\centering
-%					\begin{tikzpicture}[scale=0.79]
-%						\begin{axis}[
-%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
-%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
-%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
-%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
-%							x=10,
-%							y=100, 
-%							ymin=-1.05, 	ymax=1.05, 
-%							xmin=-10.5, 	xmax=10.5, 
-%							axis lines=center, 
-%							hide obscured x ticks=false, 
-%							xlabel=$x$,
-%							ylabel={$f(x) = $ max$(0,x)$},
-%							every inner x axis line/.append style={-},
-%							every inner y axis line/.append style={-},
-%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
-%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
-%							] 
-%							\addplot[domain=-10:10, samples=1000, color=black, very thick]{max(0,x)}; 
-%						\end{axis}
-%					\end{tikzpicture}	
-%					\caption{Rectified Linear-Funktion \\ (Quelle: E. D.)}\label{ReLUGraph}
-%				\end{minipage}
-%				\hfill
-%				\begin{minipage}[t]{.48\linewidth}
-%					\centering
-%					\begin{tikzpicture}[scale=0.79]
-%						\begin{axis}[
-%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
-%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
-%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
-%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
-%							x=10,
-%							y=100, 
-%							ymin=-1.05, 	ymax=1.05, 
-%							xmin=-10.5, 	xmax=10.5, 
-%							axis lines=center, 
-%							hide obscured x ticks=false, 
-%							xlabel=$x$,
-%							ylabel={$f(x) = \left\{\begin{array}{rcl}
-%									k \cdot x &x\leq0\\
-%									x&x>0
-%								\end{array}\right.$},
-%							every inner x axis line/.append style={-},
-%							every inner y axis line/.append style={-},
-%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
-%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
-%							] 
-%							\addplot[domain=-10:10, samples=1000, color=black, very thick]{
-%								(x <= 0) * (0.01*x)   +
-%								(x > 0) * (x)}; 
-%						\end{axis}
-%					\end{tikzpicture}	
-%					\caption{Leaky Rectified Linear-Funktion, $k=0,01$ (Quelle: E. D.)}\label{LeakyReLUGraph}
-%				\end{minipage}
-%			\end{figure}
+		
+			\begin{figure}[htb] % Vorlage: Practitioner S. 65-70
+				\centering
+				\begin{minipage}[t]{.48\linewidth}
+					\centering
+					\begin{tikzpicture}[scale=0.79]
+						\begin{axis}[
+							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0},
+							x=10,
+							y=100,
+							ymin=-1.05, 	ymax=1.05, 
+							xmin=-10.5, 	xmax=10.5, 
+							axis lines=center, 
+							hide obscured x ticks=false, 
+							xlabel=$x$,
+							ylabel={$f(x) = \sigma(x) = \frac{1}{1 + \mathrm{e}^{-x}}$},
+							every inner x axis line/.append style={-},
+							every inner y axis line/.append style={-},
+							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+							] 
+							\addplot[domain=-10:10, samples=100, color=black, very thick]{1 / (1+exp(-x))}; 
+						\end{axis};
+					\end{tikzpicture}	
+					\caption{Sigmoid-Funktion \\ (Quelle: E. D.)}\label{SigmoidGraph}
+				\end{minipage}
+				\hfill
+				\begin{minipage}[t]{.48\linewidth}
+					\centering
+					\begin{tikzpicture}[scale=0.79]
+						\begin{axis}[
+							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+							x=10,
+							y=100,
+							ymin=-1.05, 	ymax=1.05, 
+							xmin=-10.5, 	xmax=10.5, 
+							axis lines=center, 
+							hide obscured x ticks=false, 
+							xlabel=$x$,
+							ylabel={$f(x) = \textrm{tanh}(x) = \frac{\mathrm{e}^{x} - \mathrm{e}^{-x}}{\mathrm{e}^{x} + \mathrm{e}^{-x}}$},
+							every inner x axis line/.append style={-},
+							every inner y axis line/.append style={-},
+							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+							] 
+							\addplot[domain=-10:10, samples=100, color=black, very thick]{tanh(x)}; 
+						\end{axis}
+					\end{tikzpicture}	
+					\caption{TanH-Funktion (Quelle: E. D.)}\label{TanHGraph}
+				\end{minipage}
+				\hfill
+				\vspace*{0.7cm}
+				\begin{minipage}[t]{.48\linewidth}
+					\centering
+					\begin{tikzpicture}[scale=0.79]
+						\begin{axis}[
+							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+							x=10,
+							y=100, 
+							ymin=-1.05, 	ymax=1.05, 
+							xmin=-10.5, 	xmax=10.5, 
+							axis lines=center, 
+							hide obscured x ticks=false, 
+							xlabel=$x$,
+							ylabel={$f(x) = $ max$(0,x)$},
+							every inner x axis line/.append style={-},
+							every inner y axis line/.append style={-},
+							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+							] 
+							\addplot[domain=-10:10, samples=1000, color=black, very thick]{max(0,x)}; 
+						\end{axis}
+					\end{tikzpicture}	
+					\caption{Rectified Linear-Funktion \\ (Quelle: E. D.)}\label{ReLUGraph}
+				\end{minipage}
+				\hfill
+				\begin{minipage}[t]{.48\linewidth}
+					\centering
+					\begin{tikzpicture}[scale=0.79]
+						\begin{axis}[
+							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+							x=10,
+							y=100, 
+							ymin=-1.05, 	ymax=1.05, 
+							xmin=-10.5, 	xmax=10.5, 
+							axis lines=center, 
+							hide obscured x ticks=false, 
+							xlabel=$x$,
+							ylabel={$f(x) = \left\{\begin{array}{rcl}
+									k \cdot x &x\leq0\\
+									x&x>0
+								\end{array}\right.$},
+							every inner x axis line/.append style={-},
+							every inner y axis line/.append style={-},
+							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+							] 
+							\addplot[domain=-10:10, samples=1000, color=black, very thick]{
+								(x <= 0) * (0.01*x)   +
+								(x > 0) * (x)}; 
+						\end{axis}
+					\end{tikzpicture}	
+					\caption{Leaky Rectified Linear-Funktion, $k=0,01$ (Quelle: E. D.)}\label{LeakyReLUGraph}
+				\end{minipage}
+			\end{figure}
 	
+		\section{Schichten}
+			Die Neuronen eines KNNs werden meistens in drei verschiedene Arten von Schichten gruppiert. Dabei sind die Werte der vorherigen Schicht die Eingabe für die nächste Schicht.\footnote{vgl. Gibson \& Patterson, 2017, S. 55f} Es gibt zwar Ausnahmen mit beispielsweise nur einer einzigen Schicht welche aber für diese Arbeit nicht relevant sind.\footnote{vgl. ebd., S. 48} Die in den folgenden Kapiteln behandelten Arten basieren auf folgender Einteilung, welche durch Abb. 5 visualisiert wird.
+
+			\newpage
+		
+			% Erwähnen der Ausnahme eines 1-schichtigen KNN ERLEDIGT 
+			% Abbildung tikz11 (Nielsen Kapitel 1) "Aufbau der einzelnen Schichten. Die Kreise symbolisieren Neurone. 
+		
+			% Notiz 67
+			% Practitioner S. 87
+		
+			%Erwähnung, dass Informationen von einem Layer zum nächsten weitergeleitet werden
+			
+			
+			\begin{wrapfigure}{r}{0cm}\label{EinBeispielFuerEinKNN}	
+				% Vorlage: Nielsen/Kapitel 1/The architecture of neural networks
+				\begin{tikzpicture}[scale=0.75, decoration={markings, mark=at position 0.75 with {\arrow{>}}}]
+					\draw (0,0) circle (0.5cm);
+					\draw (0,1.5) circle (0.5cm);
+					\draw (0,3) circle (0.5cm);
+					\draw (0,4.5) circle (0.5cm);
+					\draw (0,6) circle (0.5cm);
+					\draw (0,7.5) circle (0.5cm);
+					\draw (0,9) circle (0.5cm);
+					
+					
+					
+					\draw (2.5,7.5) circle (0.5cm);
+					\draw[postaction={decorate}] (0.5,9) 	-- (2,7.5);
+					\draw[postaction={decorate}] (0.5,7.5) -- (2,7.5);
+					\draw[postaction={decorate}] (0.5,6) 	-- (2,7.5);
+					\draw[postaction={decorate}] (0.5,4.5) -- (2,7.5);
+					\draw[postaction={decorate}] (0.5,3) 	-- (2,7.5);
+					\draw[postaction={decorate}] (0.5,1.5) -- (2,7.5);
+					\draw[postaction={decorate}] (0.5,0) 	-- (2,7.5);
+					
+					\draw (2.5,6) circle (0.5cm);
+					\draw[postaction={decorate}] (0.5,9) 	-- (2,6);
+					\draw[postaction={decorate}] (0.5,7.5) -- (2,6);
+					\draw[postaction={decorate}] (0.5,6) 	-- (2,6);
+					\draw[postaction={decorate}] (0.5,4.5) -- (2,6);
+					\draw[postaction={decorate}] (0.5,3) 	-- (2,6);
+					\draw[postaction={decorate}] (0.5,1.5) -- (2,6);
+					\draw[postaction={decorate}] (0.5,0) 	-- (2,6);
+					
+					\draw (2.5,4.5) circle (0.5cm);
+					\draw[postaction={decorate}] (0.5,9) 	-- (2,4.5);
+					\draw[postaction={decorate}] (0.5,7.5) -- (2,4.5);
+					\draw[postaction={decorate}] (0.5,6) 	-- (2,4.5);
+					\draw[postaction={decorate}] (0.5,4.5) -- (2,4.5);
+					\draw[postaction={decorate}] (0.5,3) 	-- (2,4.5);
+					\draw[postaction={decorate}] (0.5,1.5) -- (2,4.5);
+					\draw[postaction={decorate}] (0.5,0)	-- (2,4.5);
+					
+					\draw (2.5,3) circle (0.5cm);
+					\draw[postaction={decorate}] (0.5,9) 	-- (2,3);
+					\draw[postaction={decorate}] (0.5,7.5) -- (2,3);
+					\draw[postaction={decorate}] (0.5,6) 	-- (2,3);
+					\draw[postaction={decorate}] (0.5,4.5) -- (2,3);
+					\draw[postaction={decorate}] (0.5,3) 	-- (2,3);
+					\draw[postaction={decorate}] (0.5,1.5) -- (2,3);
+					\draw[postaction={decorate}] (0.5,0) 	-- (2,3);
+					
+					\draw (2.5,1.5) circle (0.5cm);
+					\draw[postaction={decorate}] (0.5,9) 	-- (2,1.5);
+					\draw[postaction={decorate}] (0.5,7.5) -- (2,1.5);
+					\draw[postaction={decorate}] (0.5,6) 	-- (2,1.5);
+					\draw[postaction={decorate}] (0.5,4.5) -- (2,1.5);
+					\draw[postaction={decorate}] (0.5,3) 	-- (2,1.5);
+					\draw[postaction={decorate}] (0.5,1.5) -- (2,1.5);
+					\draw[postaction={decorate}] (0.5,0)	-- (2,1.5);
+					
+					
+					
+					\draw (5,7.5) circle (0.5cm);
+					\draw[postaction={decorate}] (3,7.5) 	-- (4.5,7.5);
+					\draw[postaction={decorate}] (3,6)		-- (4.5,7.5);
+					\draw[postaction={decorate}] (3,4.5) -- (4.5,7.5);
+					\draw[postaction={decorate}] (3,3) 	-- (4.5,7.5);
+					\draw[postaction={decorate}] (3,1.5) -- (4.5,7.5);
+					
+					\draw (5,6) circle (0.5cm);
+					\draw[postaction={decorate}] (3,7.5) 	-- (4.5,6);
+					\draw[postaction={decorate}] (3,6)		-- (4.5,6);
+					\draw[postaction={decorate}] (3,4.5) -- (4.5,6);
+					\draw[postaction={decorate}] (3,3) 	-- (4.5,6);
+					\draw[postaction={decorate}] (3,1.5) -- (4.5,6);
+					
+					\draw (5,4.5) circle (0.5cm);
+					\draw[postaction={decorate}] (3,7.5) 	-- (4.5,4.5);
+					\draw[postaction={decorate}] (3,6)		-- (4.5,4.5);
+					\draw[postaction={decorate}] (3,4.5) -- (4.5,4.5);
+					\draw[postaction={decorate}] (3,3) 	-- (4.5,4.5);
+					\draw[postaction={decorate}] (3,1.5) -- (4.5,4.5);
+					
+					\draw (5,3) circle (0.5cm);
+					\draw[postaction={decorate}] (3,7.5) 	-- (4.5,3);
+					\draw[postaction={decorate}] (3,6)		-- (4.5,3);
+					\draw[postaction={decorate}] (3,4.5) -- (4.5,3);
+					\draw[postaction={decorate}] (3,3) 	-- (4.5,3);
+					\draw[postaction={decorate}] (3,1.5) -- (4.5,3);
+					
+					\draw (5,1.5) circle (0.5cm);
+					\draw[postaction={decorate}] (3,7.5) 	-- (4.5,1.5);
+					\draw[postaction={decorate}] (3,6)		-- (4.5,1.5);
+					\draw[postaction={decorate}] (3,4.5) -- (4.5,1.5);
+					\draw[postaction={decorate}] (3,3) 	-- (4.5,1.5);
+					\draw[postaction={decorate}] (3,1.5) -- (4.5,1.5);
+					
+					
+					\draw (7.5,7) circle (0.5cm);
+					\draw[postaction={decorate}] (5.5,7.5) -- (7,7);
+					\draw[postaction={decorate}] (5.5,6)	-- (7,7);
+					\draw[postaction={decorate}] (5.5,4.5) -- (7,7);
+					\draw[postaction={decorate}] (5.5,3) 	-- (7,7);
+					\draw[postaction={decorate}] (5.5,1.5) -- (7,7);
+					
+					\draw (7.5,5.5) circle (0.5cm);
+					\draw[postaction={decorate}] (5.5,7.5) -- (7,5.5);
+					\draw[postaction={decorate}] (5.5,6)	-- (7,5.5);
+					\draw[postaction={decorate}] (5.5,4.5) -- (7,5.5);
+					\draw[postaction={decorate}] (5.5,3) 	-- (7,5.5);
+					\draw[postaction={decorate}] (5.5,1.5) -- (7,5.5);
+					
+					\draw (7.5,4) circle (0.5cm);
+					\draw[postaction={decorate}] (5.5,7.5) -- (7,4);
+					\draw[postaction={decorate}] (5.5,6)	-- (7,4);
+					\draw[postaction={decorate}] (5.5,4.5) -- (7,4);
+					\draw[postaction={decorate}] (5.5,3) 	-- (7,4);
+					\draw[postaction={decorate}] (5.5,1.5) -- (7,4);
+					
+					\draw (7.5,2.5) circle (0.5cm);
+					\draw[postaction={decorate}] (5.5,7.5) -- (7,2.5);
+					\draw[postaction={decorate}] (5.5,6)	-- (7,2.5);
+					\draw[postaction={decorate}] (5.5,4.5) -- (7,2.5);
+					\draw[postaction={decorate}] (5.5,3) 	-- (7,2.5);
+					\draw[postaction={decorate}] (5.5,1.5) -- (7,2.5);
+					
+					
+					\draw (10,6) circle (0.5cm);
+					\draw[postaction={decorate}] (8,7) 	-- (9.5,6);
+					\draw[postaction={decorate}] (8,5.5)	-- (9.5,6);
+					\draw[postaction={decorate}] (8,4) 	-- (9.5,6);
+					\draw[postaction={decorate}] (8,2.5) 	-- (9.5,6);
+					
+					\draw (10,4.5) circle (0.5cm);
+					\draw[postaction={decorate}] (8,7) 	-- (9.5,4.5);
+					\draw[postaction={decorate}] (8,5.5)	-- (9.5,4.5);
+					\draw[postaction={decorate}] (8,4) 	-- (9.5,4.5);
+					\draw[postaction={decorate}] (8,2.5) 	-- (9.5,4.5);
+					
+					\draw (10,3) circle (0.5cm);
+					\draw[postaction={decorate}] (8,7) 	-- (9.5,3);
+					\draw[postaction={decorate}] (8,5.5)	-- (9.5,3);
+					\draw[postaction={decorate}] (8,4) 	-- (9.5,3);
+					\draw[postaction={decorate}] (8,2.5) 	-- (9.5,3);
+					
+					\draw [decorate,decoration={brace,amplitude=5pt},xshift=0pt,yshift=0pt]
+					(-0.5,-0.5) -- (-0.5,9.5) node [black,midway,xshift=-0.4cm,rotate=90] 
+					{\footnotesize Input Layer};
+					
+					\draw [decorate,decoration={brace,amplitude=5pt},xshift=0pt,yshift=0pt]
+					(2,8) -- (8,8) node [black,midway,yshift=0.4cm] 
+					{\footnotesize Hidden Layers};
+					
+					\draw [decorate,decoration={brace,amplitude=5pt},xshift=0pt,yshift=0pt]
+					(10.5,6.5) -- (10.5,2.5) node [black,midway,xshift=0.4cm,rotate=270] 
+					{\footnotesize Output Layer};
+				\end{tikzpicture}
+				\caption{Ein Beispiel für ein KNN: Der Input Layer hat sieben Neurone, es gibt drei Hidden Layer mit je fünf, fünf und vier Neuronen. Der Output Layer hat drei Neurone. (Quelle: E. D.)}
+			\end{wrapfigure}
+			
+			\subsection{Input Layer}
+				Der Input Layer nimmt die dem KNN übergebenen Daten an und leitet diese an den ersten Hidden Layer weiter. Die Anzahl der Neurone in diesem Layer ist oft gleich der Anzahl der Daten einer Eingabe.\footnote{vgl. Gibson \& Patterson, 2017, S. 55} Werden einem KNN beispielsweise Bilder mit einer Auflösung von 28 mal 28 Pixeln übergeben, besteht der erste Layer aus 784 (28$^2$) Neuronen. Des Weiteren haben die Neurone des Input Layers keine Parameter und es wird keine Aktivierungsfunktion auf diese angewendet, da sie exakt jene Werte ausgeben sollen, welche dem Netz übergeben wurden. Dies hat keinen genauen Grund und hängt mit der Entwicklungsgeschichte von KNNs zusammen.\footnote{vgl. Rashid, 2017, S. 41}
+				% Notiz 5
+	
+			\subsection{Hidden Layer}
+				Jede in dieser Arbeit behandelte Art von KNNs besitzt mindestens einen oder mehr Hidden Layer. Diese Layer sind verantworlich für den Erfolg von KNNs in den letzten Jahren.\footnote{vgl. Gibson \& Patterson, 2017, S. 55} Der Name dieser Layer hat keine besondere Bedeutung und bedeutet nur, dass die Ausgabewerte ihrer Neurone nicht die finalen Ausgabewerte des Netzes sind.\footnote{vgl. Bengio, Courville \& Goodfellow, 2016, S. 165} Der Aufbau der Hidden Layer ist im Gegensatz zu denen der Input und Output Layer nicht so einfach zu entwickeln. Die Anzahl der Neurone in diesen Layern ist meistens durch die Art von Daten gegeben, zudem gibt es auch nur je einen Layer von beiden.\footnote{vgl. Nielsen, 2015, Kapitel 1/The architecture of neural networks}
+				
+			\subsection{Output Layer}\label{OutputLayer}
+				Der Output Layer gibt die endgültige Antwort des KNNs aus, welche, je nach Aufgabe des Netzes (Regression\footnote{Regression modelliert den Zusammenhang zwischen Eingabe und Ausgabe und versucht, für eine gegebene Eingabe die Ausgabe zu ermitteln. (vgl. Gibson \& Patterson, 2017, S. 23)} oder Classification\footnote{Classification kategorisiert die Eingabe in zwei oder mehr Klassen. Bei zwei Klassen spricht man von Binary Classification. In diesem Fall hat der Output Layer ein Neuron, bei dem der Ausgabewert, welcher oft zwischen 0 und 1 liegt, mit einem Schwellenwert aufgeteilt wird. Für den Fall von $x$ Klassen ($x > 2$), Multiclass Classification genannt, gibt es $x$ Neurone. Die Klasse dessen entsprechendes Neuron den höchsten Wert hat ist die Antwort des KNN. (vgl. ebd., S. 25f)}), eine bestimmte Dimension hat. Abhängig von der in diesem Layer benutzten Aktivierungsfunktion und der Anzahl der Neuronen handelt es sich bei der Ausgabe meistens um entweder einen reellen Wert (Regression) oder einer (Menge von) Wahrscheinlichkeit(en) (Classification).\footnote{vgl. Gibson \& Patterson, 2017, S. 55 \& S. 95} Da der Schwerpunkt dieser Arbeit der MNIST-Datensatz ist (Siehe \ref{MNIST}) und es sich bei diesem um eine Multiclass Classifications-Aufgabe handelt, wird nur auf diese Kategorie von Aufgaben Rücksicht genommen. 
+		
+		
+		\section{Arten von Künstlichen Neuronalen Netzwerken}\label{Arten}
+			In den folgenden Kapiteln werden drei Netzwerktypen behandelt und erklärt. Ausgewählt wurden dafür das Feedforward Neural Network (FFNN), das Convolutional Neural Network (CNN) und das Long Short-Term Memory Neural Network (LSTM). Alle drei Netzwerktypen gehören zum Supervised Learning (engl. für überwachtes Lernen), d.h. sie lernen mithilfe von Trainingsdaten, bei denen Eingabe und Ausgabe gegeben sind.\footnote{vgl. Wartala, 2018, S. 23ff} Das FFNN wurde ausgewählt, da es im Vergleich zu anderen Netztypen sehr einfach aufgebaut ist, das CNN, weil es v. a. bei Bilderkennung sehr erfolgreich ist, und das LSTM, weil es durch die Rückkopplung von Daten interessant ist. \footnote{vgl. ebd., S. 26 \& S. 29}
+			%, einem Teilgebiet des Deep Learning\footnote{Deep Learning ist ein Teilgebiet der Künstlichen Neuronalen Netzen, welche ein Teilgebiet von Machine Learning sind. (vgl. Wartala, 2018, S. 23) Zu Deep Learning zählen alle KNNs mit mehr als einem Hidden Layer. (vgl. Hurwitz \& Kirsch, 2018, S. 31) Unter Machine Learning versteht man das Erkennen von Strukturen in Beispielen von Daten durch Algorithmen. (vgl. Gibson \& Patterson, 2017, S. 2)}
+			
+			% In folgenden Kapiteln 3 verschiedene Arten erläutert; Leser soll wissen, 
+			% dass es natürlich noch viel mehr gibt und hier nur Ausblick
+			% Begründung warum gerade diese 3 Arten (MLP weil einfach, CNN wegen erfolge und RNN weil...?)
+			% KEINE genau detaillierte Beschreibung des Stammbaums von KNNS
+			% Alle Arten -> Supervised Learning
+			% MLP weil (relativ) einfach
+			% CNN weil tolle Erfolge in Bilderkennung
+			% RNN/LSTM weil interessant bezüglich des Zeit Begriffs
+			
+		\section{Der MNIST-Datensatz}\label{MNIST}
+			Der MNIST-Datensatz ist eine \textbf{m}odifizierte Version zweier Datensätze des \textbf{N}ational \textbf{I}nstitute of \textbf{S}tandards and \textbf{T}echnology der USA. Das Urheberrecht für den MNIST-Datensatz liegt bei Yann LeCun (Courant Institute, NYU) und  Corinna Cortes (Google Labs, New York), welche diesen unter der Creative Commons Attribution-Share Alike 3.0 Lizenz zum freien Gebrauch zur Verfügung stellen. Der Datensatz besteht aus zwei Teilen: Der erste Teil dient zum Trainieren des KNNs und besteht aus 60.000 Ziffern, welche von einer Gruppe, bestehend aus 250 Personen, handgeschrieben wurden. Diese Gruppe setzt sich zusammen aus 125 MitarbeiterInnen des US Census Bureau und 125 High School SchülerInnen. Der zweite Teil besteht aus 10.000 Ziffern, welche von einer zweiten Gruppe (Größe und Zusammensetzung gleich der ersten Gruppe) geschrieben wurden, um das KNN auf Daten zu testen, die es davor noch nie gesehen hat. Die handgeschriebenen Ziffern wurden mit einer Auflösung von 28 mal 28 Pixel in 256 Graustufen digitalisiert und in CSV-Dateien, welche die einzelnen Helligkeitswerte beinhalten, konvertiert.\footnote{vgl. Nielsen, 2015, Kapitel 1/Learning with gradient descent} Abb. 6 zeigt Beispiele für die Ziffern Null bis Neun aus dem zweiten Teil von MNIST. 
+			
+			%Die CSV-Dateien bestehen aus 785 Spalten, die Erste gibt an, um welche Ziffer es sich handelt, die 784 anderen geben die Helligkeitswerte der einzelnen Pixel Spalte für Spalte an. 
+			%\footnote{vgl. Nielsen, 2015, Kapitel 1/Learning with gradient descent}
+			
+			\begin{figure}[h]\label{MNISTbeispiele}
+				\vspace{0.0cm} \centering
+				\includegraphics[height=1.3cm]{mnistBeispiele/4080.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/6329.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/922.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/270.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/56.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/253.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/21.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/4225.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/6275.png}
+				\includegraphics[height=1.3cm]{mnistBeispiele/560.png}
+				\caption{Beispiele für MNIST-Ziffern. Anmerkung: Alle Darstellungen von Ziffern des MNIST-Datensatzes wurden aus den durch die Library Keras (Siehe \ref{Python&Keras}) bereitgestellten Tabellen generiert. (Quelle: E. D.)}
+			\end{figure}
+		
+	
+	% Verzeichnisse
+	\begin{sloppypar}
+		\cleardoublepage
+		\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+		\printbibliography[title={Literaturverzeichnis}]
+	\end{sloppypar}
+	
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+	\listoffigures
+	
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+	\listoftables
+	
+	
+	
+	% Glossar
+	
+	
+	
+	
+	
+	
+	
+	% Anhang E: Ergebnisse der Experimente 
+	\newpage
+	\vspace*{2cm}	
+	\section*{Anhang E: Ergebnisse der Experimente}
+		\addcontentsline{toc}{section}{Anhang E: Ergebnisse der Experimente}
+	
+		\def\myrot#1{\rotatebox{90}{\csname csvcol#1\endcsname\ }}
+	
+	
+		\subsection*{E.1 Tabelle der Ergebnisse der Experimente mit FFNNs}
+			Die Spalte mit der Anzahl der Epochs (Wert: 3) wurde weggelassen, da ihr Wert für alle Konfigurationen konstant ist.
+			\addcontentsline{toc}{subsection}{E.1 Tabelle der Ergebnisse der Experimente mit FFNNs}
+			\csvreader[before reading=\footnotesize, /csv/separator=semicolon,tabular=|r|*{12}{c}|,longtable={|c|c|c|c|c|c|c|c|c|c|c|c|},
+			nohead,column count=12,table head=\hline,late after first line=\\\hline,table foot=\hline\caption{Tabelle mit den Ergebnissen der Experimente mit FFNNs (Quelle: Eigene Tabelle)}]{ergebnisseFFNNfinal6.csv}{}{\csviffirstrow{\myrot{i} & \myrot{ii} & \myrot{iii} & \myrot{iv} & \myrot{v} & \myrot{vi} & \myrot{vii} & \myrot{viii} & \myrot{ix} & \myrot{x} & \myrot{xi} & \myrot{xii}}{\csvlinetotablerow}}
+		
+		
+		\newpage
+		\normalsize
+		\subsection*{E.2 Tabelle der Ergebnisse der Experimente mit CNNs}
+			Die Spalten Aktivierungsfunktion (Wert: relu), Pooling (Wert: Max), Bias (Wert: True) und Epoch (Wert: 3) wurden weggelassen, da ihre Werte für alle Konfigurationen konstant sind. Diese Werte lieferten bei Vorversuchen jene CNNs mit den höchsten Trefferquoten. 
+			\addcontentsline{toc}{subsection}{E.2 Tabelle der Ergebnisse der Experimente mit CNNs}
+			\csvreader[before reading=\footnotesize, /csv/separator=semicolon,tabular=|r|*{13}{c}|,longtable={|c|c|c|c|c|c|c|c|c|c|c|c|c|},
+			nohead,column count=13,table head=\hline,late after first line=\\\hline,table foot=\hline\caption{Tabelle mit den Ergebnissen der Experimente mit CNNs (Quelle: Eigene Tabelle)}]{ergebnisseCNNfinal6.csv}{}{\csviffirstrow{\myrot{i} & \myrot{ii} & \myrot{iii} & \myrot{iv} & \myrot{v} & \myrot{vi} & \myrot{vii} & \myrot{viii} & \myrot{ix} & \myrot{x} & \myrot{xi} & \myrot{xii} & \myrot{xiii}}{\csvlinetotablerow}}
+		
+		\newpage
+		\normalsize
+		\subsection*{E.3 Tabelle der Ergebnisse der Experimente mit LSTMs}
+			Die Spalten Bias (Wert: True) und Epoch (Wert: 3) wurden weggelassen, da ihre Werte für alle Konfigurationen konstant sind.
+			\addcontentsline{toc}{subsection}{E.3 Tabelle der Ergebnisse der Experimente mit LSTMs}
+			
+			\csvreader[before reading=\footnotesize, /csv/separator=semicolon,tabular=|r|*{13}{c}|,longtable={|c|c|c|c|c|c|c|c|c|c|c|c|c|}, nohead,
+			column count=13,table head=\hline,late after first line=\\\hline,table foot=\hline\caption{Tabelle mit den Ergebnissen der Experimente mit LSTMs (Quelle: Eigene Tabelle)}]{ergebnisseLSTMfinal6.csv}{}{\csviffirstrow{\myrot{i} & \myrot{ii} & \myrot{iii} & \myrot{iv} & \myrot{v} & \myrot{vi} & \myrot{vii} & \myrot{viii} & \myrot{ix} & \myrot{x} & \myrot{xi} & \myrot{xii} & \myrot{xiii}}{\csvlinetotablerow}}
+		
+		\normalsize
+
+
+
+	% Anhang F: Daten-DVD
+	\newpage
+	\vspace*{2cm}	
+	\section*{Anhang F: Daten-DVD}
+	\addcontentsline{toc}{section}{Anhang F: Daten-DVD}
+	\begin{center}
+		\hspace*{-1cm}
+		\begin{tikzpicture}
+			\draw (0,0) -- (12.6,0) -- (12.6,12.6) -- (0,12.6) -- (0,0);
+			\draw[dashed] (2,3.3) -- (3.5,3.3) -- (3.5,7.3) -- (2,7.3) -- (2,3.3);
+			\draw[dashed] (2+5.6+1.5,3.3) -- (3.5+5.6+1.5,3.3) -- (3.5+5.6+1.5,7.3) -- (2+5.6+1.5,7.3) -- (2+5.6+1.5,3.3);
+			\draw node[black,midway,yshift=5.3cm,xshift=2.75cm, rotate=90] at (0,0) {\centering Klebestelle};
+			\draw node[black,midway,yshift=5.3cm,xshift=9.85cm, rotate=270] at (0,0) {\centering Klebestelle};
+		\end{tikzpicture}
+	\end{center}
+	Dieser Datenträger enthält eine digitale Fassung der Arbeit, den originalen Programmcode für alle drei Netztypen sowie die bei den Experimenten entstandenen KNNs und Daten. 
 	
 	
 	

@@ -376,13 +376,11 @@
 			
 		\section{Das künstliche Neuron}\label{DefKN}
 			Das künstliche Neuron ist der Grundbaustein für alle in dieser Arbeit behandelten Arten von KNNs. Ein Neuron $n$ der Schicht $l$ lässt sich am einfachsten als eine mathematische Funktion beschreiben. Es nimmt die Ausgabewerte $x_{(l-1,1)}$, $x_{(l-1,2)}$, …, $x_{(l-1,m)}$ der Neurone der vorherigen Schicht $l-1$, multipliziert diese Werte mit Weights $w_{(l-1,1),(l,n)}$, $w_{(l-1,2),(l,n)}$, …, $w_{(l-1,m),(l,n)}$, summiert diese auf und addiert einen weiteren Parameter, genannt Bias, $b_{(l,n)}$. Diese Summe wird einer Aktivierungsfunktion $f_{(l)}$ übergeben, deren Wert der endgültige Ausgabewert dieses Neurons ist und an Neurone der Schicht $l+1$ weitergegeben werden kann. Mathematisch lässt sich dies in Formel \ref{FormelNeuron} ausdrücken.\footnote{vgl. Buduma, 2017, S. 8}
-	
 			\begin{equation}\label{FormelNeuron}
 				x_{(l,n)} = f_{(l)} \left(\sum_{i=1}^{m}(w_{(l-1,i),(l,n)} \cdot x_{(l-1,i)}) + b_{(l,n)} \right) = f_{(l)}(z_{(l,n)})
 			\end{equation}
-			
+
 			Diese Formel lässt sich auch so aufschreiben, dass man gleich einen Vektor mit allen Ausgabewerten aller Neurone der Schicht $l$ erhält (Siehe Formel \ref{FormelNeuronVektor}).\footnote{vgl. ebd., S. 8} Dabei ist $W_{(l-1),(l)}$ eine Matrix der Form $n\times m$, wobei $m$ die Anzahl der Neurone der Schicht $l-1$ und $n$ die Anzahl der Neurone in Schicht $l$ ist.\footnote{vgl. Rashid, 2017, S. 45-49}
-			
 			\begin{equation}\label{FormelNeuronVektor}
 				\vec{x}_{(l)} = f_{(l)}(W_{(l-1),(l)} \cdot \vec{x}_{(l-1)} + \vec{b}_{(l)})  = f_{(l)}(\vec{z}_{(l)})
 			\end{equation}
@@ -412,6 +410,7 @@
 					\centering
 					\begin{tikzpicture}[scale=0.79]
 						\begin{axis}[
+							%title={$f(x) = \frac{1}{1 + \mathrm{e}^{-x}}$},
 							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
 							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
 							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
@@ -433,12 +432,13 @@
 						\end{axis};
 					\end{tikzpicture}	
 					\caption{Sigmoid-Funktion \\ (Quelle: E. D.)}\label{SigmoidGraph}
-				\end{minipage}
-				\hfill
+				\end{minipage}%
+				\hfill%
 				\begin{minipage}[t]{.48\linewidth}
 					\centering
 					\begin{tikzpicture}[scale=0.79]
 						\begin{axis}[
+							%title={$f(x) = \frac{1}{1 + \mathrm{e}^{-x}}$},
 							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
 							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
 							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
@@ -461,14 +461,17 @@
 					\end{tikzpicture}	
 					\caption{TanH-Funktion (Quelle: E. D.)}\label{TanHGraph}
 				\end{minipage}
-				\hfill
+				\hfill%
 				\vspace*{0.7cm}
 				\begin{minipage}[t]{.48\linewidth}
 					\centering
 					\begin{tikzpicture}[scale=0.79]
 						\begin{axis}[
+							%title={$f(x) = $ max$(0,x)$},
 							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
 							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+							%ytick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+							%yticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10}, 
 							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
 							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
 							x=10,
@@ -489,13 +492,19 @@
 					\end{tikzpicture}	
 					\caption{Rectified Linear-Funktion \\ (Quelle: E. D.)}\label{ReLUGraph}
 				\end{minipage}
-				\hfill
+				\hfill%
 				\begin{minipage}[t]{.48\linewidth}
 					\centering
 					\begin{tikzpicture}[scale=0.79]
 						\begin{axis}[
+							%title={$f(x) = \left\{\begin{array}{rcl}
+									%							0,01 \cdot x &x\leq0\\
+									%							x&x>0
+									%							\end{array}\right.$},
 							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
 							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+							%ytick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+							%yticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10}, 
 							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
 							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
 							x=10,
@@ -1562,8 +1571,8 @@
 						\addplot[domain=-5:5, samples=100, dashed]{((x-1)^3)+2*((x-1)^2)-x}; 
 						\addplot[domain=-5:5, samples=100, thick]{0.45*x+0.25};
 						\addplot[domain=-5:5, samples=100, dotted]{-1.5*x-3};
-						\addplot[only marks, thick, mark=x, mark options={scale=2}] table[x index=0, y index=1] {mydata.dat};
-						\addplot[only marks, thin, mark=*] table[x index=0, y index=1] {mydata2.dat};
+						\addplot[only marks, thick, mark=x, mark options={scale=2}] table[x index=0, y index=1] {imagesAndGraphData/bspTrainingsdaten.dat};
+						\addplot[only marks, thin, mark=*] table[x index=0, y index=1] {imagesAndGraphData/bspTestdaten.dat};
 					\end{axis};
 				\end{tikzpicture}	
 				\caption{Die gepunktete Funktion repräsentiert Underfitting, die strichlierte Overfitting und die durchgehende ein für die Aufgabe passendes KNN. Die Kreuze stellen die Trainingsdaten, die Punkte die Testdaten dar. (Quelle: E. D.)}\label{UnderOverFittingGraph}

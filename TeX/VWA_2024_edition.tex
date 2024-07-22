@@ -777,7 +777,6 @@
 			
 		\section{Funktionsweise}
 			Bisher gab es nur eine Formel für die Berechnung der Werte eines Layers in Abhängigkeit der Ausgabewerte der vorherigen Schicht. Diese lässt sich durch Einsetzen in sich selbst zu Formel \ref{FormelGesamtesNetz} erweitern, sodass der Vektor des Output-Layers in Abhängigkeit des Input-Layers berechnet werden kann. 
-
 			\begin{equation}\label{FormelGesamtesNetz}
 				\vec{x}_{(L)} = f_{(L)} \left( W_{(L-1),(L)} \cdot f_{(L-1)} \left(…\cdot f_{(2)} \left(W_{(1),(2)}\cdot\vec{x}_{(1)}+\vec{b}_{(1)}\right)+…\right)+\vec{b}_{(L)}\right)
 			\end{equation}

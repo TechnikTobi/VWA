@@ -872,7 +872,6 @@
 					\end{tikzpicture}
 					\caption{Visualisierung des Convolutional Layers. Es hilft, sich den Input Layer nicht wie bisher als Vektor, sondern als Matrix vorzustellen. (Quelle: E. D.)}\label{LRF}
 				\end{wrapfigure}
-				
 				Die Gewichte zwischen den Neuronen des LRFs und dem zugehörigen Neuron des Convolutional Layers befinden sich in einer Matrix, dem Kernel $K_{(l,d)}$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks} Es wird das Skalarprodukt des Kernels und des zum Neuron zugehörige LRF gebildet, zu diesem wird noch ein Bias $b_{(l,d)}$ addiert. Auf die Summe wird wieder eine Aktivierungsfunktion $f_{(l)}$ angewandt.\footnote{\fundamentals{93}} Dieser Ausschnitt wird über den gesamten Input um einen Wert, den Stride, verschoben. Daraus entsteht eine sogenannte Feature Map, eine zweidimensionale Matrix bestehend aus Neuronen. Zu dieser können noch weitere Feature Maps hinzukommen, wodurch der Convolutional Layer dreidimensional wird. Dabei verwenden alle Neurone innerhalb einer Feature Map den gleichen Kernel und den gleichen Bias.\footnote{\cnnKlein{7}} Formel \ref{ConvolutionFormel} berechnet den Ausgabewert $x_{(l,d,n)}$ des Neurons $n$ in Feature Map $d$ von Layer $l$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks}
 		
 				\begin{equation}\label{ConvolutionFormel}
@@ -2731,10 +2730,10 @@
 		\vspace{2mm}
 		\newcommand{\newNotationRow}{\\[2.5mm]}
 	
-	
+
 		\begin{longtable}{p{30mm}p{110mm}} %longtable für mehrseitige Tabelle, sonst tabular
 			\hline
-			\centering\vspace{1mm} $l$ & \vspace{0mm}Nummer einer Schicht (Indexierung: 1)\newNotationRow	
+			\centering $l$ & Nummer einer Schicht (Indexierung: 1)\newNotationRow	
 			\centering $L$ & Letzte Schicht eines KNNs\newNotationRow
 			\centering $m$ & Nummer eines Neurons der Schicht $l-1$ (Indexierung: 1)\newNotationRow % Ebenfalls 1, da Indexierung innerhalb eines Layers nicht davon abhängt, der wie vielte Layer es ist
 			\centering $n$ & Nummer eines Neurons der Schicht $l$ (Indexierung: 1)\newNotationRow

@@ -275,3 +275,5 @@ TSWLatexianTemp*
 # Makeindex log files
 *.lpz
 .DS_Store
+TeX/VWA_2024_edition.ist
+TeX/VWA_2024_edition.tdn

@@ -32,7 +32,7 @@
 \usepackage[nopostdot, toc]{glossaries}				% Fürs Glossar
 
 %\usepackage{acronym}								% Fürs Abkürzungsverzeichnis
-%\usepgfplotslibrary{statistics}
+
 
 \usepackage{subcaption}								% Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
 \usepackage[
@@ -45,7 +45,7 @@
 
 
 %\usepackage{lineno}									% Für Zeilennummerierung für Korrektur
-%\usepackage[hang,flushmargin]{footmisc} 			% Für Indention in Fußnoten
+\usepackage[hang,flushmargin]{footmisc} 			% Für Indention in Fußnoten
 
 \usepackage{csvsimple}								% Einlesen von CSV Dateien
 \usepackage{longtable}								% Tabellen über mehrere Seiten (?)
@@ -53,7 +53,7 @@
 
 \usetikzlibrary{datavisualization}					% Ebenfalls für Graphen
 \usetikzlibrary{decorations.markings}				% Pfeilspitzen in der Mitte
-
+\usepgfplotslibrary{statistics}						% Boxplots
 
 
 \geometry{a4paper,left=35mm,right=25mm,top=10mm} 	% Format der Datei + Abstand zu den Rändern
@@ -68,6 +68,18 @@
 \setlength{\parindent}{0pt}							% Nach Absatz nicht einrücken
 \setlength\LTleft\parindent
 \setlength\LTright\fill
+
+\patchcmd{\abstract}{\null\vfil}{}{}{}				% Verschieben des Abstracts in der Höhe
+\counterwithout{figure}{chapter} 					% Abbildungen werden nicht mehr per Kapitel, sonder global nummeriert 
+\counterwithout{equation}{chapter}					% Equations werden global nummeriert
+\counterwithout{table}{chapter}						% Tabellen werden global nummeriert
+
+\interfootnotelinepenalty=10000
+\displaywidowpenalty=10000
+\widowpenalty=10000
+\clubpenalty=10000
+
+\raggedbottom										% Einstellung, wie das Ende einer Seite ausschauen soll
 
 
 
@@ -149,18 +161,6 @@
 	{ö}{{\"o}}1
 }
 %Ende für Formatierung von Code	
-
-
-
-\patchcmd{\abstract}{\null\vfil}{}{}{}				% Verschieben des Abstracts in der Höhe
-\counterwithout{figure}{chapter} 					% Abbildungen werden nicht mehr per Kapitel, sonder global nummeriert 
-\counterwithout{equation}{chapter}					% Equations werden global nummeriert
-\counterwithout{table}{chapter}						% Tabellen werden global nummeriert
-
-\interfootnotelinepenalty=10000
-\displaywidowpenalty=10000
-\widowpenalty=10000
-\clubpenalty=10000
 
 
 
@@ -860,9 +860,7 @@
 					\caption{Visualisierung des Convolutional Layers. Es hilft, sich den Input Layer nicht wie bisher als Vektor, sondern als Matrix vorzustellen. (Quelle: E. D.)}\label{LRF}
 				\end{wrapfigure}
 				
-				Die Gewichte zwischen den Neuronen des LRFs und dem zugehörigen Neuron des Convolutional Layers befinden sich in einer Matrix, dem Kernel $K_{(l,d)}$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks} Es wird das Skalarprodukt des Kernels und des zum Neuron zugehörige LRF gebildet, zu diesem wird noch ein Bias $b_{(l,d)}$ addiert. Auf die Summe wird wieder eine Aktivierungsfunktion $f_{(l)}$ angewandt.\footnote{\fundamentals{93}}
-				
-				Dieser Ausschnitt wird über den gesamten Input um einen Wert, den Stride, verschoben. Daraus entsteht eine sogenannte Feature Map, eine zweidimensionale Matrix bestehend aus Neuronen. Zu dieser können noch weitere Feature Maps hinzukommen, wodurch der Convolutional Layer dreidimensional wird. Dabei verwenden alle Neurone innerhalb einer Feature Map den gleichen Kernel und den gleichen Bias.\footnote{\cnnKlein{7}} Formel \ref{ConvolutionFormel} berechnet den Ausgabewert $x_{(l,d,n)}$ des Neurons $n$ in Feature Map $d$ von Layer $l$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks}
+				Die Gewichte zwischen den Neuronen des LRFs und dem zugehörigen Neuron des Convolutional Layers befinden sich in einer Matrix, dem Kernel $K_{(l,d)}$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks} Es wird das Skalarprodukt des Kernels und des zum Neuron zugehörige LRF gebildet, zu diesem wird noch ein Bias $b_{(l,d)}$ addiert. Auf die Summe wird wieder eine Aktivierungsfunktion $f_{(l)}$ angewandt.\footnote{\fundamentals{93}} Dieser Ausschnitt wird über den gesamten Input um einen Wert, den Stride, verschoben. Daraus entsteht eine sogenannte Feature Map, eine zweidimensionale Matrix bestehend aus Neuronen. Zu dieser können noch weitere Feature Maps hinzukommen, wodurch der Convolutional Layer dreidimensional wird. Dabei verwenden alle Neurone innerhalb einer Feature Map den gleichen Kernel und den gleichen Bias.\footnote{\cnnKlein{7}} Formel \ref{ConvolutionFormel} berechnet den Ausgabewert $x_{(l,d,n)}$ des Neurons $n$ in Feature Map $d$ von Layer $l$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks}
 		
 				\begin{equation}\label{ConvolutionFormel}
 					x_{(l,d,n)} = f_{(l)} \left( \langle K_{(l,d)},R_{(l,d,n)} \rangle_F + b_{(l,d)} \right)
@@ -1042,7 +1040,6 @@
 				% (ohne Zero Padding)
 		
 				Die Dimensionen des Convolutional Layer lassen sich wie folgt berechnen: Hat $X_{(l-1)}$ die Form $\textrm{H}({X_{(l-1)}}) \times \textrm{W}({X_{(l-1)}}) \times \textrm{D}({X_{(l-1)}})$ (der vorangehende Layer kann auch dreidimensional sein, wenn es sich dabei z.B. ebenfalls um einen Convolutional Layer handelt) und $K_{(l)}$ die Form $\textrm{H}({K_{(l)}}) \times \textrm{W}({K_{(l)}}) \times \textrm{D}({X_{(l-1)}}) \times \textrm{D}({K_{(l)}})$ (wobei $K_{(l)}$ die Menge aller Kernel des Layer $l$ und $\textrm{D}({K_{(l)}})$ die Anzahl aller Kernel ist), dann hat $X_{(l)}$ die folgende Form:\footnote{vgl. Wu, 2017, S. 12f; Nash \& O'Shea, 2015, S.7}
-				
 				\begin{equation}
 					\frac{ \textrm{H}(X_{(l-1)}) - \textrm{H}(K_{(l)}) + 2 \cdot p_{(l)}}{\textrm{H}(s_{(l)})+1} \times \frac{ \textrm{W}(X_{(l-1)}) - \textrm{W}(K_{(l)}) + 2 \cdot p_{(l)}}{\textrm{W}(s_{(l)})+1} \times \textrm{D}({K_{(l)}})
 				\end{equation}
@@ -1055,6 +1052,1337 @@
 				% Formel zur Berechnung der Form der Feature Map															
 				% Formel zur Berechnung der Werte einer Featur Map
 				% Diagramm mit stride = (1,1), (2,1), (2,2)																	ERLEDIGT
+				
+				
+			\subsection{Pooling Layer}
+				Das Ziel eines Pooling Layers ist es, die Größe der Feature Maps zu verkleinern, wodurch gleichzeitig die Komplexität des Models verringert wird. Ähnlich wie die Convolutional Layer haben auch die Pooling Layer drei Dimensionen und ein LRF mit Stride Wert, allerdings keine Kernel oder Biases. Auf das LRF wird eine Pooling-Funktion, wie z. B. Max-Pooling oder Average-Pooling angewandt. Im Fall von Max-Pooling erhält das Neuron des Pooling Layers den höchsten Wert innerhalb des LRF, bei Average-Pooling das arithmetische Mittel der Neurone im LRF.\footnote{\cnnKlein{8}}
+				
+			\subsection{Fully-Connected Layer}
+				Die Fully-Connected Layer sind gleich den Layern eines FFNN. Jedes ihrer Neurone ist mit jedem Neuron der vorherigen Schicht verbunden und hat seinen eigenen Bias, jede Verbindung hat ihr eigenes Gewicht.\footnote{\ebd{8}}
+				
+			\subsection{Softmax Layer}
+				Der Softmax Layer ist ein Output Layer, der sich bis auf die Aktivierungsfunktion von bisherigen Output Layern nicht unterscheidet und eine besondere Eigenschaft hat: Die Summe der Ausgabewerte aller Neurone dieses Layers hat den Wert 1. Dies ist insofern sinnvoll, da die Ausgabewerte als eine Wahrscheinlichkeitsverteilung betrachten werden können. Deshalb wird der Softmax Layer v. a. bei Classification-Aufgaben als Output Layer eingesetzt, da der Wert $x_{(L,n)}$ als Wahrscheinlichkeit dafür betrachtet werden kann, dass die korrekte Klasse jene des Neurons $n$ ist.~Formel \ref{SoftmaxFormel} gibt die Berechnung der Aktivierung eines Neurons eines Softmax Layers an.\footnote{vgl. Nielsen, 2015, Kapitel 3/Softmax}
+				\vspace*{-0.3cm}
+				\begin{equation}\label{SoftmaxFormel}
+					x_{(L,n)} = \frac{ \textrm{e}^{ z_{(L,n)} } }{ \sum\limits_{ n=1 }^{ \textrm{len}(L) } \left( \textrm{e}^{ z_{ (L,n) } } \right)} 
+				\end{equation}
+				
+		\section{Anordnung der Schichten}
+			Es gibt keine genauen Regeln, wie die verschiedenen Layer kombiniert werden sollen, allerdings kann man nicht einfach ein paar Schichten miteinander kombinieren und brauchbare Ergebnisse erwarten. Es gibt jedoch Reihenfolgen für die Layer, welche sich in der Literatur durchgesetzt haben. So folgt meistens auf einen Convolutional Layer ein Pooling Layer. Diese Abwechslung zwischen den beiden kann mehrmals wiederholt werden, bevor zum Schluss ein oder mehrere Fully-Connected Layer folgen. Des Weiteren hat es sich bewährt, mehrere Convolutional Layer vor einen Pooling Layer zu stapeln, da dadurch die Komplexität des Modells gesteigert werden kann.\footnote{\cnnKlein{8f}}
+			% Erklären, dass z. B. ein CNN oft mit C Layer beginnt, und auf einen oder mehreren C Layer ein P Layer folgt. 		ERLEDIGT
+
+
+
+	\chapter{Long Short-Term Memory Neural Networks}\label{LSTM Kapitel}
+		Bisher wurden in der Arbeit nur KNNs betrachtet, welche für viele Aufgaben geeignet sind, jedoch die einzelnen Eingaben voneinander getrennt behandeln. Es gibt allerdings Aufgabenstellungen, bei denen die Eingaben in einem Zusammenhang stehen, wie z. B. bei der Klassifizierung, ob die Aussage eines Satzes positiv oder negativ ist\footnote{"`Many-To-One"': Eine Sequenz von Eingaben (Wörter) erzeugt eine Ausgabe (positive/negative Aussage).}, die Beschreibung eines Bildes\footnote{"`One-To-Many"': Eine Eingabe (Bild) erzeugt eine Sequenz von Ausgaben (mehrere Wörter, die das Bild beschreiben).} oder die Übersetzung von Sprachen\footnote{"'Many-To-Many"': Eine Sequenz von Eingaben (Wörter einer Sprache) erzeugt eine Sequenz von Ausgaben (Wörter einer anderen Sprache).}.\footnote{vgl. Gupta, 2017} Dafür gibt es die Recurrent Neural Networks (kurz RNNs), welche die Besonderheit haben, dass sie zusätzlich die zeitliche Dimension, in der die Daten eingegeben werden, modellieren, wodurch Eingabedaten die Ausgaben späterer Eingabedaten beeinflussen können\footnote{Da diese Modelle mehrere Eingaben pro Trainingsbeispiel benötigen, werden im Beispiel von MNIST die einzelnen Spalten eines Bildes dem Netz übergeben.}. Dies wird erreicht indem die Ausgabe eines Neurons diesem als zusätzliche Eingabe zu einem späteren Zeitpunkt übergeben wird.\footnote{\practitioner{143-146; Gupta, 2017}} \\
+		
+		\begin{wrapfigure}[7]{r}{0cm}	
+			%Vorlage: Olah
+			\begin{tikzpicture}[scale=0.45, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]
+				\draw[fill=white] (1.8,0) circle (0.44cm);
+				\draw[fill=white] (1.5,0) circle (0.45cm);
+				\draw[fill=white] (1.2,0) circle (0.46cm);
+				\draw[fill=white] (0.9,0) circle (0.47cm);
+				\draw[fill=white] (0.6,0) circle (0.48cm);
+				\draw[fill=white] (0.3,0) circle (0.49cm);
+				\draw[fill=white] (0,0) circle (0.5cm);
+				
+				\draw (-0.6,-0.6) -- (-0.6,0.6) -- (2.4,0.6) -- (2.4,-0.6) -- (-0.6,-0.6);
+				\draw[postaction={decorate}] (0.9,0.6) -- (0.9,1.4);
+				
+				
+				\draw[fill=white] (1.5,2) circle (0.46cm);
+				\draw[fill=white] (1.2,2) circle (0.47cm);
+				\draw[fill=white] (0.9,2) circle (0.48cm);
+				\draw[fill=white] (0.6,2) circle (0.49cm);
+				\draw[fill=white] (0.3,2) circle (0.5cm);
+				
+				\draw (-0.3,1.4) -- (-0.3,2.6) -- (2.1,2.6) -- (2.1,1.4) -- (-0.3,1.4);
+				\draw[postaction={decorate}] (0.9,2.6) -- (0.9,3.4);
+				
+				\draw (2.1,2) -- (2.5,2);
+				\draw (2.5,2) -- (2.5,3);
+				\draw (2.5,3) -- (1,3);
+				\draw (0.8,3) -- (-0.7,3);
+				\draw (-0.7,3) -- (-0.7,2);
+				\draw[postaction={decorate}] (-0.7,2) -- (-0.3,2);
+				
+				
+				\draw[fill=white] (1.2,4) circle (0.48cm);
+				\draw[fill=white] (0.9,4) circle (0.49cm);
+				\draw[fill=white] (0.6,4) circle (0.5cm);
+				
+				\draw (0,3.4) -- (0,4.6) -- (1.8,4.6) -- (1.8,3.4) -- (0,3.4);
+				
+				
+				
+				\draw node[black,midway,yshift=2cm,xshift=4cm] at (0,0) {\Huge $=$};
+				\draw node[black,midway,yshift=2cm,xshift=15cm] at (0,0) {\Huge …};
+				\draw node[black,midway,yshift=-1.4cm,xshift=6.9cm] at (0,0) {\LARGE $t=1$};
+				\draw node[black,midway,yshift=-1.4cm,xshift=10.9cm] at (0,0) {\LARGE $t=2$};
+				
+				
+				
+				
+				
+				
+				\draw[fill=white] (1.8+6,0) circle (0.44cm);
+				\draw[fill=white] (1.5+6,0) circle (0.45cm);
+				\draw[fill=white] (1.2+6,0) circle (0.46cm);
+				\draw[fill=white] (0.9+6,0) circle (0.47cm);
+				\draw[fill=white] (0.6+6,0) circle (0.48cm);
+				\draw[fill=white] (0.3+6,0) circle (0.49cm);
+				\draw[fill=white] (0+6,0) circle (0.5cm);
+				
+				\draw (-0.6+6,-0.6) -- (-0.6+6,0.6) -- (2.4+6,0.6) -- (2.4+6,-0.6) -- (-0.6+6,-0.6);
+				\draw[postaction={decorate}] (0.9+6,0.6) -- (0.9+6,1.4);
+				
+				
+				\draw[fill=white] (1.5+6,2) circle (0.46cm);
+				\draw[fill=white] (1.2+6,2) circle (0.47cm);
+				\draw[fill=white] (0.9+6,2) circle (0.48cm);
+				\draw[fill=white] (0.6+6,2) circle (0.49cm);
+				\draw[fill=white] (0.3+6,2) circle (0.5cm);
+				
+				\draw (-0.3+6,1.4) -- (-0.3+6,2.6) -- (2.1+6,2.6) -- (2.1+6,1.4) -- (-0.3+6,1.4);
+				\draw[postaction={decorate}] (0.9+6,2.6) -- (0.9+6,3.4);
+				
+				\draw[postaction={decorate}] (2.1+6,2) -- (-0.3+10,2);
+				
+				
+				\draw[fill=white] (1.2+6,4) circle (0.48cm);
+				\draw[fill=white] (0.9+6,4) circle (0.49cm);
+				\draw[fill=white] (0.6+6,4) circle (0.5cm);
+				
+				\draw (0+6,3.4) -- (0+6,4.6) -- (1.8+6,4.6) -- (1.8+6,3.4) -- (0+6,3.4);
+				
+				
+				
+				
+				
+				
+				\draw[fill=white] (1.8+10,0) circle (0.44cm);
+				\draw[fill=white] (1.5+10,0) circle (0.45cm);
+				\draw[fill=white] (1.2+10,0) circle (0.46cm);
+				\draw[fill=white] (0.9+10,0) circle (0.47cm);
+				\draw[fill=white] (0.6+10,0) circle (0.48cm);
+				\draw[fill=white] (0.3+10,0) circle (0.49cm);
+				\draw[fill=white] (0+10,0) circle (0.5cm);
+				
+				\draw (-0.6+10,-0.6) -- (-0.6+10,0.6) -- (2.4+10,0.6) -- (2.4+10,-0.6) -- (-0.6+10,-0.6);
+				\draw[postaction={decorate}] (0.9+10,0.6) -- (0.9+10,1.4);
+				
+				
+				\draw[fill=white] (1.5+10,2) circle (0.46cm);
+				\draw[fill=white] (1.2+10,2) circle (0.47cm);
+				\draw[fill=white] (0.9+10,2) circle (0.48cm);
+				\draw[fill=white] (0.6+10,2) circle (0.49cm);
+				\draw[fill=white] (0.3+10,2) circle (0.5cm);
+				
+				\draw (-0.3+10,1.4) -- (-0.3+10,2.6) -- (2.1+10,2.6) -- (2.1+10,1.4) -- (-0.3+10,1.4);
+				\draw[postaction={decorate}] (0.9+10,2.6) -- (0.9+10,3.4);
+				
+				\draw[postaction={decorate}] (2.1+10,2) -- (-0.3+14,2);
+				
+				
+				\draw[fill=white] (1.2+10,4) circle (0.48cm);
+				\draw[fill=white] (0.9+10,4) circle (0.49cm);
+				\draw[fill=white] (0.6+10,4) circle (0.5cm);
+				
+				\draw (0+10,3.4) -- (0+10,4.6) -- (1.8+10,4.6) -- (1.8+10,3.4) -- (0+10,3.4);
+			\end{tikzpicture}
+			\caption{Visualisierung der Rückkopplung eines RNNs. (Quelle: E. D.)}\label{RNNunfolded}
+		\end{wrapfigure}
+				
+		Diese Arbeit befasst sich genauer nur mit dem Long Short-Term Memory Neural Network, kurz LSTM Netz, welches eines der häufigsten Typen von RNNs ist, da es im Gegensatz zum allgemeinen Modell nicht vom Vanishing Gradient (Siehe \ref{VanishingGradient}) betroffen ist.\footnote{\practitioner{149-150}}
+				
+				
+		% Arbeit betrachtet genauer LSTM Netz (-> Wäre es nicht sinnvoll zu sagen, dass dieses Kapitel (auch den Namen LSTM haben sollte) insgesamt von LSTMs handelt und nur zu Beginn RNNs allgemein angesprochen werden?)
+		% Wichtig zu sagen, warum gerade LSTM Netzwerke so interessant sind. 
+		% Für MNIST genauso geeignet, da man die Bilder beispielsweise in 28 Vektoren zerlegen könnte, die nacheinander eingespeist werden.
+		% Gründe für LSTM: Beseitigt Problem des Vanishing Gradients und eine der häufigsten Varianten von Recurrent Neural Networks. (practitioner 149-150)
+				
+		\section{RNNs allgemein}
+			RNNs gehen, wie CNNs, von den FFNNs aus, und wandeln diese ab.\footnote{\practitioner{149}} Der Unterschied liegt darin, dass die Ausgaben von Neuronen der Hidden Layer $\vec{x}_{(l)}^{(t)}$ im nächsten Zeitschritt $t+1$ als zusätzliche Eingaben, neben der Ausgabe $\vec{x}_{(l-1)}^{(t+1)}$ der Neuronen der vorherigen Schicht, verwendet werden. Berechnen lassen sich die Ausgabewerte des Layer $l$ zum Zeitpunkt $t$ mit Formel \ref{RNNallgemeinFormel}\footnote{Hier widersprechen sich verschiedene Autoren. Während Gupta eine $1 \times 1$ Matrix als Gewicht für $\vec{x}_{(l)}^{(t-1)}$ verwendet, benutzt Karpathy keinen Bias in seinen Berechnungen. Daher behandelt diese Arbeit diesen Vektor genau gleich wie $\vec{x}_{(l-1)}^{(t)}$ und verwendet einen Bias. (vgl. Gupta, 2017; Karpathy, 2015)}. Abb. \ref{RNNunfolded} visualisiert, wie die Berechnungen zum Zeitpunkte $t$ von den vorherigen Zeitpunkten abhängig sind.\footnote{vgl. Gupta, 2017}
+				
+			\begin{equation}\label{RNNallgemeinFormel}
+				\vec{x}_{(l)}^{(t)} = f_{(l)} ( W_{(l-1), (l)}^{(t),(t)} \cdot \vec{x}_{(l-1)}^{(t)} + W_{(l),(l)}^{(t-1),(t)} \cdot \vec{x}_{(l)}^{(t-1)} + \vec{b}_{(l)})
+			\end{equation}
+		
+				
+			% Sequentielle Datenverarbeitung
+			% Problem des Vanishing Gradient -> Fundamentals
+			% One to Many, Many to One, Many to Many (practitioner S. 146)
+			% Keine 100% eindeutige Definition, während Gupta 1*1 Matrizen als Weights für h^t verwendet, benutzt Karpathy keinen Bias -> wir verwenden wie bisher gelernt 1*irgendwas Matrizen als Weights mit Bias.
+			% ERLEDIGT
+				
+				
+		\section{LSTM Netzwerke}
+			LSTM Netze unterscheiden sich in der Funktionsweise ihrer Neurone, den LSTM Zellen, von anderen Netzen. Diese lösen auch das Problem des Vanishing Gradients.\footnote{vgl. ebd.}
+			
+			% Lösen das Problem des Vanishing Gradient
+			% Erklärung der Abkürzung
+			% Haben einen Long-Term (Zell-Status) und Short-Time (vorherige Hidden-Status) Speicher
+			% Das wichtige sind die Memory Cells und die Gates welche den Inhalt der Memory Cells steuern können (Practitioner 150) 
+			% Cell Status
+			
+			\begin{wrapfigure}[12]{r}{0cm}	
+				%Vorlage: Olah
+				\begin{tikzpicture}[scale=0.5, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]
+					\draw[rectangle,rounded corners,] (-0.5,-0.6) rectangle (14,7.2);
+					
+					\draw[fill=white, opacity=0.3] (1.2,1.5) circle (0.48cm);
+					\draw[fill=white, white] (0.9,1.5) circle (0.49cm);
+					\draw[fill=white, opacity=0.3] (0.9,1.5) circle (0.49cm);
+					\draw[fill=white, white] (0.6,1.5) circle (0.5cm);
+					\draw[fill=white, opacity=0.3] (0.6,1.5) circle (0.5cm);
+					\draw (0,0.9) rectangle (1.8,2.1);
+					\draw node[black,midway,yshift=1.5cm,xshift=1cm] at (0,0) {\Huge $\sigma$};
+					
+					
+					\draw[fill=white, opacity=0.3] (1.2+3,1.5) circle (0.48cm);
+					\draw[fill=white, white] (0.9+3,1.5) circle (0.49cm);
+					\draw[fill=white, opacity=0.3] (0.9+3,1.5) circle (0.49cm);
+					\draw[fill=white, white] (0.6+3,1.5) circle (0.5cm);
+					\draw[fill=white, opacity=0.3] (0.6+3,1.5) circle (0.5cm);
+					\draw (0+3,0.9) rectangle (1.8+3,2.1);
+					\draw node[black,midway,yshift=1.5cm,xshift=4cm] at (0,0) {\Huge $\sigma$};
+					
+					
+					\draw[fill=white, opacity=0.3] (1.2+6,1.5) circle (0.48cm);
+					\draw[fill=white, white] (0.9+6,1.5) circle (0.49cm);
+					\draw[fill=white, opacity=0.3] (0.9+6,1.5) circle (0.49cm);
+					\draw[fill=white, white] (0.6+6,1.5) circle (0.5cm);
+					\draw[fill=white, opacity=0.3] (0.6+6,1.5) circle (0.5cm);
+					\draw (0+6,0.9) rectangle (1.8+6,2.1);
+					\draw node[black,midway,yshift=1.5cm,xshift=7cm] at (0,0) {\LARGE $f_{z; (l)}$};
+
+					
+					\draw[fill=white, opacity=0.3] (1.2+3+6,1.5) circle (0.48cm);
+					\draw[fill=white, white] (0.9+3+6,1.5) circle (0.49cm);
+					\draw[fill=white, opacity=0.3] (0.9+3+6,1.5) circle (0.49cm);
+					\draw[fill=white, white] (0.6+3+6,1.5) circle (0.5cm);
+					\draw[fill=white, opacity=0.3] (0.6+3+6,1.5) circle (0.5cm);
+					\draw (0+3+6,0.9) rectangle (1.8+3+6,2.1);
+					\draw node[black,midway,yshift=1.5cm,xshift=10cm] at (0,0) {\Huge $\sigma$};
+					
+					
+					
+					\draw (-1,0.2) -- (9.6,0.2);
+					\draw[postaction={decorate}] (0.6,0.2) -- (0.6,0.9);
+					\draw[postaction={decorate}] (0.6+3,0.2) -- (0.6+3,0.9);
+					\draw[postaction={decorate}] (0.6+3+3,0.2) -- (0.6+3+3,0.9);
+					\draw[postaction={decorate}] (0.6+3+3+3,0.2) -- (0.6+3+3+3,0.9);
+					
+					
+					\draw (0,-1.2) -- (0,-0.2);
+					\draw (0,-0.2) -- (10.2,-0.2);
+					\draw[postaction={decorate}] (0.6+0.6,0.3) -- (0.6+0.6,0.9);
+					\draw[postaction={decorate}] (0.6+3+0.6,0.3) -- (0.6+3+0.6,0.9);
+					\draw[postaction={decorate}] (0.6+3+3+0.6,0.3) -- (0.6+3+3+0.6,0.9);
+					\draw[postaction={decorate}] (0.6+3+3+3+0.6,-0.2) -- (0.6+3+3+3+0.6,0.9);
+					\draw (0.6+0.6,-0.2) -- (0.6+0.6,0.1);
+					\draw (0.6+3+0.6,-0.2) -- (0.6+3+0.6,0.1);
+					\draw (0.6+3+3+0.6,-0.2) -- (0.6+3+3+0.6,0.1);
+					
+					
+					
+					\draw[postaction={decorate}] (-1,6.5) -- (0.5,6.5);
+					\draw[postaction={decorate}] (0.9,2.1) -- (0.9,6.1);
+					\draw[postaction={decorate}] (1.3,6.5) -- (0.5+6,6.5);
+					\draw[postaction={decorate}] (0.9+6,2.1) -- (0.9+6,2.9);
+					\draw[postaction={decorate}] (0.9+6,3.7) -- (0.9+6,6.1);
+					
+					\draw (0.9+3,2.1) -- (0.9+3,3.3);
+					\draw[postaction={decorate}] (0.9+3,3.3) -- (6.5,3.3);
+					
+					\draw (0.9+3+6,2.1) -- (0.9+3+6,3.3);
+					\draw[postaction={decorate}] (0.9+3+6,3.3) -- (6.5+5,3.3);
+					
+					\draw[postaction={decorate}] (7.3,6.5) -- (15,6.5);
+					
+					\draw[postaction={decorate}] (11.9,6.5) -- (11.9,5.4);
+					\draw[postaction={decorate}] (11.9,4.6) -- (11.9,3.7);
+					\draw (11.9,2.9) -- (11.9,0.2);
+					\draw[postaction={decorate}] (11.9,0.2) -- (15,0.2);
+					\draw (13,0.2) -- (13,6.4);
+					\draw[postaction={decorate}] (13,6.6) -- (13,8);
+					
+					
+					\draw node[black,midway,yshift=6.5cm,xshift=0.9cm] at (0,0) {\Huge $\odot$};
+					\draw node[black,midway,yshift=6.5cm,xshift=6.9cm] at (0,0) {\Huge $+$};
+					\draw node[black,midway,yshift=3.3cm,xshift=6.9cm] at (0,0) {\Huge $\odot$};
+					\draw node[black,midway,yshift=3.3cm,xshift=11.9cm] at (0,0) {\Huge $\odot$};
+					\draw node[black,midway,yshift=5cm,xshift=11.9cm] at (0,0) {\LARGE $f_{x;(l)}$};
+					
+					
+					\draw node[black,midway,yshift=-2cm,xshift=0.3cm] at (0,0) {\huge $\vec{x}_{(l-1)}^{(t)}$};
+					\draw node[black,midway,yshift=0.3cm,xshift=-1.7cm] at (0,0) {\huge $\vec{x}_{(l)}^{(t-1)}$};
+					\draw node[black,midway,yshift=6.6cm,xshift=-1.7cm] at (0,0) {\huge $\vec{c}_{(l)}^{(t-1)}$};
+					\draw node[black,midway,yshift=6.6cm,xshift=16cm] at (0,0) {\huge $\vec{c}_{(l)}^{(t)}$};
+					\draw node[black,midway,yshift=0.3cm,xshift=16cm] at (0,0) {\huge $\vec{x}_{(l)}^{(t)}$};
+					\draw node[black,midway,yshift=8.5cm,xshift=13.4cm] at (0,0) {\huge $\vec{x}_{(l)}^{(t)}$};
+					
+					
+					\draw[dashed] (-0.25, 0.4) rectangle (2.05, 6.95);
+					\draw[dashed] (2.75, 0.4) rectangle (8.05, 6.95);
+					\draw[dashed] (8.75, 0.4) rectangle (12.8, 6);
+					
+					
+					\draw node[black,midway,yshift=5cm,xshift=0.3cm] at (0,0) {\Huge $I.$};
+					\draw node[black,midway,yshift=5cm,xshift=3.5cm] at (0,0) {\Huge $II.$};
+					\draw node[black,midway,yshift=5cm,xshift=9.7cm] at (0,0) {\Huge $III.$};
+				\end{tikzpicture}
+				\caption{Visualisierung der Datenströme einer LSTM Zelle. (Quelle: E. D.)}\label{LSTMzellDarstellung}
+			\end{wrapfigure}
+				
+			\subsection{LSTM Zellen}
+				Das Besondere an LSTM Zellen ist der Zell Status, welcher sich über sogenannte Gates (auch Gatter genannt) verändern lässt. Ein LSTM hat normalerweise drei Gates, welche in Abb. \ref{LSTMzellDarstellung} mit strichlierten Boxen gekennzeichnet sind: Ein Forget Gate ($I.$), ein Input Gate ($II.$) und ein Output Gate ($III.$). Das Forget Gate bestimmt, welche Informationen vom Zell Status des Zeitpunktes $t-1$ übernommen werden sollen. Dies geschieht in Form des Vektors $\vec{u}_{(l)}^{(t)}$, welcher mit Formel \ref{uFormel} berechnet wird, dessen Elemente einen Wert zwischen 0 und 1 haben, wobei 0 bedeutet, dass diese Information vergessen, und 1, dass sie weiterhin gespeichert werden soll.\footnote{vgl. Olah, 2015}
+				
+				\begin{equation}\label{uFormel}
+					\vec{u}_{(l)}^{(t)} = f_{u;(l)} \left( W_{u; (l-1),(l)}^{(t),(t)} \cdot \vec{x}_{(l-1)}^{(t)} + W_{u; (l),(l)}^{(t-1),(t)} \cdot \vec{x}_{(l)}^{(t-1)} + \vec{b}_{u; (l)} \right)
+				\end{equation}
+				
+				Das Input Gate entscheidet, welche neuen Informationen zum Zell Status hinzugefügt werden sollen. Der Vektor $\vec{i}_{(l)}^{(t)}$ (Formel \ref{iFormel}) hat für den Vektor $\vec{z}_{(l)}^{(t)}$ (Formel \ref{zFormel}) dabei die gleiche Funktion, wie $\vec{u}_{(l)}^{(t)}$ für $\vec{c}_{(l)}^{(t-1)}$: $\vec{z}_{(l)}^{(t)}$ gibt dabei die neuen Informationen an, $\vec{i}_{(l)}^{(t)}$ welche der neuen Daten übernommen werden sollen. Dabei ist $f_{z;(l)}$ die Aktivierungsfunktion für die neuen Daten, wobei hierfür meistens die TanH-Funktion eingesetzt wird. Mit Formel \ref{ZFormel} wird der Zell Status anschließend aktualisiert.
+				
+				% Gatter eingezeichnet in strichlierten Boxen
+				% Bestehen aus einem Layer und einer Operation mit  
+				% Beschreibung der Gatter
+				% für f_{z; (l)} und f_{x; (l)} meistens tanh-Funktion verwendet 
+				
+				\begin{equation}\label{iFormel}
+					\vec{i}_{(l)}^{(t)} = f_{i;(l)} \left( W_{i; (l-1),(l)}^{(t),(t)} \cdot \vec{x}_{(l-1)}^{(t)} + W_{i; (l),(l)}^{(t-1),(t)} \cdot \vec{x}_{(l)}^{(t-1)} + \vec{b}_{i; (l)} \right)
+				\end{equation}
+				
+				\begin{equation}\label{zFormel}
+					\vec{z}_{(l)}^{(t)} = f_{z; (l)} \left( W_{z; (l-1),(l)}^{(t),(t)} \cdot \vec{x}_{(l-1)}^{(t)} + W_{z; (l),(l)}^{(t-1),(t)} \cdot \vec{x}_{(l)}^{(t-1)} + \vec{b}_{z; (l)} \right)
+				\end{equation}
+				
+				\begin{equation}\label{ZFormel}
+					\vec{c}_{(l)}^{(t)} = \vec{u}_{(l)}^{(t)} \odot \vec{c}_{(l)}^{(t-1)} + \vec{i}_{(l)}^{(t)} \odot \vec{z}_{(l)}^{(t)}
+				\end{equation}
+				
+				Schlussendlich wird der Output berechnet, wobei $\vec{o}_{(l)}^{(t)}$ (Formel \ref{oFormel}) ebenfalls ein Vektor ist, welcher entscheidet, welche Einträge eines Vektors, in diesem Fall des Vektors $\vec{c}_{(l)}^{(t)}$, verwendet werden. Die Endgültige Ausgabe zum Zeitpunkt $t$ wird mit Formel \ref{xFormel} berechnet, wobei $f_{x;(l)}$ eine Aktivierungsfunktion ist, für die auch meistens die TanH-Funktion verwendet wird.\footnote{vgl. Olah, 2015; Gibson \& Patterson, 2017, S. 154f} 
+				
+				\begin{equation}\label{oFormel}
+					\vec{o}_{(l)}^{(t)} = f_{o;(l)} \left( W_{o; (l-1),(l)}^{(t),(t)} \cdot \vec{x}_{(l-1)}^{(t)} + W_{o; (l),(l)}^{(t-1),(t)} \cdot \vec{x}_{(l)}^{(t-1)} + \vec{b}_{o; (l)} \right)
+				\end{equation}
+				
+				\begin{equation}\label{xFormel}
+					\vec{x}_{(l)}^{(t)} = \vec{o}_{(l)}^{(t)} \odot f_{x; (l)}(\vec{c}_{(l)}^{(t)})
+				\end{equation}
+				
+				Es gibt verschiedene Varianten von LSTM Zellen, welche beispielsweise den vorherigen Zell Status $\vec{c}_{(l)}^{(t-1)}$ in die Berechnung von $\vec{u}_{(l)}^{(t)}$, $\vec{i}_{(l)}^{(t)}$ und $\vec{o}_{(l)}^{(t)}$ miteinbeziehen, allerdings in dieser Arbeit nicht untersucht werden.\footnote{vgl. Olah, 2015}
+				
+				% Grafik mit Aufbau der Gates
+				% Unterschiedliche Wege der Berechnung in der Literatur, ich halte mich an Christopher Olah und practitioner
+				% Erwähnen, dass andere Zellenarten gibt, aber nicht genauer auf diese eingehen.
+				
+			\subsection{Aufbau}
+				Ein LSTM Layer besteht aus einer solchen Zelle, wobei die Anzahl der Dimensionen von $\vec{x}_{(l)}^{(t)}$ (bzw. auch von $\vec{c}_{(l)}^{(t)}$) vergleichbar mit der Anzahl der Neuronen eines Fully-Connected Layers ist. Dabei kann es einen oder mehrere LSTM Layer geben.\footnote{vgl. Olah, 2015; Gibson \& Patterson, 2017, S. 156}
+				% Erwähnen, dass nur eine LSTM Zelle pro Layer und Dimension von \vec{x}_{(l)}^{(t-1)} vergleichbar ist mit der Anzahl der Neurone in einem Fully-Connected Layer. (Eigene Erkenntnis? Komisches Paper in Practitioner?)
+				% Wie viele Layer von LSTMs
+				% andere Layer
+				
+				
+	\chapter{Lernen eines KNNs am Beispiel des FFNN}\label{Lernen}
+		Bisher wurden in der Arbeit nur verschiedene Arten von KNNs, ihr Aufbau und ihre Funktionsweise behandelt. Jedoch fehlt noch ein wichtiger Teil für die Entwicklung von KNNs, das Training. Unter Training versteht man das Bestimmen der passenden Werte für die Parameter des KNNs für eine bestimmte Aufgabe mithilfe von Trainingsdaten.\footnote{vgl. Buduma, 2017, S. 17; Gibson \& Patterson, 2017, S. 27} Erklärt wird der Vorgang des Trainings in dieser Arbeit nur anhand des FFNN, und zwar aus dem Grund, dass dieser Prozess bei diesem Netztypus am verständlichsten ist.
+
+		%Zweitens funktioniert das Trainieren von CNNs und RNNs ähnlich wie beim FFNN. Drittens ist das Verstehen dieses Prozesses für die Implementierung von KNNs dank vieler moderner Libraries nicht mehr nötig. \\
+		
+		\ \\
+		\ \\
+		
+		Es gibt mehrere Optimierungs-Methoden, d. h. Möglichkeiten, wie das Trainieren umgesetzt wird. Diese Arbeit befasst sich mit dem Gradient Descent (GD) und dessen zwei bekanntesten Abwandlungen, dem Stochastic Gradient \mbox{Descent (SGD)} und Mini-Batch Gradient Descent.\footnote{vgl. Gibson \& Patterson, 2017, S. 98f; ebd., S. 30ff; Buduma, 2017, S. 25} Das Problem beim Herausfinden der Werte für diese Parameter ist, dass diese nicht über ein Gleichungssystem gelöst werden können, sondern iterativ berechnet werden müssen.\footnote{vgl. Rashid, 2017, S. 71; Buduma, 2017, S. 18f}
+				
+	
+	
+	
+	
+	
+		
+		% Bisher wurden in der Arbeit nur verschiedene Arten von KNNs, ihr Aufbau und ihre Funktionsweise genannt. Jedoch reicht das nicht aus, damit ein Neuronales Netz beispielsweise Bilder klassifizieren kann. Jedes KNN muss vor seinem Einsatz trainiert werden, d.h. die Weights und Biases so anzupassen, dass das Netz Strukturen in den Daten erkennen kann [BELEG ERFORDERLICH]. Die dafür benötigten Algorithmen sind teilweise erst seit den 1980er Jahren bekannt, aufgrund der mangelnden Rechenleistung haben KNNs erst seit wenigen Jahren Erfolg. [2 BELEGE ERFORDERLICH]. Die zwei häufig miteinander verwendeten Algorithmen sind (Stochastic) Gradient Descent und Backpropagation. 
+		% WICHTIG: Zu verstehen, wie Training funktioniert, ist nicht notwendig für die Beantwortung der Forschungsfragen. Jedoch gehört es auch dazu ("der Vollständigkeit wegen"). Außerdem sind die Erkenntnise, was Optimiert werden kann, hilfreich für Experimente (Und somit für Forschungsfragen)
+		% Zitat Technologies come and go, but insight is forever -> Notiz 21 			
+		% Practitioner S. 92															
+		% Bezeichnung Training: Fundamentals, S. 17										
+		% Eine Definition von Gradient: Fundamentals, S. 20								
+		% Eine Definition von Learningrate: Fundamentals, S. 21							
+		% Eine "Definition" von Backpropagation: Fundamentals, S. 23					
+		% 3 WICHTIGE OBSERVATION: Fundamentals, S. 30f									
+		% Aufbau des Datasets: Fundamentals, S. 31	
+		% Notiz 57		Der Prozess, Weights & Biases so zu adjustieren, dass der Fehler kleiner wird, nennt sich Parameter Optimierung (Practitioner S. 27)			ERLEDIGT
+		% Notiz 2.5		es wird nicht perfektes Gewicht berechnet, da sonst bisheriger Lernfortschritt zunichte gemacht wird (Rashid S.21)								
+		% Notiz 7		Je größer das Gewicht, desto größer die Beteiligung am Fehler (Rashid S. 62)																	
+		% Notiz 8		Gefahr, nur lokales und nicht globales Minimum zu erreichen (Rashid S. 77)																		
+		% Notiz 9 		Definierung der "klassischen" Loss-Funktion (und warum andere schlecht sind) (Rashid S. 79)														
+		%	-> Siehe auch: Loss-Function in Practitioner																												
+		% Notiz 13 		Faustregel für Interval für Zufallsinitialisierung der Gewichte (Rashid S. 92)																	
+		% Notiz 14		Begründung, warum Gewichte zufällig initiallisiert werden sollten und nicht gleich und oder 0 sein sollten (Rashid S. 93)						
+		% Notiz 17		Definition von einem Epoch (Rashid S. 155)																													
+		% Notiz 19		Zusammenhang zwischen Lernrate und Epochen (Rashid S. 157)																						
+		% Notiz 20 		Zusammenhang zwischen Trefferquote und Anzahl der Hidden Neurone (Rashid S. 158)																
+		%	-> eher bei Kapitel zu Experimenten																															
+		% Notiz 29		Definiton der Loss-Funktion nach Nielsen (Nielsen Blatt 8)																						
+		% Notiz 32		Definiton des Gradienten-Vektor nach Nielsen (Nielsen Blatt 9)																					
+		% Notiz 33		Symbol für die Lernrate (Nielsen Blatt 9)																										
+		% Notiz 34		Unterschied zwischen GD und SGD nach Nielsen (Nielsen Blatt 10)																					
+		% Notiz 36		Über Hyperparameter (Nielsen Blatt 13)																											
+		% Notiz 40		Unterschied zwischen SGD und Backpropagation (Nielsen Blatt 16)																					
+		% Notiz 43		Ziel von Backpropagation (nach Nielsen) (Nielsen Blatt 16 Rückseite)																			
+		% Notiz 44		Error Berechnung bei Backpropagation nach Nielsen (Nielsen Blatt 17)																			
+		% Notiz 45		Über BP1 (Nielsen Blatt 18)																														
+		% Notiz 46 		Backprop in Worten (Nielsen Blatt 19)																											
+		% Notiz 68 		Lernalgorithmen -> keine Garantie effizient oder richtig (Practitioner S. 58)																	
+		% Notiz 69		Beschreibung von Backpropagation (Practitioner S. 64)																							
+		% Notiz 72		Was genau macht Loss-Funktion (Practitioner S. 71)																								
+		% Notiz 79		Wann hört man auf zu Lernen? (Kriesel S. 63)																									
+		% Notiz 80		Probleme von Gradientenverfahren (Kriesel S. 65)																								
+		% 				Bezeichnung ob Cost oder Loss Funktion (deeplearning S. 80)																						
+		%				Backpropagation in Worten (Wartala S. 17)																										
+		
+	
+		\section{Gradient Descent}\label{GradientDescent}
+			%Gradient Descent ist ein Algorithmus, welcher die Parameter eines KNNs iterativ, d. h. in mehreren Schritten, verändert. \practitioner{64} 
+			Um ein KNN trainieren zu können, muss zunächst herausgefunden werden, wie gut oder schlecht die bisherigen Weights geeignet sind. Dazu wird die Eingabe\break\mbox{$\vec{x}_{(1)}(\textrm{tr}:i)$} \footnote{Im Fall von MNIST ein Vektor mit 784 Dimensionen; eine pro Pixelwert} eines Trainingsbeispiels $i$ in das Netz eingespeist, dessen gewünschte Ausgabe \mbox{$\vec{y}(\textrm{tr}:i)$} \footnote{Im Fall von MNIST ein Vektor mit 10 Dimensionen; eine pro möglicher Ziffer} bekannt ist, und liefert einen Output \mbox{$\vec{x}_{(L)}(\textrm{tr}:i)$}. Wie nahe dieser Output an den Gewünschten herankommt, lässt sich mit einer Cost-Funktion, auch als Loss-Funktion bezeichnet, ermitteln. Es gibt mehrere Cost-Funktionen (Siehe \ref{Optimierung:Cost-Funktion}), eine der einfacheren und gebräuchlicheren ist die mittlere quadratische Abweichung in Formel \ref{MSE}, welche den durchschnittlichen Cost-Wert für alle Trainingsbeispiele berechnet.\footnote{vgl. Nielsen, 2015, Kapitel 1/Learning with gradient descent}
+	
+			% Sollte da nicht besser Sigmoid als Bsp. verwendet werden?
+			\begin{equation}\label{MSE}
+				C = \frac{1}{2\cdot\textrm{Tr}} \cdot \left( \sum_{i=1}^{\textrm{Tr}} |(\vec{y}(\textrm{tr}:i) - \vec{x}_{(L)}(\textrm{tr}:i))^2| \right)
+			\end{equation} 
+	
+	
+			Der Wert der Cost-Funktion wird kleiner, je kleiner die Differenz zwischen dem gewünschten und dem eigentlichen Output wird, was wiederum eine Folge von an die Trainingsdaten angepassten Parametern ist. Das Ziel des GD Algorithmus ist es, den Wert der Cost-Funktion zu minimieren\footnote{Das ein kleinerer Cost-Wert nicht unbedingt ein besseres KNN zufolge hat, sieht man in \ref{UnderOverFitting} (\fundamentals{31})}.\footnote{vgl. ebd., Kapitel 1/Learning with gradient descent}
+	
+			Vor dem Training müssen die Weights und Biases initialisiert werden, wofür man Zufallswerte verwendet.\footnote{vgl. Nielsen, 2015, Kapitel 1/Implementing our network to classify digits} 
+			%Es ist nämlich nicht ratsam für alle Weights und Biases den gleichen Startwert zu verwenden, vor allem nicht 0.\footnote{Genaueres dazu in \ref{TodsündenWeights}}  (vgl. Rashid, 2017, S. 93) 
+			Da der Cost-Wert nur von den Parametern abhängig ist (Input und Output sind bei Trainingsbeispielen fest vorgegeben und lassen sich nicht verändern), lassen sich diese mithilfe der partiellen Ableitung der Cost-Funktion nach diesen verändern. Die Formeln zum Aktualisieren der Parameter sind folgende:
+	
+			\begin{equation}\label{UpdateRuleWeights}
+				w_{(l-1,m),(l,n)} = w_{(l-1,m),(l,n)} - \eta \cdot \frac{\partial C}{\partial w_{(l-1,m),(l,n)}}
+			\end{equation}
+			\begin{equation}\label{UpdateRuleBiases}
+				b_{(l,n)} = b_{(l,n)} - \eta \cdot \frac{\partial C}{\partial b_{(l,n)}}
+			\end{equation}
+	
+			Der Vektor mit den partiellen Ableitungen der Cost-Funktion nach den einzelnen Weights und Biases wird Gradient genannt.\footnote{vgl. Nielsen, 2015, Kapitel 1/Learning with gradient descent; ebd., Kapitel 2/The two assumptions we need about the cost function} Die partielle Ableitung $\frac{\partial C}{\partial w_{(l-1,m),(l,n)}}$ bzw. $\frac{\partial C}{\partial b_{(l,n)}}$ gibt an, wie sich die Cost-Funktion ändert, wenn man diesen Parameter ändert.\footnote{vgl. Rashid, 2017, S. 81} Ist die partielle Ableitung positiv bzw. negativ, muss der Parameter verringert bzw. erhöht werden. Je größer die partielle Ableitung, desto größer der Betrag um den der Parameter verändert werden muss.\footnote{vgl. ebd., S. 76} Der Faktor $\eta$ wird Learning Rate (oder Lernrate) genannt und steuert, wie groß die Veränderungen der Parameter sein sollen. Die Lernrate ist einer der Hyperparameter (Siehe \ref{Hyperparameter}) eines KNNs.\footnote{\practitioner{31}} \newline \break 
+			Durch mehrfaches, iteratives Anwenden der beiden Formeln \ref{UpdateRuleWeights} und \ref{UpdateRuleBiases} lassen sich die Parameter so anpassen, dass die Cost-Funktion zu einem Minimum kommt. Dabei wird zuerst der durchschnittliche Gradient aller Trainingsbeispiele berechnet, mit welchem dann die Weights und Biases aktualisiert werden.\footnote{vgl. Nielsen, 2015, Kapitel 1/Learning with gradient descent} Ein solcher Durchgang durch alle Trainingsdaten wird als Epoch (auch Epoche) bezeichnet.\footnote{vgl. Rashid, 2017, S. 155} Die Anzahl der Epochen beim Trainieren ist ebenfalls ein Hyperparameter.\footnote{\practitioner{100}}
+
+			\enlargethispage{0.3\baselineskip}
+	
+			Es gibt allerdings zwei größere Probleme mit diesem Algorithmus: Erstens gibt es keine Garantie, dass die Cost-Funktion sich dem globalen und nicht nur einem lokalen Minimum annähert. Zweitens dauert das Berechnen eines durchschnittlichen Gradienten bei einer großen Menge von Trainingsdaten relativ lange.\footnote{vgl. Nielsen, 2015, Kapitel 1/Learning with gradient descent} Eine Möglichkeit diese Probleme zu umgehen wäre, die Parameter nach jedem Trainingsbeispiel, d. h. mit den einzelnen Gradienten der Beispiele zu adjustieren, was als Stochastic Gradient Descent (SGD) bekannt ist. Der Nachteil dieser Optimierungs-Methode ist, dass die einzelnen Gradienten möglicherweise keine genügende Annäherung an den durchschnittlichen Gradienten sind, wodurch die Werte der Parameter fluktuieren.\footnote{\fundamentals{33}} Um diese Aufgabe zu lösen, verwendet man den Mini-Batch GD Algorithmus, welcher den Gradienten für eine kleine Teilmenge (Mini-Batch) aller Trainingsbeispiele berechnet und mit diesen die Parameter aktualisiert\footnote{Es kommt in der Literatur auch vor, dass SGD und Mini-Batch GD zu SGD zusammengefasst werden, wobei SGD wie es hier erklärt ist wie Mini-Batch GD mit einer Teilmengen-Größe von 1 gehandhabt wird.}.\footnote{\fundamentals{27}} Zu Beginn eines Epochs werden die Trainingsbeispiele in ihrer Reihenfolge durchgemischt und in die Mini-Batches aufgeteilt, welche dann zum Trainieren verwendet werden.\footnote{vgl. Nielsen, 2015, Kapitel 1/Implementing our network to classify digits}
+			\\\
+			\\\
+			Nach dem Trainieren wird das KNN getest, d. h. es werden Testbeispiele, welche nicht bei den Trainingsbeispielen dabei waren, dem Netz übergeben um zu überprüfen, wie viele zuvor noch nie gesehene Beispiele richtig klassifiziert\footnote{Unter der Annahme, dass es sich um eine Classifications-Aufgabe handelt} werden.\footnote{vgl. Rashid, 2017, S. 148; Buduma, 2017, S. 29} Falls man mit dem Testergebnis zufrieden ist, ist das KNN bereit für seinen Einsatz.\footnote{\fundamentals{33}} Neben den Trainings- und Testdatensätzen gibt es noch den Validationsdatensatz (Siehe \ref{EpochsUndMiniBatch}).\footnote{vgl. Nielsen, 2015, Kapitel 1/Implementing our network to classify digits}
+
+	
+		\section{Backpropagation} \label{Backpropagation}
+			Zur Berechnung der partiellen Ableitungen wird der Backpropagation (auch Fehlerrückführung genannt) Algorithmus verwendet, welcher das Problem ihrer Berechnung bei mehrschichtigen KNNs gelöst hat.\footnote{vgl. Wartala, 2018, S. 17} Um diese zu berechnen, wird zunächst ein Zwischenwert eingeführt, der Fehler $\delta_{(l,n)}$ eines Neurons, welcher zunächst über $\frac{\partial C}{\partial z_{(l,n)}}$ definiert wird. Das kommt daher, dass diese partielle Ableitung den Faktor angibt, wie stark sich eine Änderung $\Delta z_{(l,n)}$ auf den Wert der Cost-Funktion auswirkt (nämlich um eine Differenz von $\frac{\partial C}{\partial z_{(l,n)}} \cdot \Delta z_{(l,n)}$). Mit Backpropagation lässt sich dieser Fehler für jedes Neuron jeder Schicht berechnen, mit welchem man auch die partiellen Ableitungen $\frac{\partial C}{\partial w_{(l-1,m),(l,n)}}$ und $\frac{\partial C}{\partial b_{(l,n)}}$ berechnen kann.\footnote{vgl. Nielsen, 2015, Kapitel 2/The four fundamental equations behind backpropagation} Der Algorithmus verwendet die folgenden vier Formeln \ref{BP1} bis \ref{BP4} um die Fehler und partiellen Ableitungen zu berechnen: 
+	
+			\begin{equation}\label{BP1}
+				\vec{\delta}_{(L)} = \nabla_{\vec{x}_{(L)}}C \odot f_{(L)}^{\prime} (\vec{z}_{(L)})
+			\end{equation}
+			
+			\begin{equation}\label{BP2}
+				\vec{\delta}_{(l)} = ({W_{(l),(l+1)}}^\intercal \cdot \vec{\delta}_{(l+1)}) \odot f_{(l)}^{\prime} (\vec{z}_{(l)})
+			\end{equation}
+			
+			\begin{equation}\label{BP3}
+				\frac{\partial C}{\partial b_{(l,n)}} = \delta_{(l,n)}
+			\end{equation}
+			
+			\begin{equation}\label{BP4}
+				\frac{\partial C}{\partial w_{(l-1,m), (l,n)}} = \delta_{(l,n)} \cdot x_{(l-1,m)}
+			\end{equation}
+	
+			Die erste Formel berechnet den Fehler in der letzten Schicht des KNNs. Mithilfe der zweiten Formel lässt sich der Fehler in die Schichten $L-1$, $L-2$, ..., $1$ rückführen. Die letzten beiden Formeln dienen der Berechnung der partiellen Ableitungen\footnote{Da diese Formeln für manche Leser nicht einfach verständlich sind, befinden sich in Anhang B Beweise für diese.}.\footnote{vgl. ebd., Kapitel 2/The four fundamental equations behind backpropagation}
+	
+	
+		\section{Hyperparameter} \label{Hyperparameter}
+			Unter Hyperparametern versteht man Parameter, welche das Training eines KNN steuern. Diese wären: Anzahl der Neurone pro Layer, Learning Rate, Aktivierungsfunktion, Initialisierung der Gewichte und Biases, Cost-Funktion, Anzahl der Epochs und Größe der Mini-Batches\footnote{Hyperparameter, die nur für bestimmte Netztypen benötigt werden, werden nicht behandelt.}.\footnote{vgl. Gibson \& Patterson, 2017, S. 78; ebd., S. 100}
+			% Practitioner S. 100
+
+			\subsection{Learning Rate}
+				Die Learning Rate steuert, wie groß die Schritte relativ zu den partiellen Ableitungen sein sollen, mit denen die Parameter verändert werden. Dabei hat die Lernrate Einfluss darauf, wie gut und wie lange das KNN trainiert wird. Eine große Learning Rate (z.B. $\eta = 1$) führt zwar schneller zu einem Minimum als eine kleine Lernrate (z.B. $\eta = 0,000001$), hat allerdings den Nachteil, dass der Wert der Cost-Funktion nicht so nahe ans Minimum herankommt, sondern sich nur in seiner Umgebung bewegt. Die kleinere Lernrate nähert sich dem Minimum zwar besser an, benötigt \newpage 
+				dafür aber mehr Epochen. Es gibt zwar die Möglichkeit, die Lernrate in Abhängigkeit zur Nähe am Minimum anzupassen, allerdings ist das außerhalb des Rahmens dieser Arbeit.\footnote{\ebd{100}}
+
+			\subsection{Cost-Funktion}\label{Optimierung:Cost-Funktion}
+				Es gibt unterschiedliche Cost-Funktionen, welche je nach Aufgabe eines Netzes verwendet werden. So gibt es beispielsweise eigene Cost-Funktionen für Classification-Aufgaben.\footnote{\ebd{71-78}} In dieser Arbeit wird allerdings nur die Mean Squared Error Funktion eingesetzt, da andere Cost-Funktionen bestimme Voraussetzungen an den Output Layer haben oder nur bei bestimmten Aufgaben eingesetzt werden können.\footnote{vgl. Nielsen, 2015, Kapitel 3/Softmax; Rashid, 2017, S. 79}
+				% und auch den Rahmen der Arbeit übersteigen würden
+	
+			% Gründe für MSE: Rashid S. 79/Liste
+			\subsection{Epochs \& Mini-Batch}\label{EpochsUndMiniBatch}
+				Die Größe der Mini-Batches hat einen Einfluss darauf, wie effizient die Optimierungs-Methode arbeitet. Zu kleine Mini-Batches (z.B. 1) nutzen oft die Fähigkeiten der Hardware nicht komplett aus, wodurch das Trainieren länger dauert. Zu große Mini-Batches sind ebenfalls ineffizient, da eine ausreichende Annäherung an den durchschnittlichen Gradienten auch mit kleineren Mini-Batches erzielt werden kann.
+				% Wie sich die Größe der Mini-Batches auswirkt wird in den späteren Experimenten untersucht. \newline
+				\\\
+				Die Anzahl der Epochs gibt an, wie oft das KNN die Trainingsbeispiele durcharbeitet. Dabei gibt es einen Zusammenhang zwischen Anzahl der Epochs und der Learning Rate. Je mehr Epochen das KNN beim Training durchläuft, desto kleiner sollte die Learningrate sein, da sich die Optimierungs-Methode in vielen Schritten besser ans Minimum annähern kann, wenn diese kleiner sind. Durchläuft das KNN nur wenige Epochs sollte die Learning Rate größer sein, da die wenigen Aktualisierungen größer sein müssen, um sich dem Minimum zu nähern.\footnote{vgl. Rashid, 2017, S. 157}
+	
+				Das Training kann allerdings mit Early Stopping schon vor Durchlauf aller Epochs beendet werden. Nach jedem Epoch wird der Validationsdatensatz durchgegangen. Sobald sich die Trefferquote nur noch bei den Trainingsbeispielen, nicht aber bei den Validationsbeispielen verbessert, wird das Training gestoppt, da es sonst zu Overfitting (Siehe \ref{UnderOverFitting}) kommt.\footnote{vgl. Nielsen, 2015, Kapitel 3/Overfitting and regularization}
+		
+			% Early stopping
+			\subsection{Initialisierung der Parameter} \label{TodsündenWeights}
+				\enlargethispage{0.2\baselineskip}
+				Für die Effizienz der Optimierungs-Methode sind gute Startwerte für die Parameter ausschlaggebend.\footnote{vgl. Nielsen, 2015, Kapitel 3/Weight initialization} Diese werden mit Zufallswerten initialisiert. Der Grund, warum nicht für alle Weights der gleiche Startwert verwendet wird, ist, dass in diesem Fall die Optimierungs-Methode nicht dazu in der Lage wäre, unterschiedliche Gewichte zu erzeugen, d. h. alle Gewichte haben am Ende des Trainings den gleichen Wert (auch wenn dieser nicht gleich dem Startwert sein muss). Wenn alle Gewichte gleich sind, wäre das so, wie wenn alle Hidden Layer nur ein Neuron hätten\footnote{Angenommen alle Biases hätten den Wert 0}. Einem solchen Netz würde es an Lernkapazität mangeln.\footnote{vgl. Rashid, 2017, S. 93; ebd., S. 158}
+				%, wie in \ref{GradientDescent} erwähnt,
+				%DER BIAS IST DAVON NICHT BETROFFEN
+				Daher werden häufig Zufallswerte einer Normalverteilung verwendet. Hier kommt es auf die Werte des Erwartungswerts $\mu$ und der Standardabweichung $\sigma$ der Normalverteilung an. Werden diese beispielsweise auf $\mu = 0$ und $\sigma = 1$ gesetzt, kann es zu einer Sättigung (Siehe \ref{Sättigung}) kommen, da der Betrag von $z_{(l,n)}$ wahrscheinlich hoch ist, da die Standardabweichung von $z_{(l,n)}$ bei beispielsweise 500 Weights und einem Bias $\sqrt{1 \cdot 500 + 1} \approx 22,38$ ist. Eine Möglichkeit wäre nun, für $\mu = 0$ und $\sigma = \frac{1}{\sqrt{\textrm{len}(l-1)}}$ einzusetzen, da die Standardabweichung von $z_{(l,n)}$ im genannten Beispiel nur $\sqrt{\frac{1}{500} \cdot 500 + 1} = \sqrt{2}$ beträgt. Diese Regelung gilt nur für die Weights. Für die Biases werden oft die Zufallswerte einer Normalverteilung mit $\mu = 0$ und $\sigma = 1$ verwendet.\footnote{vgl. ebd., Kapitel 3/Weight initialization}
+	
+				% Daher werden häufig Zufallswerte einer Normalverteilung verwendet. Hier kommt es auf die Werte des Durchschnitts $\varnothing$ und der Standardabweichung $\sigma$ der Normalverteilung an. Werden diese beispielsweise auf $\varnothing = 0$ und $\sigma = 1$ gesetzt, kann es zu einer Sättigung (Siehe \ref{Sättigung}) kommen, da der Betrag von $z_{(l,n)}$ wahrscheinlich hoch ist, da die Standardabweichung von $z_{(l,n)}$ bei beispielsweise 500 Weights und einem Bias $\sqrt{1 \cdot 500 + 1} \approx 22,38$ ist. Eine Möglichkeit wäre nun, für $\varnothing = 0$ und $\sigma = \frac{1}{\sqrt{\textrm{len}(l-1)}}$ einzusetzen, da die Standardabweichung von $z_{(l,n)}$ im genannten Beispiel nur $\sqrt{\frac{1}{500} \cdot 500 + 1} = \sqrt{2}$ beträgt. Diese Regelung gilt nur für die Weights. Für die Biases werden oft die Zufallswerte einer Normalverteilung mit $\varnothing = 0$ und $\sigma = 1$ verwendet.\footnote{vgl. ebd., Kapitel 3/Weight initialization}
+	
+				% Werden die Parameter mit Zufallswerten einer Normalverteilung mit beispielsweise $\varnothing = 0$ und $\sigma = 1$ initialisiert, so kann es zur Sättigung (Siehe \ref{Sättigung}) von Neuronen kommen, da die Normalverteilung von $z_{(l,n)}$ eines Neurons mit 99 Eingabewerten von vorherigen Neuronen, welche alle den Ausgabewert 1 haben, eine Standardabweichung von $\sqrt{100}=10$ hat. In diesem Fall lernt das KNN zu Beginn nur langsam und benötigt um einiges länger, als wenn man die Parameter intelligenter initialisiert hätte. Daher werden die Gewichte zu einem Neuron $x_{(l,n)}$ mit Zufallswerten einer Normalverteilung mit $\varnothing = 0$ und $\sigma = \frac{1}{\sqrt{\textrm{len}(l-1)}}$ initialisiert\footnote{Es gibt noch andere Methoden, um dieses Problem zu umgehen, welche allerdings nicht Thema dieser Arbeit sein werden.}. Die Biases werden hingegen oft mit 0 oder Zufallswerten einer Normalverteilung mit $\varnothing = 0$ und $\sigma = 1$ initialisiert.\footnote{vgl. ebd., Kapitel 3/Weight initialization}
+				%, wobei \mbox{$\textrm{len}(l-1)$} die Anzahl der Neuronen in der Schicht \mbox{$l-1$}, deren Werte dem Neuron $x_{(l,n)}$ übergeben werden,
+	
+
+				% Gleicher Wert für alle Weights bei Initiallisierung
+				% 0 als Startwert für Initiallisierung
+				% Zu große/kleine Startwerte -> Sättigung
+				% Rashid S. 92
+				% Siehe Nielsen Kapitel 3 Absatz 2)	
+	
+	
+		\section{Probleme beim Trainieren}
+			\begin{wrapfigure}{}{0cm} %Vorlage: Fundamentals S. 29
+				\begin{tikzpicture}[scale=0.9]
+					\begin{axis}[
+						%title={$f(x) = \frac{1}{1 + \mathrm{e}^{-x}}$},
+						xtick={-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5}, 
+						xticklabels={-5,,,,,0,,,,,5},
+						ytick={-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5}, 
+						yticklabels={-5,,,,,0,,,,,5},
+						x=20,
+						y=20,
+						ymin=-5.5, 	ymax=5.5, 
+						xmin=-5.5, 	xmax=5.5, 
+						axis lines=center, 
+						hide obscured x ticks=false, 
+						xlabel=$x$,
+						ylabel={$y$},
+						every inner x axis line/.append style={-},
+						every inner y axis line/.append style={-},
+						every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+						every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+						] 
+						\addplot[domain=-5:5, samples=100, dashed]{((x-1)^3)+2*((x-1)^2)-x}; 
+						\addplot[domain=-5:5, samples=100, thick]{0.45*x+0.25};
+						\addplot[domain=-5:5, samples=100, dotted]{-1.5*x-3};
+						\addplot[only marks, thick, mark=x, mark options={scale=2}] table[x index=0, y index=1] {mydata.dat};
+						\addplot[only marks, thin, mark=*] table[x index=0, y index=1] {mydata2.dat};
+					\end{axis};
+				\end{tikzpicture}	
+				\caption{Die gepunktete Funktion repräsentiert Underfitting, die strichlierte Overfitting und die durchgehende ein für die Aufgabe passendes KNN. Die Kreuze stellen die Trainingsdaten, die Punkte die Testdaten dar. (Quelle: E. D.)}\label{UnderOverFittingGraph}
+			\end{wrapfigure}
+			Das Trainieren von KNNs ist oft mit zusätzlichen Aufgaben und Problemen verbunden. Vier der verbreiteteren Probleme werden im folgenden Unterkapitel angesprochen. Für viele Spezialfälle von KNNs gibt es eigene Schwierigkeiten, welche das Ausmaß dieser Arbeit allerdings bei Weitem übersteigen würden.\footnote{vgl. Rashid, 2017, S. 156; Nielsen, 2015, Kapitel 5/Other obstacles to deep learning}
+			
+			\subsection{Under- und Overfitting} \label{UnderOverFitting}
+				Beim Trainieren eines KNNs geht es um das Anpassen der Parameter, damit das Netz die Trainingsbeispiele richtig klassifiziert. Je besser allerdings das Netz an diese Beispiele angepasst ist, desto schlechter verhält sich das Netz mit Daten, welche es zuvor nicht gesehen hat. 
+				\clearpage
+	
+				Sobald sich die Cost-Funktion einem Minimum nähert, die Trefferquote bei den Testbeispielen aber nicht mehr steigt, spricht man von Overfitting.\footnote{vgl. Nielsen, 2015, Kapitel 3/Overfitting and regularization}
+	
+				Underfitting ist das Gegenteil von Overfitting. Es tritt auf, wenn das Netz zu wenig an die Trainingsbeispiele angepasst und die Eingabe nicht in Verbindung mit der Ausgabe setzen kann.\footnote{\practitioner{26-27; Wartala, 2018, S. 195}} Abb. \ref{UnderOverFittingGraph} veranschaulicht den Unterschied anhand einer Regressions-Aufgabe. 
+				
+				% Siehe Fundamentals, S. 29
+				% Siehe Deep Learning
+				% Notiz 54, 55
+	
+			\subsection{Vanishing Gradient}\label{VanishingGradient}
+				Das Problem des Vanishing Gradient tritt v. a. bei KNNs mit mehreren Hidden Layern auf. Durch das Rückführen des Fehlers mit Formel \ref{BP2} nähern sich die partiellen Ableitungen für Parameter in den ersten Hidden Layern immer mehr dem Wert 0, wodurch diese Layer langsamer lernen als die Hidden Layer nahe dem Output Layer.\footnote{vgl. Nielsen, 2015, Kapitel 5} Dieses Problem tritt auch bei RNNs auf, da bei diesen mit steigender Länge der Sequenz einer Eingabe die Beträge der partiellen Ableitungen für die Parameter in den ersten Zeitschritten immer kleiner werden.\footnote{vgl. Gupta, 2017}
+	
+			\subsection{Dying ReLU}\label{DyingReLU}
+				Dieses Problem betrifft normale ReLUs\footnote{Als Rectified Linear Units (kurz ReLUs) werden Neurone mit der Rectified Linear-Funktion als Aktivierungsfunktion bezeichnet (\practitioner{70})}. Es besteht die Möglichkeit, dass $z_{l,n}$ einen Wert kleiner 0 annimmt, wodurch die Ausgabe $x_{(l,n)}$ den Wert 0 annimmt. In diesem Fall schafft es der Backpropagation Algorithmus nicht mehr die Gewichte zu diesem Neuron anzupassen, da Formel \ref{BP4} ebenfalls immer den Wert 0 erzeugt. Um dieses Problem zu umgehen gibt es die Leaky ReLUs, welche von diesem Problem nicht betroffen sind.\footnote{\practitioner{243}}
+	
+			\subsection{Sättigung}\label{Sättigung}
+				Ein Neuron gilt dann als gesättigt, wenn sich $f_{(l)}^{\prime}(z_{(l,n)})$ dem Wert 0 annähert. In diesem Fall können die Parameter zu Beginn des Trainings nur in sehr kleinen Schritten verändert werden, da $\delta_{(l,n)}$ durch die geringe Steigung der Aktivierungsfunktion ebenfalls relativ klein ist. Von diesem Problem sind allerdings nur bestimmte Aktivierungsfunktionen, wie die Sigmoid- oder TanH-Funktion, betroffen. Die Rectified Linear-Funktion und ihre Abwandlung haben diesen Nachteil nicht.\footnote{vgl. Nielsen, 2015, Kapitel 2/The four fundamental equations behind backpropagation}
+				
+			% \subsection{Langsames Lernen durch große Gewichte und falsche Cost-Funktion} % Siehe Nielsen Kapitel 3/Cross entropy 
+			% Notiz 8, 11, 12
+	
+			%IRGENDWO MUSS DIE GRENZE GEZOGEN WERDEN, WAS ALLES BEI DEN EXPERIMENTEN DABEI IST UND WAS NICHT.
+	
+	
+	\chapter{Aufbau und Durchführung der Experimente} \label{Experimente}
+		Dieser Teil der Arbeit befasst sich mit praktischen Experimenten zu den in den vorherigen Kapiteln behandelten Typen von KNNs. Ziel der Experimente ist es weniger, neue Rekorde aufzustellen\footnote{Hierfür hätte man sich mit der Optimierung des Trainings auseinandersetzen müssen}, sondern herauszufinden, wie die einzelnen Hyperparameter die Leistung\footnote{Als Leistung wird hier die Trefferquote eines KNNs bei einem vollständigen Durchlauf aller Beispiele des Testdatensatzes bezeichnet} der verschiedenen Typen von KNNs beeinflussen und mit welchen Werten eine besonders hohe Trefferquote\footnote{Die Trefferquote bezieht sich hier nur auf den Testdatensatz, außer es wird explizit von einer anderen Menge gesprochen} erzielt werden kann. 
+		
+		% Das mit Durchprobieren von mehreren Hyperparametern, etc. Siehe Fundamentals, S. 32
+		% Layer Size eher eine Potenz von 2 (Practitioner S. 274)
+		% Ich habe nicht das Ziel, irgendwelche Rekorde zu brechen. Meine Forschung geht, wie sich das Verhalten von KNNs je nach Änderung von (Hyper)parametern ändern. Würde ich Rekorde aufstellen wollen, müsste ich mich mehr mit Optimiesierungsmethoden beschäftigen. 
+	
+
+		\section{Aufbau und Durchführung}
+			\subsection{Untersuchte Hyperparameter}
+				Bei den Versuchen werden die Werte verschiedener, allerdings nicht aller, Hyperparameter verändert. So werden für alle Typen die Lernrate und die Größe der Mini-Batches verändert. Des Weiteren wird auch der Aufbau der KNNs verändert, wobei die verschiedenen Modelle in Tabellen in Anhang C zu finden sind. Nicht verändert wird bei den Experimenten u. a. die Anzahl der Epochs oder die Cost-Funktion.\footnote{Das liegt daran, dass ihre Anzahl in Zusammenhang mit der Lernrate und der Größe der Mini-Batches steht (vgl. Rashid, 2017, S. 157)} 
+				%, wobei die Mengen der Werte für diese aus Vorversuchen und der Literatur ermittelt wurden und für alle Typen gleich sind
+				\\ \ \\ \
+				Speziell bei den FFNNs wird der Einfluss verschiedener Aktivierungsfunktionen und das Benutzen von Biases getestet. Bei den Experimenten zu CNNs haben diese Hyperparameter fixe Werte, der Fokus liegt hier v. a. auf der Größe des Kernels und dem Stride-Wert, da sonst durch die Kombination weiterer Hyperparameter die Experimente zu viel Zeit in Anspruch genommen hätten. Des Weiteren ist auch das Zero Padding so eingestellt, dass die Eingaben so gepaddet werden, dass die Feature Maps gleichgroß wie die Eingaben sind. Bei LSTM Netzen wird der Einfluss der Aktivierungsfunktion und der rekurrenten Aktivierungsfunktion\footnote{$f_{i;(l)}$, $f_{o;(l)}$, $f_{u;(l)}$ werden nachfolgend als rekurrente Aktivierungsfunktionen, $f_{x;(l)}$ und $f_{z;(l)}$ als Aktivierungsfunktionen bezeichnet. Dass die einzelnen Funktionen bei den Experimenten nicht getrennt voneinander behandelt werden liegt an einer Limitierung der Programmierung.} erforscht.
+				% Des Weiteren wird für Pooling-Funktion nur Max-Pooling und eine fixe Anzahl von zehn Feature Maps verwendet
+	
+			\subsection{Python und Keras}\label{Python&Keras}
+				Umgesetzt werden die Experimente mit der Programmiersprache Python, welche für die Arbeit mit KNNs relativ häufig eingesetzt wird.\footnote{vgl. Rashid, 2017, S. 95} Außer Python wird die Library Keras verwendet, welche eine kompakte Schreibweise ermöglicht und durch Verwendung einer weiteren Library namens Tensorflow die nötigen Berechnungen beschleunigt.\footnote{vgl. Wartala, 2018, S. 124}
+				
+			\subsection{Aufbau des Programmcodes}
+				Der Programmcode für alle Netztypen ist gleich strukturiert. Zunächst wird, neben einigen nebensächlichen Aufgaben, eine Klasse definiert, welche die Arbeit des Erstellens und Trainierens eines KNNs sowie das Niederschreiben der Ergebnisse in CSV-Dateien (die wichtigsten Tabellen sind in Anhang E zu finden) übernimmt. Anschließend wird mit mehreren Schleifen durch die verschiedenen, festgelegten Werte für die Hyperparameter iteriert. Dieses Verfahren wird als Grid Search bezeichnet.\footnote{\fundamentals{32}} 
+
+				%Die aus den Experimenten gewonnen Daten werden in CSV-Dateien gespeichert. Eine davon ist eine Tabelle für jeden Netztypus mit allen möglichen Kombinationen, für welche die Trainingszeit, die Cost-Werte und die Trefferquoten für alle drei Mengen festgehalten werden, welche in Anhang E zu finden sind. Zusätzlich wird in einer weiteren Datei gespeichert, wie viele Netze jede der Ziffern der Testmenge nicht erkannt haben. Des Weiteren wird für jedes KNN in einer eigenen Tabelle gespeichert, bei welchen Ziffern der Testmenge es falsch liegt und wie es diese stattdessen klassifiziert.
+				
+			\subsection{Durchführung}
+				Durchgeführt wurden die Experimente auf einem Heimcomputer mit etwa 190\break GFLOPS\footnote{Messung eines Intel Core i7-7700K Prozessors mit dem Intel MKL Linpack Benchmark, verfügbar unter: https://software.intel.com/en-us/articles/intel-mkl-benchmarks-suite (Zuletzt besucht am 20. 01. 2019)}. Dabei wurden 378 FFNNs, 576 CNNs und 144 LSTMs in etwa 15 Stunden Rechenzeit getestet.
+	
+	
+		\section{Auswertung der Ergebnisse}
+			In den folgenden Unterpunkten werden die Auswirkungen der Hyperparameter auf die Trefferquoten der Netze analysiert. Die Boxplots der Abbildungen \ref{ErsterBoxplot} - \ref{LetzterBoxplot} visualisieren die Ergebnisse aus den Experimenten.
+
+			\subsection{Allgemeine Erkenntnisse zu Lernrate und Mini-Batch Größe}
+				Die Versuche zu allen drei Netztypen haben bezüglich Lernrate und Größe der Mini-Batches bis auf eine Abweichung die gleichen Ergebnisse geliefert. Die leistungsstärksten KNNs der jeweiligen Netztypen haben alle den Wert 1, den größten der drei möglichen, für die Learning Rate verwendet, wobei mit sinkender Lernrate auch die durchschnittliche Trefferquote sank.
+				
+				\begin{figure}[h] 
+					%Vorlage: Practitioner S. 65-70
+					\centering
+					\begin{subfigure}[t]{.32\linewidth}
+						\centering
+						\begin{scriptsize}
+							\begin{tikzpicture}
+								\begin{axis}
+									[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=36mm,width=1.1\textwidth,ytick={1,2,3},yticklabels={1, 0.1, 0.01},]
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.918,
+										upper quartile=0.9325,
+										lower quartile=0.8943,
+										upper whisker=0.9755,
+										lower whisker=0.1012,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.8548,
+										upper quartile=0.9075,
+										lower quartile=0.4966,
+										upper whisker=0.9434,
+										lower whisker=0.1033,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.3675,
+										upper quartile=0.6709,
+										lower quartile=0.1733,
+										upper whisker=0.8948,
+										lower whisker=0.0650,
+									},
+									] 
+									coordinates {};
+								\end{axis}
+							\end{tikzpicture}
+						\end{scriptsize}
+						\caption{FFNNs}
+					\end{subfigure}
+					\hfill
+					\begin{subfigure}[t]{.32\linewidth}
+						\centering
+						\begin{scriptsize}
+							\begin{tikzpicture}
+								\begin{axis}
+									[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=36mm,width=1.1\textwidth,ytick={1,2,3},yticklabels={1, 0.1, 0.01},]
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.9114,
+										upper quartile=0.9644,
+										lower quartile=0.1552,
+										upper whisker=0.9854,
+										lower whisker=0.0892,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.8664,
+										upper quartile=0.9227,
+										lower quartile=0.4827,
+										upper whisker=0.9818,
+										lower whisker=0.0981,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.3235,
+										upper quartile=0.8343,
+										lower quartile=0.1461,
+										upper whisker=0.9454,
+										lower whisker=0.0476,
+									},
+									] 
+									coordinates {};
+								\end{axis}
+							\end{tikzpicture}
+						\end{scriptsize}
+						\caption{CNNs}
+					\end{subfigure}
+					\hfill
+					\begin{subfigure}[t]{.32\linewidth}
+						\centering
+						\begin{scriptsize}
+							\begin{tikzpicture}
+								\begin{axis}
+									[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=36mm,width=1.1\textwidth,ytick={1,2,3},yticklabels={1, 0.1, 0.01},]
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.1359,
+										upper quartile=0.6315,
+										lower quartile=0.1135,
+										upper whisker=0.9503,
+										lower whisker=0.1028,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.1136,
+										upper quartile=0.1349,
+										lower quartile=0.1135,
+										upper whisker=0.685,
+										lower whisker=0.0980,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.1135,
+										upper quartile=0.1223,
+										lower quartile=0.1031,
+										upper whisker=0.1867,
+										lower whisker=0.0958,
+									},
+									] 
+									coordinates {};
+								\end{axis}
+							\end{tikzpicture}
+						\end{scriptsize}
+						\caption{LSTMs}
+					\end{subfigure}
+					\vspace{-1mm}
+					\caption{Boxplots der Trefferquoten der verschiedenen KNN-Arten mit verschiedenen Lernraten (Quelle: Eigene Darstellungen)}\label{ErsterBoxplot}
+				\end{figure}
+				
+				\ \\ 
+				Als Größe für die Mini-Batches hat sich bei den FFNNs und LSTMs der Wert 8 durchgesetzt, bei den CNNs verwendete das Netz mit der höchsten Trefferquote eine Mini-Batch Größe von 32, wobei es zum besten CNN mit der Mini-Batch Größe 8 weniger als einen halben Prozentpunkt Unterschied gab.
+
+				\begin{figure}[h] 
+					%Vorlage: Practitioner S. 65-70
+					\centering
+					\begin{subfigure}[t]{.32\linewidth}
+						\centering
+						\begin{scriptsize}
+							\begin{tikzpicture}
+								\begin{axis}
+									[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=36mm,width=1.1\textwidth,ytick={1,2,3},yticklabels={128, 32, 8}, ]
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.478,
+										upper quartile=0.8834,
+										lower quartile=0.2104,
+										upper whisker=0.9347,
+										lower whisker=0.0650,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.8391,
+										upper quartile=0.9117,
+										lower quartile=0.4096,
+										upper whisker=0.9616,
+										lower whisker=0.1024,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.9027,
+										upper quartile=0.9276,
+										lower quartile=0.6774,
+										upper whisker=0.9755,
+										lower whisker=0.1012,
+									},
+									] 
+									coordinates {};
+								\end{axis}
+							\end{tikzpicture}
+						\end{scriptsize}
+						\caption{FFNNs}
+					\end{subfigure}
+					\hfill
+					\begin{subfigure}[t]{.32\linewidth}
+						\centering
+						\begin{scriptsize}
+							\begin{tikzpicture}
+								\begin{axis}
+									[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=36mm,width=1.1\textwidth,ytick={1,2,3},yticklabels={128, 32, 8}, ]
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.5615,
+										upper quartile=0.9046,
+										lower quartile=0.1904,
+										upper whisker=0.9818,
+										lower whisker=0.0476,
+									},
+									] 
+									coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.8348,
+										upper quartile=0.9220,
+										lower quartile=0.2127,
+										upper whisker=0.9854,
+										lower whisker=0.0773,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.8580,
+										upper quartile=0.9456,
+										lower quartile=0.2172,
+										upper whisker=0.9818,
+										lower whisker=0.0892,
+									},
+									] coordinates {};
+								\end{axis}
+							\end{tikzpicture}
+						\end{scriptsize}
+						\caption{CNNs}
+					\end{subfigure}
+					\hfill
+					\begin{subfigure}[t]{.32\linewidth}
+						\centering
+						\begin{scriptsize}
+							\begin{tikzpicture}
+								\begin{axis}
+									[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=36mm,width=1.1\textwidth,ytick={1,2,3},yticklabels={128, 32, 8}, ]
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.1135,
+										upper quartile=0.1277,
+										lower quartile=0.1135,
+										upper whisker=0.410,
+										lower whisker=0.0958,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.1138,
+										upper quartile=0.1801,
+										lower quartile=0.1135,
+										upper whisker=0.886,
+										lower whisker=0.0958,
+									},
+									] coordinates {};
+									\addplot [mark=*, boxplot,
+									boxplot prepared={
+										median=0.1152,
+										upper quartile=0.4593,
+										lower quartile=0.1135,
+										upper whisker=0.950,
+										lower whisker=0.0982,
+									},
+									] 
+									coordinates {};
+								\end{axis}
+							\end{tikzpicture}
+						\end{scriptsize}
+						\caption{LSTMs}
+					\end{subfigure}
+					\caption{Boxplots der Trefferquoten der verschiedenen KNN-Arten mit verschiedenen Mini-Batch Größen (Quelle: Eigene Darstellungen)}
+				\end{figure}
+	
+				% Der Zusammenhang zwischen Learning Rate und Trefferquote eines KNNs hat auch mit anderen Hyperparametern zu tun. Wie oft es zu einer Veränderung der Parameter eines KNNs kommt, hängt von der Anzahl an Epochs und der Mini-Batch Größe ab: Je kleiner die Mini-Batches und je mehr Epochs beim Training eines Netzes, desto öfter kommt es zu einer Aktualisierung der Parameter. Je öfter eine Aktualisierung stattfindet, desto kleiner darf der Wert der Learning Rate sein.\footnote{vgl. Rashid, 2017, S. 157}
+	
+			\subsection{Experimente zu FFNNs}
+				Bezüglich des Aufbaus der FFNNs fällt auf, dass das beste FFNN (Nr. 109, 97,55\%) nur einen Hidden Layer mit 1000 Neuronen verwendet, welches jenes Modell mit den meisten Parametern ist. 
+				%Bei den Netzen mit zwei Layern kommt es v.a. auf die Reihenfolge der verschieden großen Schichten an: Modell fünf besteht aus zuerst einem Hidden Layer mit 100, dann einem mit zehn Neuronen, Modell sechs genau umgekehrt. 
+	
+				\begin{figure}[h]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=56mm,width=\textwidth,ytick={1,2,3,4,5,6,7},yticklabels={Modell 7, Modell 6, Modell 5, Modell 4, Modell 3, Modell 2, Modell 1},]
+								\addplot [mark=*, boxplot,%Modell7
+								boxplot prepared={
+									median=0.849,
+									upper quartile=0.9243,
+									lower quartile=0.3008,
+									upper whisker=0.9657,
+									lower whisker=0.0973,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,%Modell6
+								boxplot prepared={
+									median=0.499,
+									upper quartile=0.9130,
+									lower quartile=0.1857,
+									upper whisker=0.9278,
+									lower whisker=0.1009,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,%Modell5
+								boxplot prepared={
+									median=0.687,
+									upper quartile=0.9195,
+									lower quartile=0.2619,
+									upper whisker=0.9557,
+									lower whisker=0.098,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,%Modell4
+								boxplot prepared={
+									median=0.610,
+									upper quartile=0.8993,
+									lower quartile=0.1927,
+									upper whisker=0.922,
+									lower whisker=0.0676,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,%Modell3
+								boxplot prepared={
+									median=0.894,
+									upper quartile=0.9232,
+									lower quartile=0.7876,
+									upper whisker=0.9755,
+									lower whisker=0.2651,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,%Modell2
+								boxplot prepared={
+									median=0.884,
+									upper quartile=0.9275,
+									lower quartile=0.6929,
+									upper whisker=0.9707,
+									lower whisker=0.065,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,%Modell1
+								boxplot prepared={
+									median=0.809,
+									upper quartile=0.9084,
+									lower quartile=0.4351,
+									upper whisker=0.924,
+									lower whisker=0.1375,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten der verschiedenen Aufbauten von \\ FFNNs (Quelle: E. D.)}
+				\end{figure}
+				
+				Neben verschiedenen Aufbauten wurden auch drei unterschiedliche Aktivierungsfunktionen getestet, wobei jenes Netz mit der höchsten Trefferquote die Rectified Linear-Funktion verwendet, jedoch schnitt die TanH-Funktion im Durchschnitt mit einer um zehn Prozentpunkte höheren Trefferquote deutlich besser ab, das beste FFNN mit der TanH-Funktion liegt nur etwa einen Prozentpunkt dahinter. Die Sigmoid-Funktion schnitt am schlechtesten ab.  
+				%, was auch im Einklang mit der Literatur steht und deshalb von dieser Funktion abrät. 
+	
+				\begin{figure}[h!]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=33mm,width=151mm,ytick={1,2,3},yticklabels={ReL-F., TanH-F., $\sigma$-F.},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.8741,
+									upper quartile=0.9166,
+									lower quartile=0.4395,
+									upper whisker=0.9755,
+									lower whisker=0.1012,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.894,
+									upper quartile=0.9220,
+									lower quartile=0.7097,
+									upper whisker=0.9657,
+									lower whisker=0.1788,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.3739,
+									upper quartile=0.8648,
+									lower quartile=0.1617,
+									upper whisker=0.9438,
+									lower whisker=0.065,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten von FFNNs mit verschiedenen Aktivierungsfunktionen (Quelle: E. D.)}
+				\end{figure}
+	
+				Des Weiteren wurde auch der Einsatz von Biases getestet, wobei auffiel, dass die durchschnittliche Trefferquote bei FFNNs ohne Biases um ca. 1,6 Prozentpunkte höher ist als bei jenen mit Biases. Bei den beiden besten FFNNs gibt es einen Unterschied von weniger als einem halben Prozentpunkt. Insgesamt gibt es also keinen großen Unterschied, ob man FFNNs mit oder ohne Biases trainiert, was erklären könnte, warum dieser Parameter nicht in jeder Literatur verwendet wird. 
+	
+				\begin{figure}[h] 
+					%Vorlage: Practitioner S. 65-70
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=27mm,width=146mm,ytick={1,2},yticklabels={Ohne Biases, Mit Biases},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.8425,
+									upper quartile=0.9139,
+									lower quartile=0.3637,
+									upper whisker=0.9755,
+									lower whisker=0.0980,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.8186,
+									upper quartile=0.9125,
+									lower quartile=0.3400,
+									upper whisker=0.9719,
+									lower whisker=0.0650,
+								},
+								] coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten von FFNNs mit und ohne Biases \\ (Quelle: E. D.)}
+				\end{figure}
+	
+			\subsection{Experimente zu CNNs}
+				Interessanterweise hatten CNNs mit einfacheren Aufbauten (Modell 1) eine höhere durchschnittliche Trefferquote als andere, das beste CNN (Nr. 173; 98,54\%) verwendet zwei hintereinanderliegende Convolutional Layer, gefolgt von einem Pooling Layer. Jedoch liegen die besten Netze der vier Modelle keinen halben Prozentpunkt auseinander. 
+				
+				\begin{figure}[h!]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=40mm,width=151mm,ytick={1,2,3,4},yticklabels={Modell 4, Modell 3, Modell 2, Modell 1},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.6077,
+									upper quartile=0.9191,
+									lower quartile=0.1564,
+									upper whisker=0.9818,
+									lower whisker=0.0892,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.4707,
+									upper quartile=0.9005,
+									lower quartile=0.1767,
+									upper whisker=0.9822,
+									lower whisker=0.0723,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.6402,
+									upper quartile=0.9041,
+									lower quartile=0.1720,
+									upper whisker=0.9854,
+									lower whisker=0.0476,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.9051,
+									upper quartile=0.9482,
+									lower quartile=0.8216,
+									upper whisker=0.981,
+									lower whisker=0.1023,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten der verschiedenen Aufbauten von \\ CNNs (Quelle: E. D.)}
+				\end{figure}
+	
+				Die Größe der Kernels hat kaum einen Einfluss, weder beim Durchschnitt noch bei den besten CNNs gibt es nicht mehr als zwei Prozentpunkte Unterschied, das beste Netz verwendet $3 \times 3$ große Kernels.
+				
+				\begin{figure}[h!]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=40mm,width=156mm,ytick={1,2,3,4},yticklabels={$3 \times 3$, $3 \times 2$, $2 \times 3$, $2 \times 2$},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.7497,
+									upper quartile=0.9434,
+									lower quartile=0.1872,
+									upper whisker=0.9854,
+									lower whisker=0.0723,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.7570,
+									upper quartile=0.9257,
+									lower quartile=0.2171,
+									upper whisker=0.9822,
+									lower whisker=0.0476,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.7763,
+									upper quartile=0.9245,
+									lower quartile=0.2058,
+									upper whisker=0.9812,
+									lower whisker=0.0892,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.7536,
+									upper quartile=0.9124,
+									lower quartile=0.1982,
+									upper whisker=0.9784,
+									lower whisker=0.0682,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten von CNNs mit unterschiedlichen Kernels (Quelle: E. D.)}
+				\end{figure}
+	
+				Viel einflussreicher ist der Stride-Wert, wobei mit größeren Stride-Werten die durchschnittliche Trefferquote der CNNs sinkt, weshalb das leistungsstärkste CNN auch den kleinsten Stride-Wert $(1,1)$ verwendet. Dies lässt sich möglicherweise dadurch erklären, dass Netze mit größerem Stride-Wert kleinere Feature Maps haben und deshalb auch weniger Parameter verwenden, wodurch wiederum die Lernkapazität eingeschränkt ist.
+				
+				\begin{figure}[h!]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=40mm,width=156mm,ytick={1,2,3,4},yticklabels={$2 \times 2$, $2 \times 1$, $1 \times 2$, $1 \times 1$},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.2809,
+									upper quartile=0.7262,
+									lower quartile=0.1535,
+									upper whisker=0.9686,
+									lower whisker=0.0723,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.5774,
+									upper quartile=0.8880,
+									lower quartile=0.1882,
+									upper whisker=0.976,
+									lower whisker=0.0682,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.7308,
+									upper quartile=0.9041,
+									lower quartile=0.1689,
+									upper whisker=0.9764,
+									lower whisker=0.0476,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.9270,
+									upper quartile=0.9731,
+									lower quartile=0.9012,
+									upper whisker=0.9854,
+									lower whisker=0.1135,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten von CNNs mit unterschiedlichen Stride-Werten (Quelle: E. D.)}
+				\end{figure}
+	
+			\subsection{Experimente zu LSTMs}
+				Bei den LSTMs haben zwar  Modelle mit zwei LSTM-Schichten durchschnittlich schlechter abgeschnitten als jene mit nur einem, jedoch haben diese höhere maximale Trefferquoten erzielt und das beste Netz hervorgebracht (Nr. 39; 95,03\%). Das Verwenden eines Fully-Connected Layers direkt nach dem Input Layer scheint die Leistung eines LSTMs nur zu beeinträchtigen. 
+				
+				\enlargethispage{\baselineskip}
+				\begin{figure}[h!]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=40mm,width=151mm,ytick={1,2,3,4},yticklabels={Modell 4, Modell 3, Modell 2, Modell 1},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1135,
+									upper quartile=0.1155,
+									lower quartile=0.1135,
+									upper whisker=0.9494,
+									lower whisker=0.098,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1135,
+									upper quartile=0.1707,
+									lower quartile=0.1129,
+									upper whisker=0.9148,
+									lower whisker=0.0958,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1135,
+									upper quartile=0.1549,
+									lower quartile=0.1135,
+									upper whisker=0.9503,
+									lower whisker=0.0958,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1217,
+									upper quartile=0.2067,
+									lower quartile=0.1153,
+									upper whisker=0.9078,
+									lower whisker=0.098,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten der verschiedenen Aufbauten von LSTM Netzen (Quelle: E. D.)}
+				\end{figure}
+	
+				Als Funktion für $f_{x;(l)}$ und $f_{z;(l)}$ ist die TanH-Funktion deutlich besser geeignet als die Sigmoid-Funktion, bei der rekurrenten Aktivierungsfunktion ist es jedoch genau umgekehrt. Für diese ist die Sigmoid-Funktion besser geeignet. 
+	
+				\begin{figure}[h] 
+					% Vorlage: Practitioner S. 65-70
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=27mm,width=151mm,ytick={1,2},yticklabels={TanH-F.,$\sigma$-F.},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.129,
+									upper quartile=0.4079,
+									lower quartile=0.1135,
+									upper whisker=0.9503,
+									lower whisker=0.1026,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.114,
+									upper quartile=0.1161,
+									lower quartile=0.1129,
+									upper whisker=0.8559,
+									lower whisker=0.0958,
+								},
+								] coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten von LSTMs mit unterschiedlichen Aktivierungsfunktionen (Quelle: E. D.)}
+				\end{figure}
+				
+				\begin{figure}[h] 
+					% Vorlage: Practitioner S. 65-70
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=27mm,width=151mm,ytick={1,2},yticklabels={TanH-F.,$\sigma$-F.},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.114,
+									upper quartile=0.1243,
+									lower quartile=0.1135,
+									upper whisker=0.8559,
+									lower whisker=0.098,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.120,
+									upper quartile=0.2077,
+									lower quartile=0.1135,
+									upper whisker=0.9503,
+									lower whisker=0.0958,
+								},
+								] coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten von LSTMs mit unterschiedlichen rekurrenten Aktivierungsfunktionen (Quelle: E. D.)}
+				\end{figure}
+	
+				Betrachtet man nun die vier möglichen Kombinationen der Funktionen, so schneiden LSTM Netze, welche für die Aktivierungsfunktion und die rekurrente Aktivierungsfunktion die gleiche Funktion einsetzen, schlechter ab, als LSTMs bei denen sich diese unterscheiden. 
+				
+				\begin{figure}[h!]
+					\begin{scriptsize}
+						\begin{tikzpicture}
+							\begin{axis}
+								[tick align=outside, ytick pos=left, xtick pos=left, xmin=0, xmax=1, major tick length=1mm, height=40mm,width=136mm,ytick={1,2,3,4},yticklabels={TanH-F. \& TanH-F., TanH-F. \& $\sigma$-F., $\sigma$-F. \& TanH-F., $\sigma$-F. \& $\sigma$-F.},]
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1136,
+									upper quartile=0.1175,
+									lower quartile=0.1135,
+									upper whisker=0.6428,
+									lower whisker=0.1028,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.2087,
+									upper quartile=0.6767,
+									lower quartile=0.1390,
+									upper whisker=0.9503,
+									lower whisker=0.1026,
+								},
+								] coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1135,
+									upper quartile=0.1276,
+									lower quartile=0.1135,
+									upper whisker=0.8559,
+									lower whisker=0.098,
+								},
+								] 
+								coordinates {};
+								\addplot [mark=*, boxplot,
+								boxplot prepared={
+									median=0.1135,
+									upper quartile=0.1135,
+									lower quartile=0.1028,
+									upper whisker=0.2054,
+									lower whisker=0.096,
+								},
+								] 
+								coordinates {};
+							\end{axis}
+						\end{tikzpicture}
+					\end{scriptsize}
+					\vspace{-5mm}
+					\caption{Boxplots der Trefferquoten der LSTM Netze mit den vier möglichen Kombinationen (Aktivierungsfunktion links, rekurrekte Aktivierungsfunktion rechts) (Quelle: E. D.)}\label{LetzterBoxplot}
+				\end{figure}
+	
+
+		\section{Erkenntnisse über den MNIST-Datensatz}
+			Die Abbildungen \ref{top5FFNN} - \ref{top5LSTM} zeigen jeweils jene fünf Ziffern, welche vom jeweiligen Netztypus am häufigsten falsch klassifiziert wurden. In der jeweiligen Unterbildunterschrift steht die Nummer der MNIST-Ziffer, gefolgt von der dargestellten Ziffer und die Anzahl der KNNs des Netztypus, welche diese Ziffer nicht erkannt haben. Dabei fällt auf, dass die Ziffern Fünf und Neun häufig vorkommen und die Ziffer Nr. 9982 in allen drei Listen vorkommt. Betrachtet man die Ziffern genauer, fällt es möglicherweise auch einem Menschen schwer, genau zu sagen, um welche Ziffer es sich handelt. Die Abbildungen 25a und 27d beispielsweise könnten auch ungenau geschriebene Nullen sein. Es ließe sich bei diesen Beispielen die Frage stellen, wo man genau die Grenze zwischen einer undeutlich geschriebenen Sechs und einer undeutlich geschriebenen Null zieht (Siehe Abb. \ref{6zu0Beispiel}). Ein weiteres Beispiel: Das beste KNN, welches diese Arbeit hervorbrachte, ist ein CNN mit einer Trefferquote von 98,54\%, d.h. nur 146 Ziffern der 10.000 Testbeispiele wurde falsch kategorisiert, welche in Abb. \ref{146ziffern} dargestellt sind. 
+			\\ \
+			\\ \
+			Um nun Einzuschätzen, wie gut die besten Netze der drei Netztypen sind, werden diese mit vom Aufbau vergleichbaren Netzen der Ersteller des MNIST-Datensatzes verglichen. Diese erzielen Trefferquoten zwischen 95,3\% und bis zu 99,77\%, d.h. die besten KNNs dieser Arbeit sind durchaus auf Niveau anderer Forschungsergebnisse.\footnote{vgl. Burges, Cortes \& LeCun, 1998} Auch Menschen können keine Trefferquote von 100\% erzielen. Die sogenannte Human-Level Performance für MNIST liegt bei etwa 99,75\%.\footnote{vgl. Wartala, 2018, S. 126f} 
 	
 	
 	

@@ -109,12 +109,48 @@
 \usepackage{color}									% Fürs Formatieren von Code Teil 2
 %\usepackage{lstlinebgrd}							% Fürs Formatieren von Code Teil 3
 
+%Anfang für Formatierung von Code
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb, %https://stackoverflow.com/questions/3175105/writing-code-in-latex-document
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\fontsize{10}{10}\ttfamily},
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{black}\bfseries,
+	commentstyle=\itshape\color{gray},
+	stringstyle=\itshape,
+	breaklines=true,
+	tabsize=3,
+	frame=nonuple,			%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	keepspaces=false,			%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	numbers=left,			%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	rulecolor=\color{black},  %https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+	morekeywords={self},		%https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings und https://latex.org/forum/viewtopic.php?t=2320
+	breakindent=6em,				%https://tex.stackexchange.com/questions/4239/which-measurement-units-should-one-use-in-latex und https://github.com/olivierverdier/python-latex-highlighting/blob/master/pythonhighlight.sty
+}
+\lstset{literate=%
+	{Ö}{{\"O}}1
+	{Ä}{{\"A}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
+	{ü}{{\"u}}1
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+}
+%Ende für Formatierung von Code	
+
+
 
 \patchcmd{\abstract}{\null\vfil}{}{}{}				% Verschieben des Abstracts in der Höhe
 \counterwithout{figure}{chapter} 					% Abbildungen werden nicht mehr per Kapitel, sonder global nummeriert 
 \counterwithout{equation}{chapter}					% Equations werden global nummeriert
 \counterwithout{table}{chapter}						% Tabellen werden global nummeriert
-
 
 
 
@@ -687,6 +723,11 @@
 			\end{figure}
 		
 	
+	
+	
+	
+	
+	
 	% Verzeichnisse
 	\begin{sloppypar}
 		\cleardoublepage
@@ -709,6 +750,386 @@
 	
 	
 	
+	
+	\chapter*{Anhang}
+	\addcontentsline{toc}{chapter}{Anhang}
+	
+		\section*{Anhang A: Notationstabelle}
+		\addcontentsline{toc}{section}{Anhang A: Notationstabelle}
+	
+		\vspace{2mm}
+		\newcommand{\newNotationRow}{\\[2.5mm]}
+	
+	
+		\begin{longtable}{p{30mm}p{110mm}} %longtable für mehrseitige Tabelle, sonst tabular
+			\hline
+			\centering\vspace{1mm} $l$ & \vspace{0mm}Nummer einer Schicht (Indexierung: 1)\newNotationRow	
+			\centering $L$ & Letzte Schicht eines KNNs\newNotationRow
+			\centering $m$ & Nummer eines Neurons der Schicht $l-1$ (Indexierung: 1)\newNotationRow % Ebenfalls 1, da Indexierung innerhalb eines Layers nicht davon abhängt, der wie vielte Layer es ist
+			\centering $n$ & Nummer eines Neurons der Schicht $l$ (Indexierung: 1)\newNotationRow
+			\centering $d$ & Nummer einer Feature Map in einer Schicht (Indexierung: 1)\newNotationRow
+			\centering $t$ & Variable zur Angabe eines Zeitpunkts (Indexierung: 1)\newNotationRow
+			\centering $w_{(l-1,m),(l,n)}$ & Verbindungsgewicht zwischen dem Neuron $m$ der Schicht $l-1$ und dem Neuron $n$ der Schicht $l$ (Skalar) \newNotationRow
+			\centering $\vec{w}_{(l-1),(l,n)}$ & Verbindungsgewichte zwischen allen Neuronen der Schicht \mbox{$l-1$} und dem Neuron $n$ der Schicht $l$ (Vektor) \newNotationRow
+			\centering $W_{(l-1),(l)}$ & Verbindungsgewichte zwischen allen Neuronen der Schicht \mbox{$l-1$} und allen Neuronen der Schicht $l$; Matrix mit der Form $n\times m$, wobei die $m$ die Anzahl der Neurone in der Schicht $l-1$, $n$ die Anzahl der Neurone der Schicht $l$ angibt\newNotationRow
+			\centering $W_{(l-1),(l)}^{(t),(t)}$ & Verbindungsgewichte zwischen allen Neuronen der Schicht $l-1$ zum Zeitpunkt $t$ und allen Neuronen der Schicht $l$ zum Zeitpunkt $t$; Matrix gleicher Form wie $W_{(l-1),(l)}$\newNotationRow
+			\centering $W_{(l),(l)}^{(t-1),(t)}$ & Verbindungsgewichte zwischen allen Neuronen der Schicht $l$ zum Zeitpunkt $t-1$ und allen Neuronen der Schicht $l$ zum Zeitpunkt $t$; Matrix mit der Form $n \times n$, wobei $n$ die Anzahl der Neurone der Schicht $l$ angibt\newNotationRow
+			\centering $W_{u;(l-1),(l)}^{(t),(t)}$ & Verbindungsgewichte zwischen allen Neuronen der Schicht $l-1$ zum Zeitpunkt $t$ und allen Neuronen der Schicht $l$ zum Zeitpunkt $t$ zur Berechnung von $\vec{u}_{(l)}^{(t)}$; Matrix gleicher Form wie $W_{(l-1),(l)}$; gibt auch $W_{i;(l-1),(l)}^{(t),(t)}$, $W_{o;(l-1),(l)}^{(t),(t)}$ und $W_{z;(l-1),(l)}^{(t),(t)}$ zur Berechnung von $\vec{i}_{(l)}^{(t)}$, $\vec{o}_{(l)}^{(t)}$ und $\vec{z}_{(l)}^{(t)}$\newNotationRow
+			\centering $W_{u;(l),(l)}^{(t-1),(t)}$ & Verbindungsgewichte zwischen allen Neuronen der Schicht $l$ zum Zeitpunkt $t-1$ und allen Neuronen der Schicht $l$ zum Zeitpunkt $t$ zur Berechnung von $\vec{u}_{(l)}^{(t)}$; Matrix mit der Form $n \times n$, wobei $n$ die Anzahl der Neurone der Schicht $l$ angibt; gibt auch $W_{i;(l),(l)}^{(t-1),(t)}$, $W_{o;(l),(l)}^{(t-1),(t)}$ und $W_{z;(l),(l)}^{(t-1),(t)}$ zur Berechnung von $\vec{i}_{(l)}^{(t)}$, $\vec{o}_{(l)}^{(t)}$ und $\vec{z}_{(l)}^{(t)}$\newNotationRow
+			\centering ${W_{(l),(l+1)}}^\intercal$ & Transponierte Matrix mit den Verbindungsgewichten zwischen allen Neuronen der Schicht $l-1$ und allen Neuronen der Schicht $l$; Matrix mit der Form $m\times n$, wobei die $m$ die Anzahl der Neurone in der Schicht $l-1$, $n$ die Anzahl der Neurone der Schicht $l$ angibt\newNotationRow				
+			\centering $b_{(l,n)}$ & Bias des Neurons $n$ in der Schicht $l$ \newNotationRow
+			\centering $\vec{b}_{(l)}$ & Vektor mit allen Bias-Werten der Schicht $l$ \newNotationRow
+			\centering $b_{(l,d)}$ & Bias, welcher für alle Neurone der Feature Map $d$ der \mbox{Schicht $l$} verwendet wird\newNotationRow				
+			\centering $z_{(l,n)}$ & Wert des Neurons $n$ der Schicht $l$ vor Anwendung einer Aktivierungsfunktion\newNotationRow
+			\centering $\vec{z}_{(l)}$ & Vektor mit allen Werten der Neurone der Schicht $l$ vor Anwendung einer Aktivierungsfunktion \newNotationRow				
+			\centering $f_{(l)}$ & Aktivierungsfunktion der Schicht $l$\newNotationRow
+			\centering $f_{(l)}^{\prime}$ & Erste Ableitung der Aktivierungsfunktion der Schicht $l$\newNotationRow
+			\centering $f_{i;(l)}$\break $f_{o;(l)}$\break $f_{u;(l)}$ & \break \break Rekurrente Aktivierungsfunktionen der Gates der Schicht $l$ eines LSTM Netzes (meistens Sigmoid-Funktion)\newNotationRow
+			\centering $f_{x;(l)}$\break $f_{z;(l)}$ & \break Aktivierungsfunktionen der Schicht $l$ bei LSTM Zellen(meistens TanH-Funktion)\newNotationRow				
+			\centering $x_{(l,n)}$ & Ausgabewert des Neurons $n$ der Schicht $l$\newNotationRow
+			\centering $\vec{x}_{(l)}$ & Vektor mit allen Ausgabewerten aller Neurone der Schicht $l$\newNotationRow
+			\centering $x_{(l,d,n)}$ & Ausgabewert des Neurons $n$ in der Feature Map $d$ der \mbox{Schicht $l$}\newNotationRow
+			\centering $x_{(l,n)}^{(t)}$ & Ausgabewert des Neurons $n$ der Schicht $l$ zum Zeitpunkt $t$\newNotationRow
+			\centering $\vec{x}_{(l)}^{(t)}$ & Vektor mit allen Ausgabewerten der Neurone der Schicht $l$ zum Zeitpunkt $t$\newNotationRow				
+			\centering $R_{(l,d,n)}$ & Local Receptive Field (LRF); Ausschnitt aus der Schicht $l-1$ mit dem das Neuron $n$ der Feature Map $d$ der Schicht $l$ verbunden ist\newNotationRow
+			\centering $K_{(l,d)}$ & Verbindungsgewichte, mit denen alle LRFs der Feature Map $d$ der Schicht $l$ gewichtet werden\newNotationRow
+			\centering $s_{(l)}$ & Stride-Wert der Schicht $l$; gibt an, in welchem Abstand sich die LRFs voneinander befinden\newNotationRow
+			\centering $p_{(l)}$ & Padding-Wert der Schicht $l$, gibt an, wie viele zusätzliche Zeilen und Spalten um die Matrix der Schicht $l-1$ mit dem Wert 0 hinzugefügt werden sollen\newNotationRow				
+			\centering $\vec{c}_{(l)}^{(t)}$ & Zell Status der Schicht $l$ zum Zeitpunkt $t$\newNotationRow
+			\centering $\vec{i}_{(l)}^{(t)}$ & Vektor, welcher angibt, welche Werte von $\vec{z}_{(l)}^{(t)}$ zum Zell Status hinzugefügt werden sollen \newNotationRow
+			\centering $\vec{o}_{(l)}^{(t)}$ & Vektor, welcher angibt, welche \newNotationRow
+			\centering $\vec{u}_{(l)}^{(t)}$ & Vektor, welcher angibt, welche Werte des vorherigen Zell Status zum Zeitpunkt $t-1$ zur Berechnung des Zell Status zum Zeitpunkt $t$ verwendet werden\newNotationRow
+			\centering $\vec{z}_{(l)}^{(t)}$ & Vektor mit den zum Zell Status neu hinzukommenden Werten\newNotationRow				
+			\centering $C$ & Cost-Funktion\newNotationRow
+			\centering $\textrm{Tr}$ & Anzahl der Trainingsbeispiele\newNotationRow
+			\centering $\vec{x}_{(1)}(\textrm{tr}:i)$ & Eingabe des $i$-ten Trainingsbeispiels\newNotationRow
+			\centering $\vec{y}_{(1)}(\textrm{tr}:i)$ & Gewünschte Ausgabe des $i$-ten Trainingsbeispiels\newNotationRow
+			\centering $\eta$ & Lernrate; gibt an, wie groß die Veränderung der Parameter relativ zu deren partiellen Ableitungen sein sollen \newNotationRow
+			\centering $\frac{\partial a}{\partial b}$ & Partielle Ableitung von $a$ in Abhängigkeit von $b$ \newNotationRow
+			\centering $\delta_{(l,n)}$ & Fehler des Neurons $n$ der Schicht $l$\newNotationRow
+			\centering $\vec{\delta}_{(l)}$ & Vektor mit allen Fehlern aller Neurone der Schicht $l$\newNotationRow
+			\centering $\nabla_{\vec{x}_{(L)}}C$ & Gradient; Vektor dessen Elemente die partiellen Ableitungen $\frac{\partial C}{\partial x_{(L,n)}}$ sind; zeigt in die Richtung des steilsten Anstiegs einer Funktion\newNotationRow %Gradient				
+			\centering $\langle A,B \rangle_F$ & Frobenius-Skalarprodukt; Zwei Matrizen gleicher Dimensionen werden elementweise miteinander multipliziert und die Produkte aufsummiert und ergeben ein Skalar\newNotationRow
+			\centering $\odot$ & Hadamard Produkt; Zwei Vektoren gleicher Dimension werden elementweise miteinander multipliziert und ergeben einen Vektor mit der gleichen Dimension\newNotationRow
+			\centering $\textrm{H}(X)$\break$\textrm{W}(X)$\break$\textrm{D}(X)$ & \break \break Gibt die Größe der ersten/zweiten/dritten Dimension einer Matrix $X$ an\newNotationRow
+			\centering $\textrm{len}(\vec{x})$ & Gibt die Anzahl der Elemente des Vektors $\vec{x}$ an \newNotationRow
+			\centering $\textrm{max}(a,b)$ & Funktion, welche zwei Werte $a$ und $b$ vergleicht und den größeren der beiden als Funktionswert annimmt\newNotationRow
+			\hline
+			\caption{Notationstabelle (Quelle: Eigene Tabelle)}
+		\end{longtable}
+	
+	
+	
+		\newpage
+		\vspace*{2cm}			
+		\section*{Anhang B: Beweise für die Formeln von Backpropagation}
+			\addcontentsline{toc}{section}{Anhang B: Beweise für die Formeln von Backpropagation}
+			
+			\subsection*{Backpropagation Formel 1}
+				Die erste Backpropagation Formel dient zur Berechnung eines Vektors mit den Fehlern der Neurone der letzten Schicht.
+
+				\begin{equation}
+					\vec{\delta}_{(L)} = \nabla_{\vec{x}_{(L)}}C \odot f_{(L)}^{\prime} (\vec{z}_{(L)})
+				\end{equation}
+				
+				Diese lässt sich für einzelne Fehler $\delta_{(L,n)}$ umschreiben:
+				
+				\begin{equation}\label{Beweis1Formel2}
+					\delta_{(L,n)} = \frac{\partial C}{\partial x_{(L,n)}} \cdot f_{(L)}^{\prime} (z_{(L,n)})
+				\end{equation}
+				
+				Ursprünglich wird in Kapitel \ref{Backpropagation} der einzelne Fehler $\delta_{(l,n)}$ folgendermaßen definiert:
+				
+				\begin{equation}
+					\delta_{(l,n)} = \frac{\partial C}{\partial z_{(l,n)}}
+				\end{equation}
+				
+				Diese Formel lässt sich umschreiben als:
+				
+				\begin{equation}\label{Beweis1Formel1}
+					\delta_{(l,n)} = \frac{\partial C}{\partial x_{(l,n)}} \cdot \frac{\partial x_{(l,n)}}{\partial z_{(l,n)}}
+				\end{equation}
+				
+				Da Folgendes gilt…
+				
+				\begin{equation}
+					\frac{\partial x_{(l,n)}}{\partial z_{(l,n)}} = \frac{\partial f_{(l)}(z_{(l,n)})}{\partial z_{(l,n)}} = f_{(l)}^{\prime} (z_{(l,n)})
+				\end{equation}			
+				
+				…lässt sich dies in Formel \ref{Beweis1Formel1} einsetzen, woraus Formel \ref{Beweis1Formel2} folgt.
+				
+	
+	
+			\subsection*{Backpropagation Formel 2}
+				Diese Formel dient zur Berechnung der Fehler einer Schicht $l$ in Abhängigkeit der Fehler der nachfolgenden Schicht $l+1$.
+				
+				\begin{equation}
+					\vec{\delta}_{(l)} = ({W_{(l),(l+1)}}^\intercal \cdot \vec{\delta}_{(l+1)}) \odot f_{(l)}^{\prime} (\vec{z}_{(l)})
+				\end{equation}
+			
+				Diese kann für einen einzelnen Fehler $\delta_{(l,n)}$ des Neurons $n$ der Schicht $l$ umgeformt werden, wobei der Vektor $\vec{w}_{(l,n),(l+1)}$ alle Gewichte, welche vom Neuron $n$ der Schicht $l$ zu allen Neuronen der Schicht $l+1$ gehen, beinhaltet.
+				
+				\begin{equation}\label{Beweis2Formel2}
+					\delta_{(l,n)} = \vec{w}_{(l,n),(l+1)} \cdot \vec{\delta}_{(l+1)} \cdot f_{(l)}^{\prime} (z_{(l,n)})
+				\end{equation}
+				
+				Ursprünglich wird in Kapitel \ref{Backpropagation} der einzelne Fehler $\delta_{(l,n)}$ folgendermaßen definiert:
+				
+				\begin{equation}
+					\delta_{(l,n)} = \frac{\partial C}{\partial z_{(l,n)}}
+				\end{equation}
+				
+				Dieser lässt sich umschreiben als:
+				
+				\begin{equation}
+					\delta_{(l,n)} = \frac{\partial C}{\partial \vec{z}_{(l+1)}} \cdot \frac{\partial \vec{z}_{(l+1)}}{\partial z_{(l,n)}}
+				\end{equation}
+				
+				Da $\frac{\partial C}{\partial \vec{z}_{(l+1)}} = \vec{\delta}_{(l+1)}$, lässt sich dies in die vorherige Formel einsetzen:
+				
+				\begin{equation}\label{Beweis2Formel1}
+					\delta_{(l,n)} = \frac{\partial \vec{z}_{(l+1)}}{\partial z_{(l,n)}} \cdot \vec{\delta}_{(l+1)}
+				\end{equation}
+				
+				Aus der Formel von $z_{(l+1,m)}$
+				
+				\begin{equation}
+					\begin{split}
+						z_{(l+1,m)} & = \vec{w}_{(l),(l+1,n)} \cdot \vec{x}_{(l)} + b_{(l+1,n)} \\
+						&= \vec{w}_{(l),(l+1,n)} \cdot f_{(l)}(\vec{z}_{(l)}) + b_{(l+1,n)} \\
+						&= \sum_{i=1}^{j}(w_{(l,i),(l+1,m)} \cdot f_{(l)}(z_{(l,i)})) + b_{(l+1,m)}
+					\end{split}
+				\end{equation}
+				
+				wobei $j$ hier die Anzahl aller Neuronen der Schicht $l$ ist, lässt sich folgende partielle Ableitung bilden:
+				
+				\begin{equation}
+					\frac{\partial z_{(l+1,m)}}{\partial z_{(l,n)}} = w_{(l,n),(l+1,m)} \cdot f_{(l)}^{\prime} (z_{(l,n)})
+				\end{equation}
+				
+				Diese partielle Ableitung lässt sich auch für den Vektor $\vec{z}_{(l+1)}$ bilden:
+				
+				\begin{equation}
+					\frac{\partial \vec{z}_{(l+1)}}{\partial z_{(l,n)}} = \vec{w}_{(l,n),(l+1)} \cdot f_{(l)}^{\prime}(z_{(l,n)})
+				\end{equation}
+				
+				Setzt man diese nun in Formel \ref{Beweis2Formel1} ein, so erhält man Formel \ref{Beweis2Formel2}.
+				
+	
+	
+			\subsection*{Backpropagation Formel 3}
+				Die dritte Backpropagation Formel gibt an, wie sich der Wert der Cost-Funktion in Abhängigkeit des Bias des Neurons $n$ der Schicht $l$ verändert.
+	
+				\begin{equation}\label{Beweis3Formel1}
+					\frac{\partial C}{\partial b_{(l,n)}} = \delta_{(l,n)}
+				\end{equation}
+				
+				Dieser Bruch lässt sich erweitern:
+				
+				\begin{equation}
+					\frac{\partial C}{\partial x_{(l,n)}} \cdot \frac{\partial x_{(l,n)}}{\partial z_{(l,n)}} \cdot \frac{\partial z_{(l,n)}}{\partial b_{(l,n)}} = \delta_{(l,n)}
+				\end{equation}
+				
+				Die beiden Gleichungen $\frac{\partial x_{(l,n)}}{\partial z_{(l,n)}} = \frac{\partial f_{l}(z_{(l,n)})}{\partial z_{(l,n)}} = f_{(l)}^{\prime} (z_{(l,n)})$ und $\frac{\partial z_{(l,n)}}{\partial b_{(l,n)}} = 1$ (da $b$ nur addiert wird, fällt dieser beim Differenzieren weg) lassen sich nun in die vorherige Gleichung einsetzen:
+				
+				\begin{equation}
+					\frac{\partial C}{\partial x_{(l,n)}} \cdot f_{(l)}^{\prime} (z_{(l,n)}) \cdot 1 = \delta_{(l,n)}
+				\end{equation}
+				
+				Da die linke Seite die Definition von $\delta_{(l,n)}$ ist, ist die letzte Gleichung und somit auch die ursprüngliche Formel \ref{Beweis3Formel1} richtig. 
+				
+				
+	
+			\subsection*{Backpropagation Formel 4}
+				Die letzte Backpropagation Formel gibt an, wie sich der Wert der Cost-Funktion in Abhängigkeit des Gewichts ändert. 
+	
+				\begin{equation}
+					\frac{\partial C}{\partial w_{(l-1,m), (l,n)}} = \delta_{(l,n)} \cdot x_{(l-1,m)}
+				\end{equation}
+				
+				Dieser Bruch lässt sich erweitern:
+				
+				\begin{equation}
+					\frac{\partial C}{\partial x_{(l,n)}} \cdot \frac{\partial x_{(l,n)}}{\partial z_{(l,n)}} \cdot \frac{\partial z_{(l,n)}}{\partial w_{(l-1,m), (l,n)}} = \delta_{(l,n)} \cdot x_{(l-1,m)}
+				\end{equation}
+				
+				Die beiden Gleichungen $\frac{\partial x_{(l,n)}}{\partial z_{(l,n)}} = \frac{\partial f_{(l)}(z_{(l,n)})}{\partial z_{(l,n)}} = f_{(l)}^{\prime}(z_{(l,n)})$ und $\frac{\partial z_{(l,n)}}{\partial w_{(l-1,m), (l,n)}} = x_{(l-1,m)}$ (da $w_{(l-1,m), (l,n)}$ jener Faktor ist, mit dem $x_{(l-1,m)}$ zur Berechnung von $z_{(l,n)}$ multipliziert wird, ist $x_{(l-1,m)}$ die partielle Ableitung von $z_{(l,n)}$ in Abhängigkeit von $w_{(l-1,m), (l,n)}$) lassen sich nun in die vorherige Gleichung einsetzen:
+				
+				\begin{equation}
+					\frac{\partial C}{\partial x_{(l,n)}} \cdot f_{(l)}^{\prime}(z_{(l,n)}) \cdot x_{(l-1,m)} = \delta_{(l,n)} \cdot x_{(l-1,m)}
+				\end{equation}
+				
+				Da nun der Term $\frac{\partial C}{\partial x_{(l,n)}} \cdot f_{(l)}^{\prime}(z_{(l,n)})$ die Definition von $\delta_{(l,n)}$ ist, ist die Gleichung und somit auch die ursprüngliche Formel richtig.
+				
+	
+	
+		\newpage
+		\vspace*{2cm}	
+		\section*{Anhang C: In Experimenten verwendete Modelle}
+			\addcontentsline{toc}{section}{Anhang C: In Experimenten verwendete Modelle}
+	
+			\subsection*{C.1 Modelle für Experimente zu FFNNs}
+				\addcontentsline{toc}{subsection}{C.1 Modelle für Experimente zu FFNNs}
+				
+				\begin{footnotesize}
+					\begin{longtable}[l]{|l|l|l|l|}
+						\hline
+						Modell-Nr             & Aufbau                                                                                                                                                                               & Bias                                                             & Weights und Biases                                      \\ \hline
+						\endfirsthead
+						%
+						\endhead
+						%
+						\multirow[t]{2}{*}[\myshiftdown]{1} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (10 Neurone)\\ 3. Output Layer (10 Neurone)\\ \end{tabular}}               & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}7.950\\ \ \end{tabular}   \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}7.960\\ \ \end{tabular}   \\ \hline
+						\multirow[t]{2}{*}[\myshiftdown]{2} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (100 Neurone)\\ 3. Output Layer (10 Neurone)\end{tabular}}                                 & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}79.410\\ \ \end{tabular}  \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}79.510\\ \ \end{tabular}  \\ \hline
+						\multirow[t]{2}{*}[\myshiftdown]{3} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (1000 Neurone)\\ 3. Output Layer (10 Neurone)\end{tabular}}                                & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}794.010\\ \ \end{tabular} \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}795.010\\ \ \end{tabular} \\ \hline
+						\multirow[t]{2}{*}[\myshiftdown]{4} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ \\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (10 Neurone)\\ 3. Hidden Layer (10 Neurone)\\ 4. Output Layer (10 Neurone)\end{tabular}}   & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}8.050\\ \ \end{tabular}   \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}8.070\\ \ \end{tabular}   \\ \hline
+						\multirow[t]{2}{*}[\myshiftdown]{5} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ \\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (100 Neurone)\\ 3. Hidden Layer (10 Neurone)\\ 4. Output Layer (10 Neurone)\end{tabular}}  & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}79.510\\ \ \end{tabular}  \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}79.620\\ \ \end{tabular}  \\ \hline
+						\multirow[t]{2}{*}[\myshiftdown]{6} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ \\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (10 Neurone)\\ 3. Hidden Layer (100 Neurone)\\ 4. Output Layer (10 Neurone)\end{tabular}}  & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}9.850\\ \ \end{tabular}   \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}9.960\\ \ \end{tabular}   \\ \hline
+						\multirow[t]{2}{*}[\myshiftdown]{7} & \multirow[t]{2}{*}{\begin{tabular}[c]{@{}l@{}}\\ \\ 1. Input Layer (784 Neurone)\\ 2. Hidden Layer (100 Neurone)\\ 3. Hidden Layer (100 Neurone)\\ 4. Output Layer (10 Neurone)\end{tabular}} & \begin{tabular}[c]{@{}l@{}}False\\ \ \end{tabular} & \begin{tabular}[c]{@{}l@{}}89.410\\ \ \end{tabular}  \\ \cline{3-4} 
+						&                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}True\\ \ \end{tabular}  & \begin{tabular}[c]{@{}l@{}}89.610\\ \ \end{tabular}  \\ \hline
+						\caption{Die verschiedenen, bei den Experimenten verwendeten Modelle von \\ FFNNs und die Anzahl ihrer Weights und Biases (Quelle: Eigene Tabelle)}
+					\end{longtable}
+				\end{footnotesize}
+	
+			\newpage
+			\subsection*{C.2 Modelle für Experimente zu CNNs}
+				\addcontentsline{toc}{subsection}{C.2 Modelle für Experimente zu CNNs}
+				
+				\begin{footnotesize}
+					\begin{longtable}[l]{|l|p{60mm}|l|l|l|}
+						\hline
+						Modell-Nr              & Aufbau & Kernel               & Stride & Weights und Biases \\ \hline
+						\endfirsthead
+						%
+						\endhead
+						%
+						\multirow[t]{16}{*}[\shiftdown]{1} & \multirow[t]{16}{*}[\shiftdown]{\begin{tabular}[c]{@{}l@{}}\\ \\ \\ \\1. Input Layer (784 Neurone)\\ 2. Convolutional Layer (10 FMs)\\ 3. Pooling Layer (10 FMs)\\ 4. Fully-Connected Layer (10 \\ Neurone)\end{tabular}} & \multirow[t]{4}{*}[\shiftdown]{2,2} & 1,1    & 78.460                         \\ \cline{4-5} 
+						& &                     & 1,2    & 19.660                         \\ \cline{4-5} 
+						& &                     & 2,1    & 19.660                         \\ \cline{4-5} 
+						& &                     & 2,2    & 4.960                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{2,3} & 1,1    & 78.480                         \\ \cline{4-5} 
+						& &                     & 1,2    & 19.680                         \\ \cline{4-5} 
+						& &                     & 2,1    & 19.680                         \\ \cline{4-5} 
+						& &                     & 2,2    & 4.980                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,2} & 1,1    & 78.480                         \\ \cline{4-5} 
+						& &                     & 1,2    & 19.680                         \\ \cline{4-5} 
+						& &                     & 2,1    & 19.680                         \\ \cline{4-5} 
+						& &                     & 2,2    & 4.980                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,3} & 1,1    & 78.510                         \\ \cline{4-5} 
+						& &                     & 1,2    & 19.710                         \\ \cline{4-5} 
+						& &                     & 2,1    & 19.710                        \\ \cline{4-5} 
+						& &                     & 2,2    & 5.010                        \\ \hline
+						\multirow[t]{16}{*}[\shiftdown]{2} & \multirow[t]{16}{*}[\shiftdown]{\begin{tabular}[c]{@{}l@{}}\\ \\ \\ \\ \\1. Input Layer (784 Neurone)\\ 2. Convolutional Layer (10 FMs)\\ 3. Convolutional Layer (10 FMs)\\4. Pooling Layer (10 FMs)\\ 5. Fully-Connected Layer (10 \\ Neurone)\end{tabular}}& \multirow[t]{4}{*}[\shiftdown]{2,2} & 1,1    & 78.870                         \\ \cline{4-5} 
+						& &                     & 1,2    & 11.670                         \\ \cline{4-5} 
+						& &                     & 2,1    & 11.670                         \\ \cline{4-5} 
+						& &                     & 2,2    & 2.070                        \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{2,3} & 1,1    & 79.090                         \\ \cline{4-5} 
+						& &                     & 1,2    & 11.890                         \\ \cline{4-5} 
+						& &                     & 2,1    & 11.890                        \\ \cline{4-5} 
+						& &                     & 2,2    & 2.290                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,2} & 1,1    & 79.090                         \\ \cline{4-5} 
+						& &                     & 1,2    & 11.890                         \\ \cline{4-5} 
+						& &                     & 2,1    & 11.890                         \\ \cline{4-5} 
+						& &                     & 2,2    & 2.290                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,3} & 1,1    & 79.420                         \\ \cline{4-5} 
+						& &                     & 1,2    & 12.220                         \\ \cline{4-5} 
+						& &                     & 2,1    & 12.220                         \\ \cline{4-5} 
+						& &                     & 2,2    & 2.620                         \\ \hline
+						\pagebreak
+						\hline
+						\multirow[t]{16}{*}[\shiftdown]{3} & \multirow[t]{16}{*}[\shiftdown]{\begin{tabular}[c]{@{}l@{}}\\ \\ \\ \\ \\ \\1. Input Layer (784 Neurone)\\ 2. Convolutional Layer (10 FMs)\\ 3. Pooling Layer (10 FMs)\\4. Convolutional Layer (10 FMs)\\ 5. Pooling Layer (10 FMs)\\ 6. Fully-Connected Layer (10 \\ Neurone)\end{tabular}}& \multirow[t]{4}{*}[\shiftdown]{2,2} & 1,1    & 78.870                         \\* \cline{4-5} 
+						& &                     & 1,2    & 6.070                         \\* \cline{4-5} 
+						& &                     & 2,1    & 6.070                         \\* \cline{4-5} 
+						& &                     & 2,2    & 870                         \\* \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{2,3} & 1,1    & 79.090                         \\* \cline{4-5} 
+						& &                     & 1,2    & 6.290                         \\ \cline{4-5} 
+						& &                     & 2,1    & 6.290                         \\ \cline{4-5} 
+						& &                     & 2,2    & 1.090                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,2} & 1,1    & 79.090                         \\ \cline{4-5} 
+						& &                     & 1,2    & 6.290                         \\ \cline{4-5} 
+						& &                     & 2,1    & 6.290                         \\ \cline{4-5} 
+						& &                     & 2,2    & 1.090                         \\ \cline{3-5} 
+						%\pagebreak
+						& & \multirow[t]{4}{*}[\shiftdown]{3,3} & 1,1    & 79.420                         \\ \cline{4-5} 
+						& &                     & 1,2    & 6.620                         \\ \cline{4-5} 
+						& &                     & 2,1    & 6.620                         \\ \cline{4-5} 
+						& &                     & 2,2    & 1.420                         \\ \hline
+						\multirow[t]{16}{*}[\shiftdown]{4} & \multirow[t]{16}{*}[\shiftdown]{\begin{tabular}[c]{@{}l@{}}\\ \\ \\ \\ \\ \\ \\ \\1. Input Layer (784 Neurone)\\ 2. Convolutional Layer (10 FMs)\\ 3. Convolutional Layer (10 FMs)\\4. Pooling Layer (10 FMs)\\ 5. Convolutional Layer (10 FMs)\\ 6. Convolutional Layer (10 FMs)\\7. Pooling Layer (10 FMs)\\ 8. Fully-Connected Layer (10 \\ Neurone)\end{tabular}}& \multirow[t]{4}{*}[\shiftdown]{2,2} & 1,1    & 79.690                         \\ \cline{4-5} 
+						& &                     & 1,2    & 4.090                         \\ \cline{4-5} 
+						& &                     & 2,1    & 4.090                         \\ \cline{4-5} 
+						& &                     & 2,2    & 1.390                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{2,3} & 1,1    & 80.310                         \\ \cline{4-5} 
+						& &                     & 1,2    & 4.710                         \\ \cline{4-5} 
+						& &                     & 2,1    & 4.710                         \\ \cline{4-5} 
+						& &                     & 2,2    & 2.010                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,2} & 1,1    & 80.310                         \\ \cline{4-5} 
+						& &                     & 1,2    & 4.710                         \\ \cline{4-5} 
+						& &                     & 2,1    & 4.710                         \\ \cline{4-5} 
+						& &                     & 2,2    & 2.010                         \\ \cline{3-5} 
+						& & \multirow[t]{4}{*}[\shiftdown]{3,3} & 1,1    & 81.240                         \\ \cline{4-5} 
+						& &                     & 1,2    & 5.640                         \\ \cline{4-5} 
+						& &                     & 2,1    & 5.640                         \\ \cline{4-5} 
+						& &                     & 2,2    & 2.940                         \\ \hline
+						\caption{Die verschiedenen, bei den Experimenten verwendeten Modelle von CNNs und die Anzahl ihrer Weights und Biases (Quelle: Eigene Tabelle)}
+					\end{longtable}
+				\end{footnotesize}
+	
+			\newpage
+			\subsection*{C.3 Modelle für Experimente zu LSTMs}
+				\addcontentsline{toc}{subsection}{C.2 Modelle für Experimente zu LSTMs}
+				
+				\begin{footnotesize}
+					\begin{longtable}[l]{|l|l|l|}
+						\hline
+						Modell-Nr & Aufbau                                                                                                                                                              & Weights und Biases \\ \hline
+						\endfirsthead
+						%
+						\endhead
+						%
+						1      & \begin{tabular}[t]{@{}l@{}}1. Input Layer (784 Neurone)\\ 2. LSTM Layer ($\textrm{len}(\vec{x}_{(l)}^{(t)}) = 10$)\end{tabular}                                                                    & 1.670              \\ \hline
+						2      & \begin{tabular}[t]{@{}l@{}}1. Input Layer (784 Neurone)\\ 2. LSTM Layer ($\textrm{len}(\vec{x}_{(l)}^{(t)}) = 10$)\\ 3. LSTM Layer ($\textrm{len}(\vec{x}_{(l)}^{(t)}) = 10$)\end{tabular}                                        & 2.510              \\ \hline
+						3      & \begin{tabular}[t]{@{}l@{}}1. Input Layer (784 Neurone)\\ 2. Fully-Connected Layer (10\\ Neurone)\\ 3. LSTM Layer ($\textrm{len}(\vec{x}_{(l)}^{(t)}) = 10$)\end{tabular}                          & 1.240              \\ \hline
+						4      & \begin{tabular}[t]{@{}l@{}}1. Input Layer (784 Neurone)\\ 2. Fully-Connected Layer (10\\ Neurone)\\ 3. LSTM Layer ($\textrm{len}(\vec{x}_{(l)}^{(t)}) = 10$)\\ 4. LSTM Layer ($\textrm{len}(\vec{x}_{(l)}^{(t)}) = 10$)\end{tabular} & 2.080              \\ \hline
+						\caption{Die verschiedenen, bei den Experimenten verwendeten Modelle von LSTMs und die Anzahl ihrer Weights und Biases (Quelle: Eigene Tabelle)}
+					\end{longtable}
+				\end{footnotesize}	
+		
+	
+
+	% Anhang D: Programmcode
+	\newpage
+	\vspace*{2cm}
+	\section*{Anhang D: Programmcode}
+		\addcontentsline{toc}{section}{Anhang D: Programmcode}
+	
+		\subsection*{D.1 Programmcode für FFNNs}
+			\addcontentsline{toc}{subsection}{D.1 Programmcode für FFNNs}
+			{
+				\renewcommand*{\ttdefault}{txtt}
+				\lstinputlisting{codeListings/ffnn_for_tex.py}
+			}
+			
+		\newpage
+		\subsection*{D.2 Programmcode für CNNs}
+			\addcontentsline{toc}{subsection}{D.2 Programmcode für CNNs}		
+			{
+				\renewcommand*{\ttdefault}{txtt}
+				\lstinputlisting{codeListings/cnn_for_tex.py}
+			}
+	
+		\newpage
+		\subsection*{D.3 Programmcode für LSTMs}
+			\addcontentsline{toc}{subsection}{D.3 Programmcode für LSTMs}
+			{
+				\renewcommand*{\ttdefault}{txtt}
+				\lstinputlisting{codeListings/lstm_for_tex.py}
+			}
 	
 	
 	

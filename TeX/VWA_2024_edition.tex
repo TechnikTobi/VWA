@@ -805,7 +805,6 @@
 		
 			\subsection{Convolutional Layer}
 				Besonders am Convolutional Layer ist, dass bei diesem die Neurone nicht mit allen Neuronen der vorherigen Schicht verbunden sind. Stattdessen ist jedes Neuron mit Neuronen eines Ausschnitts, welcher eine bestimmte Größe hat, der vorherigen Schicht verbunden, dem Local Receptive Field $R_{(l,d,n)}$, kurz LRF (Siehe Abb. \ref{LRF}). 
-				
 				\begin{wrapfigure}[13]{r}{0cm}
 					%Vorlage: Nielsen/Kapitel 6/Introducing convolutional networks
 					\begin{tikzpicture}[scale=0.5, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]
@@ -1766,7 +1765,7 @@
 				\end{figure}
 				
 				Als Größe für die Mini-Batches hat sich bei den FFNNs und LSTMs der Wert 8 durchgesetzt, bei den CNNs verwendete das Netz mit der höchsten Trefferquote eine Mini-Batch Größe von 32, wobei es zum besten CNN mit der Mini-Batch Größe 8 weniger als einen halben Prozentpunkt Unterschied gab.
-
+				
 				\begin{figure}[h] 
 					%Vorlage: Practitioner S. 65-70
 					\centering
@@ -3114,10 +3113,9 @@
 	\vspace*{2cm}	
 	\section*{Anhang E: Ergebnisse der Experimente}
 		\addcontentsline{toc}{section}{Anhang E: Ergebnisse der Experimente}
-	
+		
 		\def\myrot#1{\rotatebox{90}{\csname csvcol#1\endcsname\ }}
-	
-	
+		
 		\subsection*{E.1 Tabelle der Ergebnisse der Experimente mit FFNNs}
 			Die Spalte mit der Anzahl der Epochs (Wert: 3) wurde weggelassen, da ihr Wert für alle Konfigurationen konstant ist.
 			\addcontentsline{toc}{subsection}{E.1 Tabelle der Ergebnisse der Experimente mit FFNNs}

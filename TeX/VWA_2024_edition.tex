@@ -1,0 +1,300 @@
+\documentclass[a4paper,12pt,ngerman,oneside]{scrreprt}
+
+
+
+\usepackage[ngerman]{babel} 						% Deutsche Einstellungen
+\usepackage[utf8]{inputenc} 						% UTF8
+\usepackage[T1]{fontenc}							% Schriftart für den Titel
+\usepackage{csquotes}								% Für Anführungszeichen
+\usepackage[onehalfspacing]{setspace}				% 1,5 Zeilenabstand
+\usepackage{geometry}								% Für die Bestimmung der Größe der Seiten
+\usepackage[
+	backend=bibtex, 
+	citestyle=authoryear, 
+	date=short
+]{biblatex}	
+
+\usepackage{calc}									% Für \heightof
+										% Fürs Literaturverzeichnis
+%\usepackage{graphicx}								% Fürs Einbinden von Grafiken
+%\usepackage{wrapfig}								% Fürs Verschieben von Grafiken
+%\usepackage{amsmath}								% Für Vektoren
+%\usepackage{abstract}								% Für das Abstract
+%\usepackage{url}									% Für URLs im Literaturverzeichnis
+%\usepackage{etoolbox}	
+%\usepackage{chngcntr}	
+%\usepackage[nopostdot, toc]{glossaries}				% Fürs Glossar
+%\usepackage{acronym}								% Fürs Abkürzungsverzeichnis
+%\usepackage{listings}								% Fürs Formatieren von Code Teil 1
+%\usepackage{color}									% Fürs Formatieren von Code Teil 2
+%\usepackage{lstlinebgrd}							% Fürs Formatieren von Code Teil 3
+%\usepackage{pgfplots}								% Für Graphen
+%\usepgfplotslibrary{statistics}
+%\usepackage{subcaption}								% Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
+%\usepackage[
+%	format=plain,
+%	indention=0cm,
+%	labelfont=bf,
+%	figurename=Abb.
+%]{caption}											% Formatierung von Bildunterschriften
+%\usepackage{lineno}									% Für Zeilennummerierung für Korrektur
+%\usepackage[hang,flushmargin]{footmisc} 			% Für Indention in Fußnoten
+
+
+
+%\usetikzlibrary{datavisualization}					% Ebenfalls für Graphen
+%\usetikzlibrary{decorations.markings}				% Pfeilspitzen in der Mitte
+
+
+\geometry{a4paper,left=35mm,right=25mm,top=10mm} 	% Format der Datei + Abstand zu den Rändern
+
+\addtokomafont{chapter}{\rmfamily} 					% Schriftart für Kapitelüberschriften
+\addtokomafont{chapterentry}{\rmfamily}				% Schriftart für Kapiteleinstiege
+\addtokomafont{section}{\rmfamily}					% Schriftart für Unterkapitelüberschriften
+\addtokomafont{subsection}{\rmfamily}				% Schriftart für Unterunterkapitelüberschriften
+\addtokomafont{subsubsection}{\rmfamily} 			% Schriftart für Unterunterunterkapitelüberschriften
+\addtokomafont{descriptionlabel}{\rmfamily} 		% Schriftart für Glossar
+
+\setlength{\parindent}{0pt}							% Nach Absatz nicht einrücken
+
+% Fürs Zitieren
+\newcommand{\practitioner}[1]{vgl. Gibson \& Patterson, 2017, S. {#1}}
+\newcommand{\fundamentals}[1]{vgl. Buduma, 2017, S. {#1}}
+\newcommand{\cnnKlein}[1]{vgl. Nash \& O'Shea, 2015, S. {#1}}
+\newcommand{\ebd}[1]{vgl. ebd., S. {#1}}
+
+
+
+
+\begin{document}
+	
+	\newlength{\shiftdown}
+	\setlength{\shiftdown}{\heightof{f}-\heightof{A}}
+	\newlength{\myshiftdown}
+	\setlength{\myshiftdown}{\heightof{f}-\heightof{A}+\heightof{A}}
+	
+	
+	% Titelseite
+	\begin{titlepage}\label{Titleseite}
+		\vspace*{80mm}\Huge\centering\textbf{Künstliche Neuronale Netzwerke \newline und ihr Verhalten beim MNIST-Datensatz\break}
+		\vspace{0mm}\hrulefill
+		\setstretch{1}\vspace{7mm}\Large{\break Verfasser: Tobias Prisching, 8C 2018/19 \break Betreuer: Mag. Christoph Hödl}
+		\vspace{15mm}\Large{\break BRG/BORG St. Pölten \break Schulring 16, 3100 St. Pölten}
+		\vspace{70mm}\Large{\break Abgabe: Februar 2019}
+	\end{titlepage}
+
+
+
+	% Abstract
+	\renewcommand{\abstractname}{Abstract}	
+	\chapter*{Abstract}\label{Abstract}
+		Die vorliegende Arbeit aus dem Bereich der Informatik beschäftigt sich mit Künstlichen Neuronalen Netzwerken, genauer den Feedforward Neural Networks, Convolutional Neural Networks und Long Short-Term Memory Neural Networks, und wie sich diese beim MNIST-Datensatz, einem bekannten Vergleichstest bestehend aus insgesamt 70.000 Ziffern, verhalten. Dabei werden in den ersten Kapiteln die Grundlagen für Künstliche Neuronale Netzwerke, die drei in der Arbeit behandelten Typen und der Lernprozess anhand des Feedforward Neural Networks erklärt. Im darauf folgenden Kapitel werden die Programmier-Experimente, welche mit der Sprache Python und der Library Keras erstellt wurden, mit den verschiedenen Netztypen und dem MNIST-Datensatz beschrieben und ihre Ergebnisse ausgewertet. Dabei stellt sich heraus, dass jeder Netztypus brauchbare Netze hervorgebracht hat. Des Weiteren werden die Zusammenhänge zwischen der Trefferquote eines KNN und den verschiedenen sogenannten Hyperparametern festgestellt, welche sich auch teilweise untereinander beeinflussen. 
+		\thispagestyle{empty}
+	
+	
+	
+	% Vorwort
+	\chapter*{Vorwort}\label{Vorwort}
+		\addcontentsline{toc}{chapter}{Vorwort}
+		Im Verlauf der letzten Monate wurde ich immer wieder von MitschülerInnen, Freund-Innen, Bekannten und Verwandten nach meinem VWA Thema gefragt. Prompt kam jedes Mal die auswendig gelernte Antwort zurück. Bis heute konnte noch keiner auf Anhieb etwas damit anfangen oder sich vorstellen, worum es dabei gehen könnte. Mit der Antwort „Ich versuche einem Computer beizubringen, einzelne Ziffern erkennen zu können“ konnten die meisten schon mehr anfangen, beließen es allerdings dabei. 
+		\\ \
+		\\ \
+		Ich möchte mich im Folgenden bei allen Personen bedanken, ohne die diese Arbeit in ihrer jetzigen Form nie möglich gewesen wäre. Zuerst möchte ich mich bei meinem Betreuer Mag. Christoph Hödl für seine Unterstützung, Ratschläge und konstruktive Kritik bedanken. Auch möchte ich mich bei Herrn Mag. Scheibenpflug für seinen hilfreichen Unterricht im Wahlpflichtfach VWA und Frau Mag.$^{\textrm{a}}$ Gertrud Aumayr für die Beantwortung von Fragen bezüglich mathematischer Ausdrücke bedanken. Des Weiteren möchte ich mich bei meinen Eltern bedanken, welche mich bei meiner Arbeit unterstützt und diese auf mathematische, logische und Rechtschreib- sowie Grammatikfehler gegengelesen haben. 
+		\\ \
+		\\ \
+		Noch lange werden mir die langen Sommernächte, welche bis 3 Uhr morgens mit der Arbeit an der VWA gefüllt waren, sowie das grausame Gefühl, ein Stück Information zu wissen, von dem man weiß, dass es sich irgendwo im Papierberg vor einem befindet, man es jedoch nicht finden kann, in Erinnerung bleiben. 
+		\\ \ 
+		\\ \
+		St. Pölten, am 20. 01. 2019 \\ \
+		Tobias Prisching
+		\thispagestyle{empty}
+		
+		
+	
+	% Inhaltsverzeichnis
+	\begingroup
+		\renewcommand*{\chapterpagestyle}{empty}
+		\pagestyle{empty}
+		\tableofcontents
+		\clearpage
+	\endgroup
+	
+	
+	
+	% Einleitung
+	\chapter{Einleitung}\label{Einleitung}
+		Das Interesse in das Gebiet der Künstlichen Neuronalen Netzwerke ist in den vergangen Jahren stark gestiegen. Entwicklungen, die auf dieser Technologie beruhen, von automatischer Sprach- und Bilderkennung bis hin zum autonomen Fahren, sind bereits teilweise Realität. Und obwohl das Gebiet der Künstlichen Neuronalen Netzwerke schon über 50 Jahre alt ist, waren diese Entwicklungen vor noch zwei Jahrzehnten unvorstellbar, da viele der notwendigen Erkenntnisse erst um die Jahrtausendwende herum gewonnen wurden und die notwendige Rechenkapazität erst seit kurzer Zeit verfügbar ist.\footnote{\practitioner{1}} 
+		\\ \
+		\\ \
+		Diese Arbeit beschäftigt sich mit den Grundlagen der Künstlichen Neuronalen Netzwerke, wie diese aufgebaut sind und funktionieren. Die Kapitel 3, 4 und 5 beschäftigen sich mit drei Arten von Netzwerken und im sechsten Kapitel wird beschrieben, wie diese lernen. Dieser Teil der Arbeit beruht rein auf Literatur, welche sowohl in gedruckter Form als auch digital im Internet zu finden ist. Da die behandelte Thematik erst seit relativ kurzer Zeit relevant und interessant ist, waren die meisten Werke erst seit nur wenige Monaten zur Zeit des Verfassens dieser Arbeit alt. In Kapitel 7 wird untersucht, wie sich verschiedene Netztypen beim MNIST-Datensatz, einem Vergleichstest für Künstliche Neuronale Netzwerke, verhalten und wie ein Netz beschaffen sein muss, um diese Aufgabe weitgehendst zu bewältigen. Um diese Fragen zu beantworten, werden zusätzlich zur Literatur auch Experimente in Form von Programmiertätigkeiten ausgewertet. 
+		
+		
+	
+	
+	\chapter{Bausteine und Grundlegendes zu Künstlichen Neuronalen Netzwerken}\label{BausteineGrundlegendes}
+	
+		\section{Grundlegendes zur Verwendung von Fachbegriffen und mathematischen \mbox{Ausdrücken in dieser Arbeit}}\label{Fachbegriffe&Mathe}
+			Damit man über die verschiedenen Konzepte in dieser Arbeit schreiben kann, benötigt man Fachbegriffe, Terme und Gleichungen. Wie in anderen wissenschaftlichen Gebieten auch gibt es im Bereich der Künstlichen Neuronalen Netze keine standardisierte Schreibweise. 
+		
+		\subsection{Fachbegriffe}\label{Fachbegriffe}
+			Da der Großteil der verwendeten Literatur in englischer Sprache verfasst ist, liegen auch sämtliche Fachbegriffe nur in dieser vor. Um mögliche Übersetzungsfehler und Differenzen zu anderen deutschen Werken zu verhindern, werden in dieser Arbeit hauptsächlich die englischen Fachbegriffe eingedeutscht. Das hat die Vorteile, dass einerseits der/die LeserIn sich in weiterführender Literatur besser zurecht findet, und andererseits, dass die Herleitungen der mathematischen Variablenbezeichnungen offensichtlich sind. Falls jedoch auch andere, deutsche Bezeichnungen vorkommen, werden diese bei Erstnennung des Begriffes ebenfalls erwähnt.
+		
+		\subsection{Mathematische Ausdrücke}\label{Mathe}
+			Ebenfalls nicht einheitlich sind mathematische Ausdrücke in der Literatur. Häufig werden unterschiedliche Buchstaben, Nummerierungen und Indexierungen für die Variablen verwendet. In dieser Arbeit wird versucht, eine eigene Schreibweise zu verwenden, welche möglichst einfach zu verstehen ist, jedoch nicht die eleganteste oder kürzeste Ausdrucksweise ist. Sämtliche Parameter sind im \mbox{Anhang A} in einer Notationstabelle aufgelistet. 
+		
+		\section{Definition eines Künstlichen Neuronalen Netzes}\label{DefKNN}
+			Um den Inhalt in den folgenden Kapiteln zu verstehen, ist eine Definition von Künstlichen Neuronalen Netzwerken, kurz KNN oder auch nur Neuronales Netz(werk), notwendig, da die verschiedenen Netztypen auf dieser Definition aufbauen. Ein KNN ist ein rechnerisches Modell, welches ein Netz bestehend aus miteinander verbundenen Knoten, auch künstliche Neurone genannt, dessen Aufbau lose an dem von biologischen Gehirnen orientiert ist, modelliert. Diese Neuronen können miteinander Signale über Verbindungen, den Weights (auch Gewichte genannt), welche die Strukturen aus den Informationen lernen, austauschen und sind in verschiedene Schichten, auch Layer genannt, eingeteilt. Die Weights werden in einem Lernprozess, auch als Training bezeichnet, so angepasst, dass das Netz in den ihm eingespeisten Informationen Strukturen erkennen kann.\footnote{vgl. Gurney, 1997, S. 1} Aus mathematischer Sicht lassen sich KNNs als komplexe Funktionen mit einigen wenigen bis zu Milliarden Parametern aufschreiben. Die einzige Grenze für die Komplexität und Größe dieser Funktion ist die verfügbare Rechenkapazität. 
+			
+		\section{Das künstliche Neuron}\label{DefKN}
+			Das künstliche Neuron ist der Grundbaustein für alle in dieser Arbeit behandelten Arten von KNNs. Ein Neuron $n$ der Schicht $l$ lässt sich am einfachsten als eine mathematische Funktion beschreiben. Es nimmt die Ausgabewerte $x_{(l-1,1)}$, $x_{(l-1,2)}$, …, $x_{(l-1,m)}$ der Neurone der vorherigen Schicht $l-1$, multipliziert diese Werte mit Weights $w_{(l-1,1),(l,n)}$, $w_{(l-1,2),(l,n)}$, …, $w_{(l-1,m),(l,n)}$, summiert diese auf und addiert einen weiteren Parameter, genannt Bias, $b_{(l,n)}$. Diese Summe wird einer Aktivierungsfunktion $f_{(l)}$ übergeben, deren Wert der endgültige Ausgabewert dieses Neurons ist und an Neurone der Schicht $l+1$ weitergegeben werden kann. Mathematisch lässt sich dies in Formel \ref{FormelNeuron} ausdrücken.\footnote{vgl. Buduma, 2017, S. 8}
+	
+			\begin{equation}\label{FormelNeuron}
+				x_{(l,n)} = f_{(l)} \left(\sum_{i=1}^{m}(w_{(l-1,i),(l,n)} \cdot x_{(l-1,i)}) + b_{(l,n)} \right) = f_{(l)}(z_{(l,n)})
+			\end{equation}
+			
+			Diese Formel lässt sich auch so aufschreiben, dass man gleich einen Vektor mit allen Ausgabewerten aller Neurone der Schicht $l$ erhält (Siehe Formel \ref{FormelNeuronVektor}).\footnote{vgl. ebd., S. 8} Dabei ist $W_{(l-1),(l)}$ eine Matrix der Form $n\times m$, wobei $m$ die Anzahl der Neurone der Schicht $l-1$ und $n$ die Anzahl der Neurone in Schicht $l$ ist.\footnote{vgl. Rashid, 2017, S. 45-49}
+			
+			\begin{equation}\label{FormelNeuronVektor}
+				\vec{x}_{(l)} = f_{(l)}(W_{(l-1),(l)} \cdot \vec{x}_{(l-1)} + \vec{b}_{(l)})  = f_{(l)}(\vec{z}_{(l)})
+			\end{equation}
+			
+			Das Gewicht einer Eingabe gibt an, wie viel Aussagekraft bzw. wie wichtig der Wert eines Neurons ist. Der Bias eines Neurons lässt sich mit einem Schwellenwert vergleichen, welchen die gewichteten Eingaben überwinden müssen, damit dass Neuron aktiviert wird.\footnote{vgl. Nielsen, 2015, Kapitel 1/Perceptrons} Allerdings fehlt der Bias bei Netzen mancher Quellen, so z. B. bei Rashid.
+			\ \\
+			\ \\
+			Neurone wie beim menschlichen Gehirn haben keine lineare Funktion für ihren Ausgabewert. Erst wenn ein bestimmter Schwellenwert erreicht ist, geben sie ein Ausgabesignal aus. Dieses Konzept der Nichtlinearität wird bei künstlichen Neuronen übernommen.\footnote{vgl. Rashid, 2017, S. 32} Diese Nichtlinearität ist wichtig, da diese es einem KNN erst ermöglicht, komplexere Aufgaben zu lösen.\footnote{vgl. Buduma, 2017, S. 13} Erreicht wird sie durch eine Aktivierungsfunktion, welche die Aktivierung eines Neurons steuert. Ein Neuron gilt dann als aktiviert, wenn sein Ausgabewert ungleich 0 ist.\footnote{vgl. Gibson \& Patterson, 2017, S. 53} Es gibt verschiedene Aktivierungsfunktionen, welche je nach Aufgabe des KNNs bzw. des Layers im KNN eingesetzt werden.\footnote{vgl. ebd., S. 255f} Innerhalb eines KNNs können die Layer unterschiedliche Aktivierungsfunktionen verwenden.\footnote{vgl. ebd., S. 50} Die Graphen von vier Funktionen sind in den Abbildungen \ref{SigmoidGraph} - \ref{LeakyReLUGraph} dargestellt, die Sigmoid-Funktion, die TanH-Funktion, die Rectified Linear-Funktion und die Leaky Rectified Linear-Funktion.\footnote{vgl. Buduma, 2017, S. 13ff} Die Sigmoid-Funktion ist in der Literatur eine der am häufigsten anzutreffenden Aktivierungsfunktionen, jedoch werden aufgrund eines Nachteils dieser Aktivierungsfunktion, dem Vanishing Gradient (Siehe \ref{VanishingGradient}), andere Funktionen verwendet. Auch die TanH-Funktion besitzt diesen Nachteil, die Rectified Linear-Funktion hat das Problem des "`Dying ReLU"' (Siehe \ref{DyingReLU}), weshalb die Leaky Rectified Linear-Funktion oft bevorzugt wird\footnote{Es gibt genaue, mathematische Begründungen, warum eine Aktivierungsfunktion besser ist als die andere, welche allerdings nicht zielführend zur Beantwortung der Forschungsfragen sind.}.\footnote{vgl. Gibson \& Patterson, 2017, S. 254}
+		
+			\newpage
+%		
+%			\begin{figure}[htb] % Vorlage: Practitioner S. 65-70
+%				\centering
+%				\begin{minipage}[t]{.48\linewidth}
+%					\centering
+%					\begin{tikzpicture}[scale=0.79]
+%						\begin{axis}[
+%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0},
+%							x=10,
+%							y=100,
+%							ymin=-1.05, 	ymax=1.05, 
+%							xmin=-10.5, 	xmax=10.5, 
+%							axis lines=center, 
+%							hide obscured x ticks=false, 
+%							xlabel=$x$,
+%							ylabel={$f(x) = \sigma(x) = \frac{1}{1 + \mathrm{e}^{-x}}$},
+%							every inner x axis line/.append style={-},
+%							every inner y axis line/.append style={-},
+%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+%							] 
+%							\addplot[domain=-10:10, samples=100, color=black, very thick]{1 / (1+exp(-x))}; 
+%						\end{axis};
+%					\end{tikzpicture}	
+%					\caption{Sigmoid-Funktion \\ (Quelle: E. D.)}\label{SigmoidGraph}
+%				\end{minipage}
+%				\hfill
+%				\begin{minipage}[t]{.48\linewidth}
+%					\centering
+%					\begin{tikzpicture}[scale=0.79]
+%						\begin{axis}[
+%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+%							x=10,
+%							y=100,
+%							ymin=-1.05, 	ymax=1.05, 
+%							xmin=-10.5, 	xmax=10.5, 
+%							axis lines=center, 
+%							hide obscured x ticks=false, 
+%							xlabel=$x$,
+%							ylabel={$f(x) = \textrm{tanh}(x) = \frac{\mathrm{e}^{x} - \mathrm{e}^{-x}}{\mathrm{e}^{x} + \mathrm{e}^{-x}}$},
+%							every inner x axis line/.append style={-},
+%							every inner y axis line/.append style={-},
+%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+%							] 
+%							\addplot[domain=-10:10, samples=100, color=black, very thick]{tanh(x)}; 
+%						\end{axis}
+%					\end{tikzpicture}	
+%					\caption{TanH-Funktion (Quelle: E. D.)}\label{TanHGraph}
+%				\end{minipage}
+%				\hfill
+%				\vspace*{0.7cm}
+%				\begin{minipage}[t]{.48\linewidth}
+%					\centering
+%					\begin{tikzpicture}[scale=0.79]
+%						\begin{axis}[
+%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+%							x=10,
+%							y=100, 
+%							ymin=-1.05, 	ymax=1.05, 
+%							xmin=-10.5, 	xmax=10.5, 
+%							axis lines=center, 
+%							hide obscured x ticks=false, 
+%							xlabel=$x$,
+%							ylabel={$f(x) = $ max$(0,x)$},
+%							every inner x axis line/.append style={-},
+%							every inner y axis line/.append style={-},
+%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+%							] 
+%							\addplot[domain=-10:10, samples=1000, color=black, very thick]{max(0,x)}; 
+%						\end{axis}
+%					\end{tikzpicture}	
+%					\caption{Rectified Linear-Funktion \\ (Quelle: E. D.)}\label{ReLUGraph}
+%				\end{minipage}
+%				\hfill
+%				\begin{minipage}[t]{.48\linewidth}
+%					\centering
+%					\begin{tikzpicture}[scale=0.79]
+%						\begin{axis}[
+%							xtick={-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 
+%							xticklabels={-10,,,,,-5,,,,,0,,,,,5,,,,,10},
+%							ytick={-1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}, 
+%							yticklabels={-1.0,,,,,-0.5,,,,,0,,,,,0.5,,,,,1.0}, 
+%							x=10,
+%							y=100, 
+%							ymin=-1.05, 	ymax=1.05, 
+%							xmin=-10.5, 	xmax=10.5, 
+%							axis lines=center, 
+%							hide obscured x ticks=false, 
+%							xlabel=$x$,
+%							ylabel={$f(x) = \left\{\begin{array}{rcl}
+%									k \cdot x &x\leq0\\
+%									x&x>0
+%								\end{array}\right.$},
+%							every inner x axis line/.append style={-},
+%							every inner y axis line/.append style={-},
+%							every axis x label/.style={at={(ticklabel* cs:0.99)},anchor=west,},
+%							every axis y label/.style={at={(ticklabel* cs:0.99)},anchor=south,},
+%							] 
+%							\addplot[domain=-10:10, samples=1000, color=black, very thick]{
+%								(x <= 0) * (0.01*x)   +
+%								(x > 0) * (x)}; 
+%						\end{axis}
+%					\end{tikzpicture}	
+%					\caption{Leaky Rectified Linear-Funktion, $k=0,01$ (Quelle: E. D.)}\label{LeakyReLUGraph}
+%				\end{minipage}
+%			\end{figure}
+	
+	
+	
+	
+	% Selbstständigkeitserklärung
+	\chapter*{Selbstständigkeitserklärung}
+		Name: Tobias Prisching\newline
+	
+		Ich erkläre, dass ich diese vorwissenschaftliche Arbeit eigenständig angefertigt und nur die im Literaturverzeichnis angeführten Quellen und Hilfsmittel benutzt habe.
+	
+		\vspace{3cm}
+		
+		\parbox{6cm}{\centering\hrule
+		\strut \centering\footnotesize Ort, Datum} \hfill\parbox{6cm}{\hrule
+		\strut \centering\footnotesize Unterschrift}
+	
+\end{document}

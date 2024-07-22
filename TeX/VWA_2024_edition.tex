@@ -3116,6 +3116,7 @@
 		\def\myrot#1{\rotatebox{90}{\csname csvcol#1\endcsname\ }}
 		
 		\subsection*{E.1 Tabelle der Ergebnisse der Experimente mit FFNNs}
+			\enlargethispage{1\baselineskip} % Nicht Teil der originalen VWA. Allerdings scheinen neue LaTeX Versionen ansonsten hier die letzte Zeile auf dieser Seite abzuschneiden und auf der nächsten einzufügen. Durch das einmalige erlauben des Überschreitens des bottom margins wird die alte Formatierung wiederhergestellt. 
 			Die Spalte mit der Anzahl der Epochs (Wert: 3) wurde weggelassen, da ihr Wert für alle Konfigurationen konstant ist.
 			\addcontentsline{toc}{subsection}{E.1 Tabelle der Ergebnisse der Experimente mit FFNNs}
 			\csvreader[before reading=\footnotesize, /csv/separator=semicolon,tabular=|r|*{12}{c}|,longtable={|c|c|c|c|c|c|c|c|c|c|c|c|},

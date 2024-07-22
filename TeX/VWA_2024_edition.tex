@@ -722,16 +722,16 @@
 			
 			\begin{figure}[h]\label{MNISTbeispiele}
 				\vspace{0.0cm} \centering
-				\includegraphics[height=1.3cm]{mnistBeispiele/4080.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/6329.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/922.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/270.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/56.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/253.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/21.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/4225.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/6275.png}
-				\includegraphics[height=1.3cm]{mnistBeispiele/560.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/4080.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/6329.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/922.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/270.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/56.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/253.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/21.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/4225.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/6275.png}
+				\includegraphics[height=1.3cm]{imagesAndGraphData/mnistBeispiele/560.png}
 				\caption{Beispiele für MNIST-Ziffern. Anmerkung: Alle Darstellungen von Ziffern des MNIST-Datensatzes wurden aus den durch die Library Keras (Siehe \ref{Python&Keras}) bereitgestellten Tabellen generiert. (Quelle: E. D.)}
 			\end{figure}
 		
@@ -1386,20 +1386,12 @@
 				
 				
 	\chapter{Lernen eines KNNs am Beispiel des FFNN}\label{Lernen}
-		Bisher wurden in der Arbeit nur verschiedene Arten von KNNs, ihr Aufbau und ihre Funktionsweise behandelt. Jedoch fehlt noch ein wichtiger Teil für die Entwicklung von KNNs, das Training. Unter Training versteht man das Bestimmen der passenden Werte für die Parameter des KNNs für eine bestimmte Aufgabe mithilfe von Trainingsdaten.\footnote{vgl. Buduma, 2017, S. 17; Gibson \& Patterson, 2017, S. 27} Erklärt wird der Vorgang des Trainings in dieser Arbeit nur anhand des FFNN, und zwar aus dem Grund, dass dieser Prozess bei diesem Netztypus am verständlichsten ist.
+		Bisher wurden in der Arbeit nur verschiedene Arten von KNNs, ihr Aufbau und ihre Funktionsweise behandelt. Jedoch fehlt noch ein wichtiger Teil für die Entwicklung von KNNs, das Training. Unter Training versteht man das Bestimmen der passenden Werte für die Parameter des KNNs für eine bestimmte Aufgabe mithilfe von Trainingsdaten.\footnote{vgl. Buduma, 2017, S. 17; Gibson \& Patterson, 2017, S. 27} Erklärt wird der Vorgang des Trainings in dieser Arbeit nur anhand des FFNN, und zwar aus dem Grund, dass dieser Prozess bei diesem Netztypus am verständlichsten ist. \\
 
 		%Zweitens funktioniert das Trainieren von CNNs und RNNs ähnlich wie beim FFNN. Drittens ist das Verstehen dieses Prozesses für die Implementierung von KNNs dank vieler moderner Libraries nicht mehr nötig. \\
 		
-		\ \\
-		\ \\
-		
 		Es gibt mehrere Optimierungs-Methoden, d. h. Möglichkeiten, wie das Trainieren umgesetzt wird. Diese Arbeit befasst sich mit dem Gradient Descent (GD) und dessen zwei bekanntesten Abwandlungen, dem Stochastic Gradient \mbox{Descent (SGD)} und Mini-Batch Gradient Descent.\footnote{vgl. Gibson \& Patterson, 2017, S. 98f; ebd., S. 30ff; Buduma, 2017, S. 25} Das Problem beim Herausfinden der Werte für diese Parameter ist, dass diese nicht über ein Gleichungssystem gelöst werden können, sondern iterativ berechnet werden müssen.\footnote{vgl. Rashid, 2017, S. 71; Buduma, 2017, S. 18f}
 				
-	
-	
-	
-	
-	
 		
 		% Bisher wurden in der Arbeit nur verschiedene Arten von KNNs, ihr Aufbau und ihre Funktionsweise genannt. Jedoch reicht das nicht aus, damit ein Neuronales Netz beispielsweise Bilder klassifizieren kann. Jedes KNN muss vor seinem Einsatz trainiert werden, d.h. die Weights und Biases so anzupassen, dass das Netz Strukturen in den Daten erkennen kann [BELEG ERFORDERLICH]. Die dafür benötigten Algorithmen sind teilweise erst seit den 1980er Jahren bekannt, aufgrund der mangelnden Rechenleistung haben KNNs erst seit wenigen Jahren Erfolg. [2 BELEGE ERFORDERLICH]. Die zwei häufig miteinander verwendeten Algorithmen sind (Stochastic) Gradient Descent und Backpropagation. 
 		% WICHTIG: Zu verstehen, wie Training funktioniert, ist nicht notwendig für die Beantwortung der Forschungsfragen. Jedoch gehört es auch dazu ("der Vollständigkeit wegen"). Außerdem sind die Erkenntnise, was Optimiert werden kann, hilfreich für Experimente (Und somit für Forschungsfragen)
@@ -1760,7 +1752,6 @@
 					\caption{Boxplots der Trefferquoten der verschiedenen KNN-Arten mit verschiedenen Lernraten (Quelle: Eigene Darstellungen)}\label{ErsterBoxplot}
 				\end{figure}
 				
-				\ \\ 
 				Als Größe für die Mini-Batches hat sich bei den FFNNs und LSTMs der Wert 8 durchgesetzt, bei den CNNs verwendete das Netz mit der höchsten Trefferquote eine Mini-Batch Größe von 32, wobei es zum besten CNN mit der Mini-Batch Größe 8 weniger als einen halben Prozentpunkt Unterschied gab.
 
 				\begin{figure}[h] 
@@ -2383,6 +2374,133 @@
 			\\ \
 			\\ \
 			Um nun Einzuschätzen, wie gut die besten Netze der drei Netztypen sind, werden diese mit vom Aufbau vergleichbaren Netzen der Ersteller des MNIST-Datensatzes verglichen. Diese erzielen Trefferquoten zwischen 95,3\% und bis zu 99,77\%, d.h. die besten KNNs dieser Arbeit sind durchaus auf Niveau anderer Forschungsergebnisse.\footnote{vgl. Burges, Cortes \& LeCun, 1998} Auch Menschen können keine Trefferquote von 100\% erzielen. Die sogenannte Human-Level Performance für MNIST liegt bei etwa 99,75\%.\footnote{vgl. Wartala, 2018, S. 126f} 
+			
+			\begin{figure}[h]
+				\vspace{0.0cm} \centering
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5FFNN/6-2118.png}
+					\caption{2118: 6 (377)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5FFNN/6-3853.png}
+					\caption{3853: 6 (376)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5FFNN/5-9982.png}
+					\caption{9982: 5 (375)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5FFNN/5-9729.png}
+					\caption{9729: 5 (375)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5FFNN/9-6166.png}
+					\caption{6166: 9 (375)}
+				\end{subfigure}
+				
+				\vspace*{-2mm}
+				\caption{Top 5 der von FFNNs falsch erkannten Ziffern (Quelle: E. D.)}\label{top5FFNN}
+			\end{figure}
+			\vspace*{-3mm}
+			\begin{figure}[h]
+				\vspace{0.0cm} \centering
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5CNN/5-9982.png}
+					\caption{9982: 5 (568)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5CNN/9-1247.png}
+					\caption{1247: 9 (564)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5CNN/9-3597.png}
+					\caption{3597: 9 (562)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5CNN/9-2293.png}
+					\caption{2293: 9 (560)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5CNN/9-6505.png}
+					\caption{6505: 9 (559)}
+				\end{subfigure}
+				
+				\vspace*{-2mm}
+				\caption{Top 5 der von CNNs falsch erkannten Ziffern (Quelle: E. D.)}\label{top5CNN}
+			\end{figure}
+			\vspace*{-3mm}
+			\begin{figure}[h]
+				\vspace{0.0cm} \centering
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5LSTM/5-9770.png}
+					\caption{9770: 5 (144)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5LSTM/5-3893.png}
+					\caption{3893: 5 (144)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5LSTM/5-2573.png}
+					\caption{2573: 5 (144)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5LSTM/5-1299.png}
+					\caption{1299: 5 (144)}
+				\end{subfigure}
+				\begin{subfigure}[t]{.19\linewidth}
+					\centering
+					\includegraphics[height=0.6\linewidth]{imagesAndGraphData/top5LSTM/5-9982.png}
+					\caption{9982: 5 (143)}
+				\end{subfigure}
+				
+				\vspace*{-2mm}
+				\caption{\mbox{Top 5 der von LSTMs falsch erkannten Ziffern (Quelle: E. D.)}}\label{top5LSTM}
+			\end{figure}
+			
+			\begin{figure}[h!]
+				\vspace{0.0cm} \centering
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/6-21.png}
+				\end{subfigure}
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/6-439.png}
+				\end{subfigure}
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/6-3130.png}
+				\end{subfigure}
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/6-965.png}
+				\end{subfigure}
+				\unskip\ \vrule\ 
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/0-1061.png}
+				\end{subfigure}
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/0-5415.png}
+				\end{subfigure}
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/0-1533.png}
+				\end{subfigure}
+				\begin{subfigure}[h]{0.11\linewidth}
+					\includegraphics[height=\linewidth]{imagesAndGraphData/6zu0/0-1271.png}
+				\end{subfigure}
+				
+				\caption{Verlauf von Sechs zu Null. Die Ziffern links vom Strich sind Sechsen, rechts davon Nullen des Testdatensatzes (Quelle: E. D.)}\label{6zu0Beispiel}
+			\end{figure}
 	
 	
 	

@@ -30,8 +30,10 @@
 \usepackage{etoolbox}	
 \usepackage{chngcntr}	
 \usepackage[nopostdot, toc]{glossaries}				% Fürs Glossar
+
 %\usepackage{acronym}								% Fürs Abkürzungsverzeichnis
 %\usepgfplotslibrary{statistics}
+
 \usepackage{subcaption}								% Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
 \usepackage[
 	format=plain,
@@ -39,6 +41,9 @@
 	labelfont=bf,
 	figurename=Abb.
 ]{caption}											% Formatierung von Bildunterschriften
+\usepackage{amsfonts,amssymb}
+
+
 %\usepackage{lineno}									% Für Zeilennummerierung für Korrektur
 %\usepackage[hang,flushmargin]{footmisc} 			% Für Indention in Fußnoten
 
@@ -151,6 +156,11 @@
 \counterwithout{figure}{chapter} 					% Abbildungen werden nicht mehr per Kapitel, sonder global nummeriert 
 \counterwithout{equation}{chapter}					% Equations werden global nummeriert
 \counterwithout{table}{chapter}						% Tabellen werden global nummeriert
+
+\interfootnotelinepenalty=10000
+\displaywidowpenalty=10000
+\widowpenalty=10000
+\clubpenalty=10000
 
 
 
@@ -277,11 +287,13 @@
 
 \begin{document}
 	
+	%\linenumbers %Für Zeilennummerierung zur Korrektur
+	
+	% Abstandsdefinitionen die später in Tabellen verwendet werden
 	\newlength{\shiftdown}
 	\setlength{\shiftdown}{\heightof{f}-\heightof{A}}
 	\newlength{\myshiftdown}
 	\setlength{\myshiftdown}{\heightof{f}-\heightof{A}+\heightof{A}}
-	
 	
 	% Titelseite
 	\begin{titlepage}\label{Titleseite}
@@ -504,7 +516,8 @@
 					\caption{Leaky Rectified Linear-Funktion, $k=0,01$ (Quelle: E. D.)}\label{LeakyReLUGraph}
 				\end{minipage}
 			\end{figure}
-	
+
+
 		\section{Schichten}
 			Die Neuronen eines KNNs werden meistens in drei verschiedene Arten von Schichten gruppiert. Dabei sind die Werte der vorherigen Schicht die Eingabe für die nächste Schicht.\footnote{vgl. Gibson \& Patterson, 2017, S. 55f} Es gibt zwar Ausnahmen mit beispielsweise nur einer einzigen Schicht welche aber für diese Arbeit nicht relevant sind.\footnote{vgl. ebd., S. 48} Die in den folgenden Kapiteln behandelten Arten basieren auf folgender Einteilung, welche durch Abb. 5 visualisiert wird.
 
@@ -722,6 +735,326 @@
 				\caption{Beispiele für MNIST-Ziffern. Anmerkung: Alle Darstellungen von Ziffern des MNIST-Datensatzes wurden aus den durch die Library Keras (Siehe \ref{Python&Keras}) bereitgestellten Tabellen generiert. (Quelle: E. D.)}
 			\end{figure}
 		
+	\chapter{Feedforward Neural Networks}\label{FFNN Kapitel}
+		Das Feedforward Neural Network (auch Multilayer Perceptron Network\footnote{Diese Bezeichnung ist irreführend (und wird deshalb in dieser Arbeit auch nicht verwendet), da MLPs meistens nicht aus den im Namen stehenden Perceptrons, welche die Heaviside-Funktion als Aktivierungsfunktion verwenden, bestehen. (vgl. Nielsen, 2015, Kapitel 1/The architecture of neural networks)} oder Multilayer Feed-Forward Network genannt) ist trotz seiner Einfachheit ein schon relativ leistungsstarkes Netzwerk, da mit diesem jede stetige Funktion approximiert werden kann.\footnote{vgl. Wartala, 2018, S. 17; Gibson \& Patterson, 2017, S. 50}
+
+		\section{Aufbau}
+			Ein FFNN besteht aus einem Input- und einem Output-Layer und einem oder mehreren Hidden-Layern.\footnote{\practitioner{50}} Diese Layer sind bei diesem Netztypus fully connected (engl. für komplett verbunden), was bedeutet, dass jedes Neuron einer Schicht mit jedem Neuron der benachbarten Schichten verbunden ist.\footnote{\ebd{54}} Jeder Layer besteht aus einem oder mehreren Neuronen, wobei es nicht empfehlenswert ist, aufeinanderfolgende Layer mit gleicher Anzahl an Neuronen zu verwenden.\footnote{vgl. Gibson \& Patterson, 2017, S. 50; Buduma, 2017, S. 11} \\
+			
+			% Dies kann insofern ein Nachteil sein, da bei beispielsweise Bilderkennung mit steigender Auflösung die Anzahl Neuronen allein in der 1. Schicht quadratisch zunimmt.\footnote{\fundamentals{89}} 
+			% Dies kann insofern ein Nachteil sein, da bei beispielsweise Bilderkennung mit durch Verdoppelung der Höhe und Breite eines Bildes die Anzahl der Neuronen alleine in der 1. Schicht (und somit auch die Anzahl der Parameter des 1. Hidden Layer) vervierfacht wird.\footnote{\fundamentals{89}}
+	
+			Des Weiteren ist der Begriff Feedforward in der Bezeichnung wichtig. Er bedeutet, dass Information nur in eine Richtung, nämlich vom Input- zum Output-Layer fließt. Dabei gibt es keine Verbindungen zwischen Neuronen im selben Layer oder in eine vorherige Schicht, da sich sonst Schleifen bilden, sodass der Input in ein Neuron von seinem Output abhängt. Solche Schleifen kommen bei LSTMs in Kapitel \ref{LSTM Kapitel} vor.\footnote{vgl. Buduma, 2017, S. 11; Nielsen, 2015, Kapitel 1/The architecture of neural networks}
+	
+	
+			% Erwähnung von Softmax -> Auf CNN verschoben zu den ganzen anderen Arten von Layern. 																										Aufbau										
+			% XOR Problem in Verbindung mit "jede stetige Funktion approximieren" 																														"Einleitung"								NICHT MEHR NÖTIG
+			% Def von Feedforward: Fundamentals, S. 11																																					Definition/Aufbau							ERLEDIGT
+			% Anzahl der Neurone sollte in Layern unterschiedlich sein: Fundamentals, S. 11																												Aufbau										ERLEDIGT
+			% Problem von FFNNs bei größeren bildern -> Anzahl der Neurone in nimmt exponential zu: Fundamentals, S. 89																					"Einleitung"/Weiterführend (Kapitel 2.0)	ERLEDIGT
+			% Mit FFNNs kann jede stetige Funktion approximiert werden: Wartala, S. 17	(Gegenteil zu Single Layer Perceptron)																			Einleitung									ERLEDIGT
+			% Fully connected, siehe Practitioner, S. 54																																					Aufbau									ERLEDIGT
+			% Hinweis, dass verschiedene Anzahl von Layern und Neurone Teil der Experimente ist																											Weiterführend								ERLEDIGT
+			% Aufbau der Schichten eines MLP so wie in 1.4 beschrieben, wobei alle Layer fully connected sind; meistens Softmax für letzten Layer; 2 oder mehr Hidden layer -> deep learning				Aufbau										
+			% Weiterführend zu Kapitel 1 ließe sich eine Funktion aufschreiben, welche den Output-Layer berechnet. -> Vielleicht auch noch was zum Input-Layer $x_(0)$									Funktionsweise								ERLEDIGT
+			% Erwähnung, dass in späteren kapitel erklärt wird, wie ein KNN am Beispiel von diesem Netztyp trainiert wird. 																				Weiterführend 								ERLEDIGT	
+			% Beweis, dass mehrere Aktivierungsfunktionen in einem KNN vorkommen können siehe Practitoner S. 50																							-> KAPITEL 1								ERLEDIGT
+			
+		\section{Funktionsweise}
+			Bisher gab es nur eine Formel für die Berechnung der Werte eines Layers in Abhängigkeit der Ausgabewerte der vorherigen Schicht. Diese lässt sich durch Einsetzen in sich selbst zu Formel \ref{FormelGesamtesNetz} erweitern, sodass der Vektor des Output-Layers in Abhängigkeit des Input-Layers berechnet werden kann. 
+
+			\begin{equation}\label{FormelGesamtesNetz}
+				\vec{x}_{(L)} = f_{(L)} \left( W_{(L-1),(L)} \cdot f_{(L-1)} \left(…\cdot f_{(2)} \left(W_{(1),(2)}\cdot\vec{x}_{(1)}+\vec{b}_{(1)}\right)+…\right)+\vec{b}_{(L)}\right)
+			\end{equation}
+			
+			Dies erklärt jedoch nicht, wie die einzelnen Parameter so angepasst werden, dass $\vec{x}_{(L)}$ ein brauchbares Ergebnis liefert. Dieser Vorgang wird Training oder auch Lernen genannt und in Kapitel \ref{Lernen} beschrieben. \footnote{\fundamentals{17; ebd., S. 5}}
+
+
+	
+	\chapter{Convolutional Neural Networks}\label{CNN Kapitel}
+		KNNs, wie das FFNN, sind für Bilderkennung ungeeignet, da sich mit der Verdopplung der Auflösung entlang der Kanten die Anzahl der benötigten Weights vervierfacht. Handelt es sich dabei noch zusätzlich um Farbfotos, verdreifacht sich nochmal die Anzahl der Gewichte\footnote{Aufgrund der geringen Auflösung und fehlender Farbe sind FFNNs trotzdem gut für MNIST und ein Vergleich mit anderen Netzwerktypen geeignet. (\cnnKlein{3})}.\footnote{\fundamentals{89}} Je mehr Parameter ein KNN hat, umso mehr Rechenleistung benötigt es. Deshalb gibt es CNNs, welche auf die Klassifizierung von Bildern spezialisiert sind (und sich daher für MNIST sehr gut eignen).\footnote{vgl. Nielsen, 2018, Kapitel 6/Introducing convolutional networks}
+		%(und nicht wie bei MNIST um Schwarz-Weiß-Bilder)
+	
+		% Fundamentals S. 89												ERLEDIGT
+		% Introduction to CNNs (kurz), Seite 3, Absatz vor Overfitting		ERLEDIGT
+		
+		\section{Aufbau}
+			Der Aufbau von CNNs basiert auf dem von FFNNs aus Kapitel \ref{FFNN Kapitel}. Die beiden größten Unterschiede zu FFNNs sind, dass erstens die Neurone mancher Layer in drei Dimensionen angeordnet sind, und zweitens nicht jedes Neuron mit allen Neuronen der benachbarten Schichten verbunden ist. Des Weiteren werden für unterschiedliche Verbindungen die gleichen Gewichte genutzt.\footnote{\cnnKlein{4 \& 7}}
+			%, verändert allerdings auch manche Eigenschaften
+		
+			% Nicht immer jedes Neuron mit allen Neuronen der benachbarten Schchichten verbunden
+			% Tensoren 3. Ordnung (oder gar höher!)
+			% "Regeln" zum Strukturieren der Schichten / Wie sollte ein gutes CNN ausschauen?
+			
+		\section{Arten von Schichten}
+			Ein CNN besteht grundsätzlich aus drei verschiedenen Arten von Schichten: Convolutional Layer, Pooling Layer, und Fully-Connected Layer. Außerdem wird eine häufig als Output Layer verwendete Art von Schicht betrachtet, der Softmax Layer\footnote{Dieser kommt auch in anderen Netztypen vor. (\practitioner{55})}.\footnote{\cnnKlein{4}}
+		
+			\subsection{Convolutional Layer}
+				Besonders am Convolutional Layer ist, dass bei diesem die Neurone nicht mit allen Neuronen der vorherigen Schicht verbunden sind. Stattdessen ist jedes Neuron mit Neuronen eines Ausschnitts, welcher eine bestimmte Größe hat, der vorherigen Schicht verbunden, dem Local Receptive Field $R_{(l,d,n)}$, kurz LRF (Siehe Abb. \ref{LRF}). 
+				
+				\begin{wrapfigure}[13]{r}{0cm}
+					%Vorlage: Nielsen/Kapitel 6/Introducing convolutional networks
+					\begin{tikzpicture}[scale=0.5, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]
+						\draw[opacity=0.3] (0,0) circle (0.4cm);
+						\draw[opacity=0.3] (0,1) circle (0.4cm);
+						\draw (0,2) circle (0.4cm);
+						\draw (0,3) circle (0.4cm);
+						\draw (0,4) circle (0.4cm);
+						
+						\draw[opacity=0.3] (1,0) circle (0.4cm);
+						\draw[opacity=0.3] (1,1) circle (0.4cm);
+						\draw (1,2) circle (0.4cm);
+						\draw (1,3) circle (0.4cm);
+						\draw (1,4) circle (0.4cm);
+						
+						\draw[opacity=0.3] (2,0) circle (0.4cm);
+						\draw[opacity=0.3] (2,1) circle (0.4cm);
+						\draw (2,2) circle (0.4cm);
+						\draw (2,3) circle (0.4cm);
+						\draw (2,4) circle (0.4cm);
+						
+						\draw[opacity=0.3] (3,0) circle (0.4cm);
+						\draw[opacity=0.3] (3,1) circle (0.4cm);
+						\draw[opacity=0.3] (3,2) circle (0.4cm);
+						\draw[opacity=0.3] (3,3) circle (0.4cm);
+						\draw[opacity=0.3] (3,4) circle (0.4cm);
+						
+						\draw[opacity=0.3] (4,0) circle (0.4cm);
+						\draw[opacity=0.3] (4,1) circle (0.4cm);
+						\draw[opacity=0.3] (4,2) circle (0.4cm);
+						\draw[opacity=0.3] (4,3) circle (0.4cm);
+						\draw[opacity=0.3] (4,4) circle (0.4cm);
+						
+						
+						\draw[opacity=0.3] (7,1) circle (0.4cm);
+						\draw[opacity=0.3] (7,2) circle (0.4cm);
+						\draw (7,3) circle (0.4cm);
+						
+						\draw[opacity=0.3] (8,1) circle (0.4cm);
+						\draw[opacity=0.3] (8,2) circle (0.4cm);
+						\draw[opacity=0.3] (8,3) circle (0.4cm);
+						
+						\draw[opacity=0.3] (9,1) circle (0.4cm);
+						\draw[opacity=0.3] (9,2) circle (0.4cm);
+						\draw[opacity=0.3] (9,3) circle (0.4cm);
+						
+						\draw (0,2) -- (7,3);
+						\draw (0,3) -- (7,3);
+						\draw (0,4) -- (7,3);
+						
+						\draw (1,2) -- (7,3);
+						\draw[postaction={decorate}] (1,3) -- (7,3);
+						\draw (1,4) -- (7,3);
+						
+						\draw (2,2) -- (7,3);
+						\draw (2,3) -- (7,3);
+						\draw (2,4) -- (7,3);
+						
+						\draw (-0.5,1.5) -- (-0.5,4.5) -- (2.5,4.5) -- (2.5,1.5) -- (-0.5,1.5);
+						
+						\draw [decorate,decoration={brace,amplitude=5pt},xshift=0pt,yshift=0pt] (-0.5,4.5) -- (2.5,4.5) node [black,midway,yshift=0.35cm,] {\footnotesize Local Receptive Field};
+						\draw [decorate,decoration={brace,amplitude=5pt},xshift=0pt,yshift=0pt] (-0.5,6) -- (4.5,6) node [black,midway,yshift=0.35cm,] {\footnotesize Input};
+						\draw [decorate,decoration={brace,amplitude=5pt},xshift=0pt,yshift=0pt] (6.5,3.5) -- (9.5,3.5) node [black,midway,yshift=0.35cm,] {\footnotesize Convolutional Layer};
+						
+					\end{tikzpicture}
+					\caption{Visualisierung des Convolutional Layers. Es hilft, sich den Input Layer nicht wie bisher als Vektor, sondern als Matrix vorzustellen. (Quelle: E. D.)}\label{LRF}
+				\end{wrapfigure}
+				
+				Die Gewichte zwischen den Neuronen des LRFs und dem zugehörigen Neuron des Convolutional Layers befinden sich in einer Matrix, dem Kernel $K_{(l,d)}$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks} Es wird das Skalarprodukt des Kernels und des zum Neuron zugehörige LRF gebildet, zu diesem wird noch ein Bias $b_{(l,d)}$ addiert. Auf die Summe wird wieder eine Aktivierungsfunktion $f_{(l)}$ angewandt.\footnote{\fundamentals{93}}
+				
+				Dieser Ausschnitt wird über den gesamten Input um einen Wert, den Stride, verschoben. Daraus entsteht eine sogenannte Feature Map, eine zweidimensionale Matrix bestehend aus Neuronen. Zu dieser können noch weitere Feature Maps hinzukommen, wodurch der Convolutional Layer dreidimensional wird. Dabei verwenden alle Neurone innerhalb einer Feature Map den gleichen Kernel und den gleichen Bias.\footnote{\cnnKlein{7}} Formel \ref{ConvolutionFormel} berechnet den Ausgabewert $x_{(l,d,n)}$ des Neurons $n$ in Feature Map $d$ von Layer $l$.\footnote{vgl. Nielsen, 2015, Kapitel 6/Introducing convolutional networks}
+		
+				\begin{equation}\label{ConvolutionFormel}
+					x_{(l,d,n)} = f_{(l)} \left( \langle K_{(l,d)},R_{(l,d,n)} \rangle_F + b_{(l,d)} \right)
+				\end{equation}
+		
+				\begin{figure}[htb]
+					\centering
+					\begin{minipage}[t]{.6\linewidth}
+						\centering
+						%Vorlage: Nielsen/Kapitel 6/Introducing convolutional networks
+						\begin{tikzpicture}[scale=0.45, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]
+							\draw (0,0) circle (0.4cm);
+							\draw (0,1) circle (0.4cm);
+							\draw (0,2) circle (0.4cm);
+							\draw (0,3) circle (0.4cm);
+							\draw (0,4) circle (0.4cm);
+							
+							\draw (1,0) circle (0.4cm);
+							\draw (1,1) circle (0.4cm);
+							\draw (1,2) circle (0.4cm);
+							\draw (1,3) circle (0.4cm);
+							\draw (1,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (2,2) circle (0.05cm);
+							\draw (2,3) circle (0.4cm);
+							\draw (2,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (3,1) circle (0.05cm);
+							\draw (3,3) circle (0.4cm);
+							\draw (3,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (4,0) circle (0.05cm);
+							\draw (4,3) circle (0.4cm);
+							\draw (4,4) circle (0.4cm);
+							
+							
+							
+							\draw (7,0) circle (0.4cm);
+							\draw (7,1) circle (0.4cm);
+							\draw (7,2) circle (0.4cm);
+							\draw (7,3) circle (0.4cm);
+							\draw (7,4) circle (0.4cm);
+							
+							\draw (8,0) circle (0.4cm);
+							\draw (8,1) circle (0.4cm);
+							\draw (8,2) circle (0.4cm);
+							\draw (8,3) circle (0.4cm);
+							\draw (8,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (9,2) circle (0.05cm);
+							\draw (9,3) circle (0.4cm);
+							\draw (9,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (10,1) circle (0.05cm);
+							\draw (10,3) circle (0.4cm);
+							\draw (10,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (11,0) circle (0.05cm);
+							\draw (11,3) circle (0.4cm);
+							\draw (11,4) circle (0.4cm);
+							
+							
+							
+							\draw (14,0) circle (0.4cm);
+							\draw (14,1) circle (0.4cm);
+							\draw (14,2) circle (0.4cm);
+							\draw (14,3) circle (0.4cm);
+							\draw (14,4) circle (0.4cm);
+							
+							\draw (15,0) circle (0.4cm);
+							\draw (15,1) circle (0.4cm);
+							\draw (15,2) circle (0.4cm);
+							\draw (15,3) circle (0.4cm);
+							\draw (15,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (16,2) circle (0.05cm);
+							\draw (16,3) circle (0.4cm);
+							\draw (16,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (17,1) circle (0.05cm);
+							\draw (17,3) circle (0.4cm);
+							\draw (17,4) circle (0.4cm);
+							
+							\draw[line width=0.5mm] (18,0) circle (0.05cm);
+							\draw (18,3) circle (0.4cm);
+							\draw (18,4) circle (0.4cm);
+							
+							
+							\draw (-0.5,2.5) -- (-0.5,4.5) -- (1.5,4.5) -- (1.5,2.5) -- (-0.5,2.5);
+							
+							\draw (-0.5,1.5) -- (-0.5,3.5) -- (1.5,3.5) -- (1.5,1.5) -- (-0.5,1.5);
+							\draw (-0.5,0.5) -- (-0.5,2.5) -- (1.5,2.5) -- (1.5,0.5) -- (-0.5,0.5);
+							\draw (-0.5,-0.5) -- (-0.5,1.5) -- (1.5,1.5) -- (1.5,-0.5) -- (-0.5,-0.5);
+							
+							\draw (0.5,2.5) -- (0.5,4.5) -- (2.5,4.5) -- (2.5,2.5) -- (0.5,2.5);
+							\draw (1.5,2.5) -- (1.5,4.5) -- (3.5,4.5) -- (3.5,2.5) -- (1.5,2.5);
+							\draw (2.5,2.5) -- (2.5,4.5) -- (4.5,4.5) -- (4.5,2.5) -- (2.5,2.5);
+							
+							
+							
+							\draw (6.5,2.5) -- (6.5,4.5) -- (8.5,4.5) -- (8.5,2.5) -- (6.5,2.5);
+							
+							\draw (6.5,1.5) -- (6.5,3.5) -- (8.5,3.5) -- (8.5,1.5) -- (6.5,1.5);
+							\draw (6.5,0.5) -- (6.5,2.5) -- (8.5,2.5) -- (8.5,0.5) -- (6.5,0.5);
+							\draw (6.5,-0.5) -- (6.5,1.5) -- (8.5,1.5) -- (8.5,-0.5) -- (6.5,-0.5);
+							
+							\draw (9.5,2.5) -- (9.5,4.5) -- (11.5,4.5) -- (11.5,2.5) -- (9.5,2.5);
+							
+							
+							
+							\draw (13.5,2.5) -- (13.5,4.5) -- (15.5,4.5) -- (15.5,2.5) -- (13.5,2.5);
+							
+							\draw (13.5,-0.5) -- (13.5,1.5) -- (15.5,1.5) -- (15.5,-0.5) -- (13.5,-0.5);
+							
+							\draw (16.5,2.5) -- (16.5,4.5) -- (18.5,4.5) -- (18.5,2.5) -- (16.5,2.5);
+							
+						\end{tikzpicture}
+						\caption{Visualisierung verschiedener Stride-Werte - Links: $s_{(l)} = (1,1)$; Mitte: $s_{(l)} = (3,1)$; Rechts: $s_{(l)} = (3,3)$ (Quelle: E. D.)}\label{StrideAbbildung}
+		
+					\end{minipage}
+					\hfill
+					\begin{minipage}[t]{.3\linewidth}
+						\centering
+						% Vorlage: Nielsen/Kapitel 6/Introducing convolutional networks
+						\begin{tikzpicture}[scale=0.45, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]
+							\draw (2,1) circle (0.4cm) node [black,midway,xshift=2cm,yshift=1cm,] {1};
+							\draw (2,2) circle (0.4cm) node [black,midway,xshift=2cm,yshift=2cm,] {2};
+							\draw (2,3) circle (0.4cm) node [black,midway,xshift=2cm,yshift=3cm,] {1};
+							
+							\draw (3,1) circle (0.4cm) node [black,midway,xshift=3cm,yshift=1cm,] {3};
+							\draw (3,2) circle (0.4cm) node [black,midway,xshift=3cm,yshift=2cm,] {0};
+							\draw (3,3) circle (0.4cm) node [black,midway,xshift=3cm,yshift=3cm,] {2};
+							
+							\draw (4,1) circle (0.4cm) node [black,midway,xshift=4cm,yshift=1cm,] {2};
+							\draw (4,2) circle (0.4cm) node [black,midway,xshift=4cm,yshift=2cm,] {1};
+							\draw (4,3) circle (0.4cm) node [black,midway,xshift=4cm,yshift=3cm,] {3};
+							
+							
+							\draw (7,0) circle (0.4cm) node [black,midway,xshift=7cm,yshift=0cm,] {0};
+							\draw (7,1) circle (0.4cm) node [black,midway,xshift=7cm,yshift=1cm,] {0};
+							\draw (7,2) circle (0.4cm) node [black,midway,xshift=7cm,yshift=2cm,] {0};
+							\draw (7,3) circle (0.4cm) node [black,midway,xshift=7cm,yshift=3cm,] {0};
+							\draw (7,4) circle (0.4cm) node [black,midway,xshift=7cm,yshift=4cm,] {0};
+							
+							\draw (8,0) circle (0.4cm) node [black,midway,xshift=8cm,yshift=0cm,] {0};
+							\draw (8,1) circle (0.4cm) node [black,midway,xshift=8cm,yshift=1cm,] {1};
+							\draw (8,2) circle (0.4cm) node [black,midway,xshift=8cm,yshift=2cm,] {2};
+							\draw (8,3) circle (0.4cm) node [black,midway,xshift=8cm,yshift=3cm,] {1};
+							\draw (8,4) circle (0.4cm) node [black,midway,xshift=8cm,yshift=4cm,] {0};
+							
+							\draw (9,0) circle (0.4cm) node [black,midway,xshift=9cm,yshift=0cm,] {0};
+							\draw (9,1) circle (0.4cm) node [black,midway,xshift=9cm,yshift=1cm,] {3};
+							\draw (9,2) circle (0.4cm) node [black,midway,xshift=9cm,yshift=2cm,] {0};
+							\draw (9,3) circle (0.4cm) node [black,midway,xshift=9cm,yshift=3cm,] {2};
+							\draw (9,4) circle (0.4cm) node [black,midway,xshift=9cm,yshift=4cm,] {0};
+							
+							\draw (10,0) circle (0.4cm) node [black,midway,xshift=10cm,yshift=0cm,] {0};
+							\draw (10,1) circle (0.4cm) node [black,midway,xshift=10cm,yshift=1cm,] {2};
+							\draw (10,2) circle (0.4cm) node [black,midway,xshift=10cm,yshift=2cm,] {1};
+							\draw (10,3) circle (0.4cm) node [black,midway,xshift=10cm,yshift=3cm,] {3};
+							\draw (10,4) circle (0.4cm) node [black,midway,xshift=10cm,yshift=4cm,] {0};
+							
+							\draw (11,0) circle (0.4cm) node [black,midway,xshift=11cm,yshift=0cm,] {0};
+							\draw (11,1) circle (0.4cm) node [black,midway,xshift=11cm,yshift=1cm,] {0};
+							\draw (11,2) circle (0.4cm) node [black,midway,xshift=11cm,yshift=2cm,] {0};
+							\draw (11,3) circle (0.4cm) node [black,midway,xshift=11cm,yshift=3cm,] {0};
+							\draw (11,4) circle (0.4cm) node [black,midway,xshift=11cm,yshift=4cm,] {0};
+						\end{tikzpicture}
+						\caption{Beispiel für unterschiedliche Zero Padding Werte - Links: $p_{(l)}=0$; Rechts: $p_{(l)}=1$ (Quelle: E. D.)}\label{PaddingAbbildung}
+						
+					\end{minipage}
+				\end{figure}
+		
+				\enlargethispage{0.2\baselineskip}
+		
+				Der Stride $s_{(l)}$ bestimmt, wie sehr sich die einzelnen LRFs überlappen (Siehe Abb. \ref{StrideAbbildung}). Stride und Größe der LRFs beeinflussen die Größe der Feature Maps.\footnote{\cnnKlein{7}} Diese lässt sich zusätzlich durch den Wert $p_{(l)}$ des Zero Paddings steuern. Indem um die Input Matrix herum Zeilen und Spalten hinzugefügt werden (Siehe Abb. \ref{PaddingAbbildung}), können die Feature Maps vergrößert werden, was v. a. dann angewendet wird, wenn die Feature Maps die gleiche Größe wie die vorherige Schicht haben sollen. Diese Zeilen und Spalten werden meistens mit dem Wert 0 gefüllt.\footnote{vgl. Wu, 2017, S. 12f}
+				% (ohne Zero Padding)
+		
+				Die Dimensionen des Convolutional Layer lassen sich wie folgt berechnen: Hat $X_{(l-1)}$ die Form $\textrm{H}({X_{(l-1)}}) \times \textrm{W}({X_{(l-1)}}) \times \textrm{D}({X_{(l-1)}})$ (der vorangehende Layer kann auch dreidimensional sein, wenn es sich dabei z.B. ebenfalls um einen Convolutional Layer handelt) und $K_{(l)}$ die Form $\textrm{H}({K_{(l)}}) \times \textrm{W}({K_{(l)}}) \times \textrm{D}({X_{(l-1)}}) \times \textrm{D}({K_{(l)}})$ (wobei $K_{(l)}$ die Menge aller Kernel des Layer $l$ und $\textrm{D}({K_{(l)}})$ die Anzahl aller Kernel ist), dann hat $X_{(l)}$ die folgende Form:\footnote{vgl. Wu, 2017, S. 12f; Nash \& O'Shea, 2015, S.7}
+				
+				\begin{equation}
+					\frac{ \textrm{H}(X_{(l-1)}) - \textrm{H}(K_{(l)}) + 2 \cdot p_{(l)}}{\textrm{H}(s_{(l)})+1} \times \frac{ \textrm{W}(X_{(l-1)}) - \textrm{W}(K_{(l)}) + 2 \cdot p_{(l)}}{\textrm{W}(s_{(l)})+1} \times \textrm{D}({K_{(l)}})
+				\end{equation}
+		
+				% Für jedes Neuron des Convolutional Layers wird dieser Ausschnitt über den vorherigen Layer verschoben. Um wie viel dieser Ausschnitt verschoben wird, legt der Stride-Wert fest.  Größe des Ausschnitts und Stride sind ebenefalls Hyperparameter (?).																	ERLEDIGT
+				% Zusätzlich kommt auch noch die Tiefe des Convolutional Layer												ERLEDIGT
+				% Die Werte einer Tiefe d des Convolutional Layers werden auch als Feature Map bezeichnet. 					ERLEDIGT
+				% Alle Neurone innerhalb einer Feature Map eines Layers haben den gleichen Bias! (Fundamentals, S. 93)		ERLEDIGT
+				% Zero Padding																								ERLEDIGT
+				% Formel zur Berechnung der Form der Feature Map															
+				% Formel zur Berechnung der Werte einer Featur Map
+				% Diagramm mit stride = (1,1), (2,1), (2,2)																	ERLEDIGT
 	
 	
 	
@@ -746,11 +1079,13 @@
 	
 	
 	% Glossar
+	% Damit das geht muss zuerst Tools -> Befehle -> Makeglossaries ausgeführt werden
+	\printglossary[style=list, type=Abk, nonumberlist]
+	\printglossary[style=indexgroup, title=Glossar, nonumberlist]
 	
 	
 	
-	
-	
+	% Anhang
 	\chapter*{Anhang}
 	\addcontentsline{toc}{chapter}{Anhang}
 	

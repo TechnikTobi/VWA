@@ -5,7 +5,10 @@
 	oneside
 ]{scrreprt}											% Festlegen der Dokumentenklasse
 
-
+% Das ist ein Kommentar
+% Bei Anführungszeichen: unteres -> Anführungszeichen + Shift+Akzent; oberes -> Anführungszeichen + Shift+Hashtag
+% Mathmatischer Ausdruck -> $AUSDRUCK$ oder \(AUSDRUCK\)
+% Tiefgestelte Zahlen: x_1
 
 \usepackage[ngerman]{babel} 						% Deutsche Einstellungen
 \usepackage[utf8]{inputenc} 						% UTF8
@@ -31,9 +34,6 @@
 \usepackage{chngcntr}	
 \usepackage[nopostdot, toc]{glossaries}				% Fürs Glossar
 
-%\usepackage{acronym}								% Fürs Abkürzungsverzeichnis
-
-
 \usepackage{subcaption}								% Für subcaptions für subBilder -> Nicht ganz klar ob das Package benötigt wird
 \usepackage[
 	format=plain,
@@ -44,13 +44,18 @@
 \usepackage[percent]{overpic}
 \usepackage{amsfonts,amssymb}
 
-
 \usepackage{lineno}									% Für Zeilennummerierung für Korrektur
 \usepackage[hang,flushmargin]{footmisc} 			% Für Indention in Fußnoten
 
 \usepackage{csvsimple}								% Einlesen von CSV Dateien
 \usepackage{longtable}								% Tabellen über mehrere Seiten (?)
 \usepackage{multirow}								% Für Mehrere Zellen in einer Zeile
+
+% Nicht verwendete imports
+% \usepackage{acronym}								% Fürs Abkürzungsverzeichnis -> doch nicht notwendig?
+% \usepackage{lstlinebgrd}							% Fürs Formatieren von Code Teil 3 -> macht Probleme
+% \usepackage{booktabs}								% Macht nix?
+% \usepackage{float}								% Macht nix?
 
 \usetikzlibrary{datavisualization}					% Ebenfalls für Graphen
 \usetikzlibrary{decorations.markings}				% Pfeilspitzen in der Mitte
@@ -1220,13 +1225,12 @@
 				
 		\section{LSTM Netzwerke}
 			LSTM Netze unterscheiden sich in der Funktionsweise ihrer Neurone, den LSTM Zellen, von anderen Netzen. Diese lösen auch das Problem des Vanishing Gradients.\footnote{vgl. ebd.}
-			
 			% Lösen das Problem des Vanishing Gradient
 			% Erklärung der Abkürzung
 			% Haben einen Long-Term (Zell-Status) und Short-Time (vorherige Hidden-Status) Speicher
 			% Das wichtige sind die Memory Cells und die Gates welche den Inhalt der Memory Cells steuern können (Practitioner 150) 
 			% Cell Status
-			
+			% Hier keine Leerzeilen zwischen section Überschrift und wrapfigure einfügen!
 			\begin{wrapfigure}[12]{r}{0cm}	
 				%Vorlage: Olah
 				\begin{tikzpicture}[scale=0.5, decoration={markings, mark=at position 1 with {\arrow[scale=2]{>}}}]

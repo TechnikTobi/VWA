@@ -19,6 +19,9 @@
 		D2ABE3A42C4F96EA00F4FA04 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3A32C4F96EA00F4FA04 /* DrawView.swift */; };
 		D2ABE3AB2C4FA93800F4FA04 /* FFNN.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3AA2C4FA79500F4FA04 /* FFNN.mlmodel */; };
 		D2ABE3AC2C4FA93C00F4FA04 /* CNN.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3A92C4FA79400F4FA04 /* CNN.mlmodel */; };
+		D2E1D2FA2C4FD90A00BAB70E /* keras_mnist_cnn.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2E1D2F82C4FD90A00BAB70E /* keras_mnist_cnn.mlmodel */; };
+		D2E1D2FB2C4FD90A00BAB70E /* mnistCNN.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2E1D2F92C4FD90A00BAB70E /* mnistCNN.mlmodel */; };
+		D2E1D2FC2C4FD91100BAB70E /* CNN4softmax.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2E1D2F72C4FD69D00BAB70E /* CNN4softmax.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		D2ABE3A32C4F96EA00F4FA04 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		D2ABE3A92C4FA79400F4FA04 /* CNN.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = CNN.mlmodel; sourceTree = "<group>"; };
 		D2ABE3AA2C4FA79500F4FA04 /* FFNN.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = FFNN.mlmodel; sourceTree = "<group>"; };
+		D2E1D2F72C4FD69D00BAB70E /* CNN4softmax.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = CNN4softmax.mlmodel; sourceTree = "<group>"; };
+		D2E1D2F82C4FD90A00BAB70E /* keras_mnist_cnn.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = keras_mnist_cnn.mlmodel; sourceTree = "<group>"; };
+		D2E1D2F92C4FD90A00BAB70E /* mnistCNN.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = mnistCNN.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,9 @@
 		D2ABE3722C4F86F900F4FA04 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				D2E1D2F72C4FD69D00BAB70E /* CNN4softmax.mlmodel */,
+				D2E1D2F82C4FD90A00BAB70E /* keras_mnist_cnn.mlmodel */,
+				D2E1D2F92C4FD90A00BAB70E /* mnistCNN.mlmodel */,
 				D2ABE3A92C4FA79400F4FA04 /* CNN.mlmodel */,
 				D2ABE3AA2C4FA79500F4FA04 /* FFNN.mlmodel */,
 				D2ABE3732C4F86F900F4FA04 /* AppDelegate.swift */,
@@ -269,6 +278,9 @@
 			files = (
 				D2ABE3782C4F86F900F4FA04 /* ViewController.swift in Sources */,
 				D2ABE3AB2C4FA93800F4FA04 /* FFNN.mlmodel in Sources */,
+				D2E1D2FB2C4FD90A00BAB70E /* mnistCNN.mlmodel in Sources */,
+				D2E1D2FC2C4FD91100BAB70E /* CNN4softmax.mlmodel in Sources */,
+				D2E1D2FA2C4FD90A00BAB70E /* keras_mnist_cnn.mlmodel in Sources */,
 				D2ABE3742C4F86F900F4FA04 /* AppDelegate.swift in Sources */,
 				D2ABE3A42C4F96EA00F4FA04 /* DrawView.swift in Sources */,
 				D2ABE3AC2C4FA93C00F4FA04 /* CNN.mlmodel in Sources */,

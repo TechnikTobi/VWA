@@ -16,6 +16,7 @@
 		D2ABE38B2C4F86FA00F4FA04 /* DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE38A2C4F86FA00F4FA04 /* DemoTests.swift */; };
 		D2ABE3952C4F86FA00F4FA04 /* DemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3942C4F86FA00F4FA04 /* DemoUITests.swift */; };
 		D2ABE3972C4F86FA00F4FA04 /* DemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3962C4F86FA00F4FA04 /* DemoUITestsLaunchTests.swift */; };
+		D2ABE3A42C4F96EA00F4FA04 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3A32C4F96EA00F4FA04 /* DrawView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,9 @@
 		D2ABE3902C4F86FA00F4FA04 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2ABE3942C4F86FA00F4FA04 /* DemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoUITests.swift; sourceTree = "<group>"; };
 		D2ABE3962C4F86FA00F4FA04 /* DemoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D2ABE3A32C4F96EA00F4FA04 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		D2ABE3A92C4FA79400F4FA04 /* CNN.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = CNN.mlmodel; sourceTree = "<group>"; };
+		D2ABE3AA2C4FA79500F4FA04 /* FFNN.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = FFNN.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,8 @@
 		D2ABE3722C4F86F900F4FA04 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABE3A92C4FA79400F4FA04 /* CNN.mlmodel */,
+				D2ABE3AA2C4FA79500F4FA04 /* FFNN.mlmodel */,
 				D2ABE3732C4F86F900F4FA04 /* AppDelegate.swift */,
 				D2ABE3752C4F86F900F4FA04 /* SceneDelegate.swift */,
 				D2ABE3772C4F86F900F4FA04 /* ViewController.swift */,
@@ -106,6 +112,7 @@
 				D2ABE37C2C4F86FA00F4FA04 /* Assets.xcassets */,
 				D2ABE37E2C4F86FA00F4FA04 /* LaunchScreen.storyboard */,
 				D2ABE3812C4F86FA00F4FA04 /* Info.plist */,
+				D2ABE3A32C4F96EA00F4FA04 /* DrawView.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -260,6 +267,7 @@
 			files = (
 				D2ABE3782C4F86F900F4FA04 /* ViewController.swift in Sources */,
 				D2ABE3742C4F86F900F4FA04 /* AppDelegate.swift in Sources */,
+				D2ABE3A42C4F96EA00F4FA04 /* DrawView.swift in Sources */,
 				D2ABE3762C4F86F900F4FA04 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

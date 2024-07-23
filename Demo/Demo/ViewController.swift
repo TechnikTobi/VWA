@@ -34,7 +34,8 @@ class ViewController: UIViewController {
     ()
     {
         super.viewDidLoad();
-        
+     
+        // Set up the pixelbuffer
         CVPixelBufferCreate(
             kCFAllocatorDefault,
             28,
@@ -46,8 +47,15 @@ class ViewController: UIViewController {
         
         self.uiDrawView.viewController = self;
         
+        // Disable interpolation
+        self.uiImageView.layer.magnificationFilter = .nearest;
+        
+        // Hide the prediction text labels for now
         self.uiFFNNpredictionLabel.isHidden = true;
         self.uiCNNpredictionLabel.isHidden  = true;
+        
+        // First render to image view
+        self.showDrawViewInImageView();
     }
     
     func
@@ -56,6 +64,10 @@ class ViewController: UIViewController {
     {
         // Get the image from the DrawView
         let ciImage = self.uiDrawView.getCIimage();
+        
+        // Show the image in the image view
+        let uiImage = UIImage(ciImage: ciImage!);
+        uiImageView.image = uiImage;
         
         // Convert it to a pixelbuffer
         CIContext().render(ciImage!, to: self.pixelBuffer!);
@@ -70,9 +82,15 @@ class ViewController: UIViewController {
         
         self.uiFFNNpredictionLabel.text = ffnn_output?.classLabel;
         self.uiCNNpredictionLabel.text  = cnn_output?.classLabel;
-        
-        let uiImage = UIImage(ciImage: ciImage!);
-        uiImageView.image = uiImage;
+    }
+    
+    func
+    showDrawViewInImageView
+    ()
+    {
+        uiImageView.image = UIImage(
+            ciImage: self.uiDrawView.getCIimage()!
+        );
     }
     
     @IBAction func
@@ -81,8 +99,11 @@ class ViewController: UIViewController {
         _ sender: Any
     )
     {
+        // Clear the draw view
         self.uiDrawView.clear();
+        self.showDrawViewInImageView();
         
+        // Hide the prediction text labels
         self.uiFFNNpredictionLabel.isHidden = true;
         self.uiCNNpredictionLabel.isHidden  = true;
     }

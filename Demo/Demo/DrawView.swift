@@ -104,12 +104,12 @@ class DrawView: UIView
             space: colorSpace, bitmapInfo: bitmapInfo
         );
         
-        context?.translateBy(x: 0, y: 0);
+        context?.translateBy(x: 0, y: 28);
         context?.scaleBy(
             x:  28/self.frame.size.width,
             y: -28/self.frame.size.height
         );
-        
+
         self.layer.render(in: context!);
         
         return context
@@ -122,8 +122,7 @@ class DrawView: UIView
     ()
     -> CIImage?
     {
-        let context = self.getCGcontext();
-        let cgImage = context?.makeImage();
+        let cgImage = self.getCGcontext()?.makeImage();
         return CIImage(cgImage: cgImage!);
     }
     

@@ -60,9 +60,19 @@ class ViewController: UIViewController {
         // Convert it to a pixelbuffer
         CIContext().render(ciImage!, to: self.pixelBuffer!);
         
+        // Call the models to make their prediction
+        let ffnn_output = try? ffnn.prediction(image: pixelBuffer!);
+        let cnn_output  = try? cnn.prediction(image: pixelBuffer!);
         
+        // Display predictions
+        self.uiFFNNpredictionLabel.isHidden = false;
+        self.uiCNNpredictionLabel.isHidden  = false;
         
+        self.uiFFNNpredictionLabel.text = ffnn_output?.classLabel;
+        self.uiCNNpredictionLabel.text  = cnn_output?.classLabel;
         
+        let uiImage = UIImage(ciImage: ciImage!);
+        uiImageView.image = uiImage;
     }
     
     @IBAction func

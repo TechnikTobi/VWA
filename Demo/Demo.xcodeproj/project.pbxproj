@@ -17,6 +17,8 @@
 		D2ABE3952C4F86FA00F4FA04 /* DemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3942C4F86FA00F4FA04 /* DemoUITests.swift */; };
 		D2ABE3972C4F86FA00F4FA04 /* DemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3962C4F86FA00F4FA04 /* DemoUITestsLaunchTests.swift */; };
 		D2ABE3A42C4F96EA00F4FA04 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3A32C4F96EA00F4FA04 /* DrawView.swift */; };
+		D2ABE3AB2C4FA93800F4FA04 /* FFNN.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3AA2C4FA79500F4FA04 /* FFNN.mlmodel */; };
+		D2ABE3AC2C4FA93C00F4FA04 /* CNN.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D2ABE3A92C4FA79400F4FA04 /* CNN.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,8 +268,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2ABE3782C4F86F900F4FA04 /* ViewController.swift in Sources */,
+				D2ABE3AB2C4FA93800F4FA04 /* FFNN.mlmodel in Sources */,
 				D2ABE3742C4F86F900F4FA04 /* AppDelegate.swift in Sources */,
 				D2ABE3A42C4F96EA00F4FA04 /* DrawView.swift in Sources */,
+				D2ABE3AC2C4FA93C00F4FA04 /* CNN.mlmodel in Sources */,
 				D2ABE3762C4F86F900F4FA04 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

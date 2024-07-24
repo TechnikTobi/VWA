@@ -1,0 +1,105 @@
+\documentclass[a4paper,12pt,ngerman,oneside]{scrreprt}
+
+\usepackage[ngerman]{babel} 																		%Deutsche Einstellungen
+\usepackage[utf8]{inputenc} 																		%UTF8
+\usepackage[T1]{fontenc}																			%Schriftart für den Titel
+\usepackage{csquotes}																				%Für Anführungszeichen
+\usepackage[onehalfspacing]{setspace}																%1,5 Zeilenabstand
+\usepackage{geometry}																				%Für die Bestimmung der Größe der Seiten
+\usepackage[backend=bibtex, citestyle=authoryear]{biblatex}											%Fürs Literaturverzeichnis
+\usepackage{graphicx}																				%Fürs Einbinden von Grafiken
+\usepackage{wrapfig}																				%Fürs Verschieben von Grafiken
+\usepackage{amsmath}																				%Für Vektoren
+\usepackage{abstract}																				%Für das Abstract
+\usepackage{url}																					%Für URLs im Literaturverzeichnis
+\usepackage{etoolbox}	
+\usepackage{chngcntr}
+\usepackage{longtable}																				%Tabelle auf mehreren Seiten
+
+\geometry{a4paper,left=20mm,right=20mm,top=10mm} 													%Format der Datei + Abstand zu den Rändern
+
+\addtokomafont{chapter}{\rmfamily} 																	%Schriftart für Kapitelüberschriften
+\addtokomafont{chapterentry}{\rmfamily}																%Schriftart für Kapiteleinstiege
+\addtokomafont{section}{\rmfamily}																	%Schriftart für Unterkapitelüberschriften
+\addtokomafont{subsection}{\rmfamily}																%Schriftart für Unterunterkapitelüberschriften
+\addtokomafont{subsubsection}{\rmfamily} 															%Schriftart für Unterunterunterkapitelüberschriften
+
+\setlength{\parindent}{0pt}																			%Nach Absatz nicht einrücken
+
+
+
+\begin{document}
+	\pagestyle{empty}
+	\begin{center}	
+		\vspace*{15mm}\huge\centering\textbf{Begleitprotokoll\break}
+	\end{center}
+	\vspace*{-5mm}
+	Name der Schülerin/des Schülers: {Tobias Prisching}
+	\newline Thema der Arbeit: {Künstliche Neuronale Netzwerke und ihr Verhalten beim  MNIST-Datensatz}
+	\newline Name der Betreuungsperson: {Mag. Christoph Hödl}
+	
+	\vspace{1cm}
+	\setlength\LTleft{0mm}
+	\begin{longtable}{|p{21mm}|p{71mm}|p{66mm}|}
+			
+		%Datum & Vorgangsweise , ausgeführte Arbeiten, verwendete Hilfsmittel, aufgesuchte Bibliotheken, ... &  
+		\hline
+		Datum & Ausgeführte Arbeiten & Fortschritte/nächste Schritte \\
+		\hline
+		2017-11-02 & 1. Besprechung zum Thema mit betreuender Lehrperson & E-Mail mit Gliederung und Literatur \\\hline
+		2017-11-17 & 1. E-Mail an die betreuende Lehrperson mit Gliederung und Literatur & \\\hline
+		Herbst 2017 & Ausarbeitung einer "`Mini-VWA"' im Rahmen des VWA-Wahlpflichtfaches als Vorbereitung & Erste Beschäftigung mit einem der Teilgebiete (Multilayer Perceptron-Netzwerke) \\\hline
+		Winter 2017 & Ausarbeitung der Einreichung & Einreichung ausgearbeitet \\\hline
+		2018-01-28 & 2. E-Mail an die betreuende Lehrperson & \\\hline
+		2018-02-15 & Einreichung des VWA-Themas & VWA-Thema eingereicht und von Betreuer und Direktorin genehmigt \\\hline
+		2018-04-09 &  & VWA-Thema durch LSI genehmigt\\\hline
+		2018-06-06 & 2. Besprechung mit dem Betreuer über diverse formale Kriterien wie Zitierung bei Programmcode, Aufbau der Experimente & \\\hline
+		2018-06-24 \newline bis \newline 2018-07-03 & Suche nach Literatur; Herunterladen der Internetquellen um Serverausfällen und Veränderungen vorzubeugen & Fortschritt: Vorerst fertige Literatursammlung \newline Nächste Schritte: Konkretisieren der Inhaltsangabe, Lesen der Literatur \\\hline
+		2018-07-04 & Ausarbeiten einer genauen Übersicht über den Inhalt der VWA & Fortschritt: Übersicht darüber, worauf genau bei Lesen der Literatur geachtet werden soll \\\hline
+		2018-07-06 \newline bis \newline 2018-07-18& Beginn Intensives Lesen der Literatur mit Erstellung von Randbemerkungen & Fortschritt: Wissen, wo genau was steht, um beim Schreiben besser arbeiten zu können \\\hline
+		2018-07-14 \newline bis \newline 2018-07-27& Digitalisieren der während dem Lesen gemachten Notizen für Kapitel 1 um diese während des Schreibens schneller durchsuchen zu können und das Formulieren zu üben & Fortschritt: Stoff zum Schreiben von Kapitel 1 aufbereitet \\\hline
+		2018-07-13 & 2. E-Mail an die betreuende Lehrperson mit Fragen bezüglich der Schreibweise von Begriffen und der Handhabung von Programmcode in der VWA & \\\hline
+		2018-07-16 & Formatierung von Programmcode und Notationstabelle in \LaTeX & \\\hline
+		2018-07-18 & Beginn mit Schreiben des 2. Kapitels & \\\hline
+		2018-07-28 & Fertigstellung einer ersten Version des 2. Kapitel & \\\hline
+		2018-07-29 & 3. E-Mail an betreuende Lehrperson mit Fragen und dem 2. Kapitel im Anhang & \\\hline
+		2018-08-01 \newline bis \newline 2018-08-02 & Schreiben des 3. Kapitels & \\\hline	
+		2018-08-17 & Beginn mit Schreiben des 6. Kapitels & \\\hline
+		2018-08-25 & Fertigstellung einer ersten Version des 6. Kapitels & \\\hline	
+		2018-08-26 & Beginn mit Schreiben des 4. Kapitels & \\\hline
+		2018-08-29 & Fertigstellung einer ersten Version des 4. Kapitels & \\\hline
+		2018-08-30 & Beginn mit Schreiben des 5. Kapitels & \\\hline
+		2018-09-03 & 3. Besprechung der bisherigen VWA  mit Betreuer. & \\\hline
+		2018-08-29 & Fertigstellung einer ersten Version des 5. Kapitels & \\\hline
+		2018-09-08 & Beginn mit Arbeit an Programmierarbeiten & \\\hline
+		2018-10-03 & 4. Besprechung der bisherigen VWA, Versuchsergebnisse und dem weiteren Vorgehen & \\\hline
+		2018-10-25 & Abschluss der Programmierarbeiten und Versuche & \\\hline 
+		2018-11-23 & 5. Besprechung über Ergebnisse der Programmierarbeiten & Grundsteinlegung für 7. Kapitel \\\hline
+		2018-12-19 & Besprechung der mathematischen Ausdrücke mit Mag.$^{\textrm{a}}$ Gertrud Aumayr & \\\hline
+		2018-12-24 \newline bis \newline 2018-12-26 & Fertigstellung der Notationstabelle & \\\hline 
+		2018-12-26 \newline bis \newline 2018-12-29 & Fertigstellung des Glossars & \\\hline
+		2018-12-28 & Niederschreiben der Beweise in Anhang B & \\\hline
+		2018-12-28 \newline bis \newline 2018-12-29 & Schreiben der Einleitung & \\\hline
+		2018-12-31 \newline bis \newline 2019-01-05 & Schreiben des 7. Kapitels & \\\hline
+		2019-01-19 \newline bis \newline 2019-01-20 & Schreiben des Resümees, Abstracts und Vorworts & \\\hline
+		2019-01-21 \newline bis \newline 2019-02-02 & Überarbeiten der Arbeit & \\\hline
+		2019-02-02 & Druck der Arbeit & \\\hline
+		2019-02-11 & Abgabe der Arbeit & \\\hline
+		%Besprechungen mit der betreuenden Lehrperson, Fortschritte, offene Fragen, Probleme, nächste Schritte \\
+	\end{longtable}
+%	\vspace*{0.4cm}
+	Die Arbeit hat eine Länge von 59869 Zeichen.
+	\\ \
+	\\ \
+	\\ \
+	\\ \
+	\\ \
+	\\ \
+	\\ \
+	\\ \
+	\\ \
+	\parbox{6cm}{\centering\hrule
+		\strut \centering\footnotesize Ort, Datum} \hfill\parbox{6cm}{\hrule
+		\strut \centering\footnotesize Unterschrift}
+
+\end{document}
